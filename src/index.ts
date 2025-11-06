@@ -12,14 +12,11 @@ export * from './types'
 // 导出组件
 export { ZwForm, Icon as ZwIcon, ZwTable }
 
-// 组件列表
-const components = [ZwForm, ZwIcon, ZwTable]
-
 // 安装函数
 const install = (app: App) => {
-  components.forEach(component => {
-    app.component(component.name || '', component)
-  })
+  app.component('ZwForm', ZwForm)
+  app.component('ZwIcon', Icon)
+  app.component('ZwTable', ZwTable)
 }
 
 // 默认导出
