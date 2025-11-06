@@ -1,7 +1,6 @@
 import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import vueJsx from '@vitejs/plugin-vue-jsx'
-import dts from 'vite-plugin-dts'
 import AutoImport from 'unplugin-auto-import/vite'
 import Components from 'unplugin-vue-components/vite'
 import { ElementPlusResolver } from 'unplugin-vue-components/resolvers'
@@ -33,18 +32,6 @@ export default defineConfig({
       dirs: [], // 不扫描任何目录
       resolvers: [ElementPlusResolver()],
       dts: 'src/types/components.d.ts'
-    }),
-    dts({
-      insertTypesEntry: true,
-      copyDtsFiles: true,
-      include: ['src/**/*.ts', 'src/**/*.d.ts', 'src/**/*.tsx', 'src/**/*.vue'],
-      exclude: ['src/**/*.spec.ts', 'src/**/*.test.ts'],
-      beforeWriteFile: (filePath, content) => {
-        return {
-          filePath: filePath.replace('/src/', '/'),
-          content
-        }
-      }
     })
   ],
   resolve: {
@@ -61,7 +48,7 @@ export default defineConfig({
     lib: {
       entry: resolve(__dirname, 'src/index.ts'),
       name: 'AdvancedEleUI',
-      fileName: (format) => `advanced-ele-ui.${format}.js`
+      fileName: format => `advanced-ele-ui.${format}.js`
     },
     rollupOptions: {
       external: ['vue', 'element-plus', '@iconify/vue', '@vueuse/core', 'lodash-es', 'dayjs'],
@@ -72,10 +59,10 @@ export default defineConfig({
           '@iconify/vue': 'IconifyVue',
           '@vueuse/core': 'VueUse',
           'lodash-es': '_',
-          'dayjs': 'dayjs'
+          dayjs: 'dayjs'
         },
         exports: 'named',
-        assetFileNames: (assetInfo) => {
+        assetFileNames: assetInfo => {
           if (assetInfo.name === 'style.css') return 'style.css'
           return assetInfo.name || ''
         }

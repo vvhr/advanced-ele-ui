@@ -2,7 +2,7 @@ import { componentMap } from '../component'
 import type { FormProps, FormSchema, FormSlots, FormEmits, ComponentProps } from '../types'
 import { useComponent } from '../hook/useComponent'
 import { getSlot } from '../utils/helpers'
-import type { Ref } from 'vue'
+import type { Ref, VNode } from 'vue'
 
 export function renderContainer(
   props: FormProps,
