@@ -1,0 +1,12 @@
+src/
+scripts/
+.git/
+.idea/
+.vscode/
+node_modules/
+*.log
+.DS_Store
+tsconfig.json
+tsconfig.node.json
+vite.config.ts
+.gitignore

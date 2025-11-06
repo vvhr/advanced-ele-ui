@@ -1,0 +1,55 @@
+.demo-section {
+  padding: 20px 0;
+}
+
+.section-header {
+  margin-bottom: 30px;
+}
+
+.section-header h2 {
+  font-size: 28px;
+  color: #303133;
+  margin: 0 0 10px 0;
+}
+
+.section-header p {
+  color: #909399;
+  margin: 0;
+  font-size: 14px;
+}
+
+.demo-card {
+  margin-bottom: 20px;
+}
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.card-actions {
+  display: flex;
+  gap: 10px;
+}
+
+.feature-card {
+  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+}
+
+.feature-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.feature-list li {
+  padding: 12px 0;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+  font-size: 15px;
+  color: #606266;
+}
+
+.feature-list li:last-child {
+  border-bottom: none;
+}

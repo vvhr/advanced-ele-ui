@@ -1,0 +1,180 @@
+<script lang="tsx">
+import { defineComponent, type PropType, onMounted, onBeforeUnmount, computed, watch, unref } from 'vue'
+import type { FormSchema, SchemaProps } from './types'
+import { renderForm } from './render/RenderForm'
+import { useForm } from './hook/useForm'
+
+export default defineComponent({
+  name: 'ZwForm',
+  props: {
+    // 表单数据对象
+    model: {
+      type: Object as PropType<Recordable>,
+      default: () => ({})
+    },
+    // 表单组件配置项
+    schemas: {
+      type: Array as PropType<FormSchema[]>,
+      default: () => []
+    },
+    // 双向绑定-当前步骤值
+    stepValue: {
+      type: [Number, null],
+      default: null
+    },
+    /**
+     * 表单禁用状态
+     * @default false
+     * @description 表单禁用状态,将控制表单内所有组件的禁用状态，当值为`true`时,优先级高于每个组件的`disabled`属性
+     */
+    disabled: {
+      type: Boolean,
+      default: false
+    },
+    /**
+     * 表单类型
+     * @default 'form'
+     * @description 表单类型，默认为`form`，可选值为`form`或`desc`
+     * - `form`: 常规模式
+     * - `desc`: 描述模式，通过el-descriptions组件包裹
+     */
+    type: {
+      type: String as PropType<'form' | 'desc'>,
+      default: 'form'
+    },
+    /**
+     * 是否为设计模式
+     * @default false
+     * @description 是否为设计模式，将显示设计模式下的工具栏以及允许组件被拖拽
+     */
+    designable: {
+      type: Boolean,
+      default: false
+    },
+    // 上下文-共享数据
+    dataSource: {
+      type: Object as PropType<Recordable>,
+      default: () => ({})
+    },
+    /**
+     * 表单组件配置项默认配置
+     * @description 针对一些特殊场景,避免重复对所有schema进行配置，可在本属性中统一配置
+     */
+    schemaProps: {
+      type: Object as PropType<SchemaProps>,
+      default: () => ({})
+    },
+    // 表单标题宽度
+    labelWidth: {
+      type: [String, Number],
+      default: '120px'
+    },
+    // 表单校验不通过时是否额外弹出提示消息块
+    showErrorNotice: {
+      type: Boolean,
+      default: true
+    },
+    // 传入滚动条的Ref,当校验不通过时自动滚动到第一个错误项
+    scrollRef: {
+      type: Object as PropType<HTMLDivElement | null>,
+      default: null
+    },
+    // 是否自动初始化字段
+    autoInitField: {
+      type: Boolean,
+      default: true
+    }
+  },
+  emits: ['register', 'update:stepValue'],
+  setup(props, ctx) {
+    const {
+      formModel,
+      elFormRef,
+      baseElRowRef,
+      componentRefs,
+      schemasKeys,
+      initValues,
+      getDefaultModel,
+      getFormModel,
+      getElFormRef,
+      setValues,
+      clearValues,
+      setValue,
+      delValue,
+      resetValidate,
+      validate
+    } = useForm(props, props.schemas)
+    onMounted(() => {
+      ctx.emit('register', unref(elFormRef))
+      // 组件完成加载时会初始化一次表单,但如果组件配置或表单对象是异步传入的, 则需要手动调用初始化函数
+      unref(props).autoInitField ? initValues(props.model) : setValues(props.model)
+      // resetValidate()
+    })
+    onBeforeUnmount(() => {
+      // 清理表单数据
+      formModel.value = {}
+      // 清理其他引用
+      elFormRef.value = null
+    })
+    // 监听表单结构化 - 优化版本
+    const schemasFieldsHash = computed(() => {
+      // 只提取影响字段初始化的关键属性
+      const extractFieldInfo = (schema: FormSchema): string => {
+        const { key, field, type, component, value, children } = schema
+        let info = `${field || key}:${type || 'Inputer'}:${component || ''}:${value !== undefined ? 'hasValue' : 'noValue'}`
+        // 递归处理子组件
+        if (children && Array.isArray(children)) {
+          info += ':children[' + children.map(extractFieldInfo).join(',') + ']'
+        }
+        return info
+      }
+      return unref(props).schemas.map(extractFieldInfo).join('|')
+    })
+
+    watch(
+      schemasFieldsHash,
+      () => {
+        // 为对象中不存在的组件字段进行创建
+        unref(props).autoInitField && initValues(unref(formModel))
+        resetValidate()
+      },
+      {
+        immediate: false
+      }
+    )
+
+    ctx.expose({
+      initValues,
+      getDefaultModel,
+      getFormModel,
+      getElFormRef,
+      setValues,
+      clearValues,
+      setValue,
+      delValue,
+      validate,
+      resetValidate
+    })
+
+    return () => (
+      <div class="zw-form">
+        {renderForm(
+          props,
+          ctx.emit,
+          ctx.attrs,
+          ctx.slots,
+          formModel,
+          elFormRef,
+          componentRefs,
+          baseElRowRef,
+          schemasKeys
+        )}
+      </div>
+    )
+  }
+})
+</script>
+
+<style lang="less">
+//.zw-form {}
+</style>
