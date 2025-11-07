@@ -63,6 +63,7 @@
     "@element-plus/icons-vue": "^2.3.2",
     "@iconify/vue": "^5.0.0",
     "@vueuse/core": "^11.0.0",
+    "aieditor": "^1.4.2",
     "dayjs": "^1.11.13",
     "lodash-es": "^4.17.21"
   },
