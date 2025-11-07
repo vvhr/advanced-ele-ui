@@ -24,6 +24,9 @@ export function renderTable(
   summaryMethodLocal: TableProps['summaryMethod'],
   dictTools: UseDictTools
 ) {
+  const showAppend = () => {
+    return Reflect.has(slots, 'append') || (selections.value && selections.value.length > 0)
+  }
   const renderElTableAppend = () => {
     if (selections.value && selections.value.length > 0) {
       return (
@@ -38,6 +41,7 @@ export function renderTable(
     }
   }
   const renderElTable = () => {
+    const tableClass = `zw-table-main ${showAppend() ? 'has-append' : ''}`
     const table = (
       <ElTable
         ref={elTableRef}
@@ -48,7 +52,7 @@ export function renderTable(
         onRow-click={elTableHanders.handleRowClick}
         header-row-class-name="zw-table-header"
         summary-method={props.showSummary ? summaryMethodLocal : undefined}
-        class="zw-table-main"
+        class={tableClass}
         {...unref(elTableAttrs)}
       >
         {{

@@ -139,7 +139,8 @@ export default defineComponent({
         'emptyValue',
         'adaptive',
         'summaryMethod',
-        'freshKey'
+        'freshKey',
+        'dict'
       ]
       cleanProps.forEach(prop => {
         delete allAttrs[prop]
@@ -358,10 +359,12 @@ export default defineComponent({
       }
     }
   }
-  .el-table__append-wrapper {
-    overflow: hidden;
-    border-top: 1px solid #f2f3f5;
-    height: 42px;
+  .has-append {
+    .el-table__append-wrapper {
+      overflow: hidden;
+      border-top: 1px solid #f2f3f5;
+      height: 42px;
+    }
   }
   .zw-table-append {
     position: absolute;
