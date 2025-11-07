@@ -4,22 +4,21 @@
       <h1>🎨 Advanced Element UI</h1>
       <p class="subtitle">基于 Vue 3 + Element Plus 的高级组件库</p>
     </header>
-
     <el-tabs v-model="activeTab" class="demo-tabs">
+      <el-tab-pane label="🚀 快速开始" name="start">
+        <QuickStartExample />
+      </el-tab-pane>
       <el-tab-pane label="📝 ZwForm 表单组件" name="form">
         <FormExample />
       </el-tab-pane>
-
       <el-tab-pane label="📊 ZwTable 表格组件" name="table">
         <TableExample />
       </el-tab-pane>
-
-      <el-tab-pane label="🎨 Icon 图标组件" name="icon">
+      <el-tab-pane label="🎨 ZwIcon 图标组件" name="icon">
         <IconExample />
       </el-tab-pane>
-
-      <el-tab-pane label="🚀 快速开始" name="start">
-        <QuickStartExample />
+      <el-tab-pane label="📄 ZwEditor 富文本编辑器" name="aieditor">
+        <EditorExample />
       </el-tab-pane>
     </el-tabs>
   </div>
@@ -30,6 +29,7 @@ import { ref } from 'vue'
 import FormExample from './examples/FormExample.vue'
 import TableExample from './examples/TableExample.vue'
 import IconExample from './examples/IconExample.vue'
+import EditorExample from './examples/EditorExample.vue'
 import QuickStartExample from './examples/QuickStartExample.vue'
 
 const activeTab = ref('form')

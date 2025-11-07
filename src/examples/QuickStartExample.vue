@@ -29,7 +29,9 @@ app.mount('#app')</code></pre>
       <template #header>
         <span>📝 按需引入</span>
       </template>
-      <pre class="code-block"><code>import { ZwForm, ZwTable, Icon } from 'advanced-ele-ui'
+      <pre
+        class="code-block"
+      ><code>import { ZwForm, ZwTable, ZwIcon, ZwEditor } from 'advanced-ele-ui'
 import 'advanced-ele-ui/dist/style.css'</code></pre>
     </el-card>
 
