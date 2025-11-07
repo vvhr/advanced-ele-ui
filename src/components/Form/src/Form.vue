@@ -1,5 +1,13 @@
 <script lang="tsx">
-import { defineComponent, type PropType, onMounted, onBeforeUnmount, computed, watch, unref } from 'vue'
+import {
+  defineComponent,
+  type PropType,
+  onMounted,
+  onBeforeUnmount,
+  computed,
+  watch,
+  unref
+} from 'vue'
 import type { FormSchema, SchemaProps } from './types'
 import { renderForm } from './render/RenderForm'
 import { useForm } from './hook/useForm'
@@ -176,5 +184,37 @@ export default defineComponent({
 </script>
 
 <style lang="less">
-//.zw-form {}
+.zw-form {
+  // 居上布局时
+  .el-form-item--label-top {
+    // 没有使用自定义label插槽时
+    &.is-normal-label {
+      // 设置副标题的颜色和尺寸
+      .zw-form-item-label {
+        > .sub-label {
+          // 副标题默认小于主标题1px的尺寸
+          font-size: clamp(12px, calc(var(--el-font-size-base, '14px') - 1px), 16px);
+          color: var(--el-color-info);
+        }
+      }
+      &.is-required {
+        // 使必填*号变为绝对定位
+        .el-form-item__label {
+          width: 100%;
+          position: relative;
+          &::before {
+            position: absolute;
+            left: 0;
+          }
+        }
+        // 由于必填*号被绝对定位, 因此需要将主标题往右移动10px
+        .zw-form-item-label {
+          > .label {
+            margin-left: 10px;
+          }
+        }
+      }
+    }
+  }
+}
 </style>

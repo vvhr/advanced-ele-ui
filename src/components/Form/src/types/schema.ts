@@ -399,7 +399,7 @@ export interface FormItemProps {
   /**
    * 副标题
    * @description 在主标题下显示副标题
-   * @notes 仅在`labelPosition`为`top`时生效
+   * @notes 仅在`labelPosition`为`top`时显示在主标题下方，其他情况时无效
    */
   subLabel?: FormSchemaFn<string> | string
   /**
@@ -412,7 +412,7 @@ export interface FormItemProps {
   /**
    * formItem组件的标题最大宽度
    * @default undefined
-   * @description 当某标题过长需要换行显示时，可设置最大宽度来实现换行
+   * @description 当某标题过长需要换行显示时，可设置最大宽度来实现换行，一般建议设置为表单labelWidth-20px
    * @notes 仅当`labelPosition`为`left`或`right`时生效
    */
   labelMaxWidth?: string | number

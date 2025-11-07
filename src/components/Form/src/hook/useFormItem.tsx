@@ -2,7 +2,7 @@ import { ComponentProps, FormProps, FormSchema, FormSlots } from '../types'
 import {
   getComponentPropValue,
   getLabel, getNoLabel,
-  getStyleWidth,
+  getStyleWidth, getSubLabel,
   getTrueComponentProps,
 } from '../utils'
 import type { FormItemRule } from 'element-plus'
@@ -35,7 +35,7 @@ export function useFormItem(
       ...(schema.formItemProps || {}),
       prop: schema.field || '',
       label: formItemLabel.value,
-      class: ['zw-form-item', getNoMarginBottomClass(), getNoLabelClass()].join(' '),
+      class: ['zw-form-item', getNoMarginBottomClass(), getNoLabelClass(), getNormalLabelClass()].filter(name => !!name).join(' '),
       required: getFormItemRequired(),
       rules: getFormItemRules()
     }
@@ -102,6 +102,15 @@ export function useFormItem(
     return formItemLabel?.value?.length === 0 ? 'no-label' : ''
   }
 
+  // 当没有自定义label插槽时, 为form-item添加一个类名
+  function getNormalLabelClass() {
+    if (!slots || !Reflect.has(slots, `${schema.key || schema.field}-error`)) {
+      return 'is-normal-label'
+    } else {
+      return ''
+    }
+  }
+
   /**
    * @param slots 插槽
    * @param field 字段名
@@ -118,29 +127,33 @@ export function useFormItem(
       slotObj['label'] = (data: Recordable) => {
         return getSlot(slots, `${field}-label`, data)
       }
-    }
-    // 如果标题不为空且使用了labelMaxWidth属性,则默认生成label插槽的内容
-    const labelPosition =
-      schema.formItemProps?.labelPosition ??
-      props.schemaProps?.formItemProps?.labelPosition ??
-      'right'
-    if (
-      labelPosition !== 'top' &&
-      schema.formItemProps?.labelMaxWidth &&
-      formItemLabel?.value?.length
-    ) {
+    } else {
+      // 默认使用二次包装过的标题栏
       slotObj['label'] = () => {
-        const style = {
-          width: getStyleWidth(schema.formItemProps.labelMaxWidth),
-          textAlign: labelPosition,
-          verticalAlign: 'middle',
-          lineHeight: 'var(--el-font-size-base)'
+        const labelPosition =
+          schema.formItemProps?.labelPosition ??
+          props.schemaProps?.formItemProps?.labelPosition ??
+          'right'
+        if (labelPosition === 'top') {
+          const subLabel = getSubLabel(schema, formModel.value, props)
+          return (
+            <div class="zw-form-item-label flex-col">
+              <div class="label">{formItemLabel.value}</div>
+              {!!subLabel && (<div class="sub-label">{subLabel}</div>)}
+            </div>
+          )
+        } else {
+          const labelStyle = {
+            width: getStyleWidth(schema.formItemProps?.labelMaxWidth) || 'fit-content',
+            lineHeight: schema.formItemProps?.labelMaxWidth ? "var(--el-font-size-base, '14px')" : '',
+            marginTop: schema.formItemProps?.labelMaxWidth ? '5px' : ''
+          }
+          return (
+            <div class="zw-form-item-label inline-flex">
+              <span class="label" style={labelStyle}>{formItemLabel.value}</span>
+            </div>
+          )
         }
-        return (
-          <div class="zw-form-item-label" style={style}>
-            {formItemLabel}
-          </div>
-        )
       }
     }
     return slotObj

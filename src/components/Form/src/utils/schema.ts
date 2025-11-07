@@ -10,6 +10,9 @@ export function getValue(schema: FormSchema, formModel: Recordable, props: FormP
 export function getLabel(schema: FormSchema, formModel: Recordable, props: FormProps) {
   return getSchemaPropValue(schema.label, schema, formModel, props, 'string', '')
 }
+export function getSubLabel(schema: FormSchema, formModel: Recordable, props: FormProps) {
+  return getSchemaPropValue(schema.formItemProps?.subLabel, schema, formModel, props, 'string', '')
+}
 export function getNoLabel(schema: FormSchema, formModel: Recordable, props: FormProps) {
   return getSchemaPropValue(
     schema.formItemProps?.noLabel,

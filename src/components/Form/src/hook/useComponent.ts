@@ -310,7 +310,7 @@ function setTableProps(schema: FormSchema, formModel: Recordable, props: FormPro
   return {
     dataSource: props.dataSource,
     form: formModel,
-    editable: true, // 自动启用表格编辑功能
+    editable: !props.disabled, // 自动启用表格编辑功能
     adaptive: false // 禁止自适应高宽度
   }
 }
