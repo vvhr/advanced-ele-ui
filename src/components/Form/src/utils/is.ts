@@ -29,3 +29,10 @@ export function isValidKey(value: any): value is string | number | symbol {
   const type = typeof value
   return type === 'string' || type === 'number' || type === 'symbol'
 }
+
+/**
+ * 是否是render函数
+ */
+export function isRenderFunction(fn: any): boolean {
+  return fn !== undefined && isFunction(fn)
+}

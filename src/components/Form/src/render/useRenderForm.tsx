@@ -3,7 +3,7 @@ import type { ComponentProps, FormEmits, FormProps, FormSchema, FormSlots } from
 import { getSubLabel, isHidden } from '../utils/schema'
 import { useFormItem } from '../hook/useFormItem'
 import { SchemaLayout } from './SchemaLayout'
-import { getSlot, getStyleWidth } from '../utils'
+import { getSlot, getStyleWidth, isRenderFunction } from '../utils'
 import type { ComputedRef, Ref, VNode } from 'vue'
 import { componentMap } from '../component'
 import { useComponent } from '../hook/useComponent'
@@ -99,7 +99,8 @@ export function useRenderForm(
         display: 'flex',
         flexDirection: direction,
         flexWrap: 'wrap',
-        alignItems: 'center',
+        // 水平布局时默认居中对齐, 垂直布局时默认靠左
+        alignItems: direction === 'row' ? 'center' : 'flex-start',
         width: '100%',
         ...(schema?.outsideProps?.style || {})
       }
@@ -174,7 +175,8 @@ export function useRenderForm(
         display: 'flex',
         flexDirection: direction,
         flexWrap: 'wrap',
-        alignItems: 'center',
+        // 水平布局时默认居中对齐, 垂直布局时默认靠左
+        alignItems: direction === 'row' ? 'center' : 'flex-start',
         width: '100%',
         ...(schema?.outsideProps?.style || {})
       }
@@ -194,7 +196,7 @@ export function useRenderForm(
   // 渲染自定义类组件
   function renderCustom(schema: FormSchema): VNode | undefined {
     if (schema?.type === 'Custom') {
-      if (schema.render !== undefined) {
+      if (isRenderFunction(schema.render)) {
         return schema.render(formModel.value, schema, props.disabled, props.dataSource)
       }
       const { slotKey } = useComponent(props, slots, emits, schema, formModel, {})
@@ -220,6 +222,25 @@ export function useRenderForm(
       props.schemaProps?.formItemProps?.labelPosition ??
       'right'
     if (labelPosition === 'top') {
+      // 只要定义了subLabelRender，则优先使用
+      if (isRenderFunction(schema.formItemProps?.subLabelRender)) {
+        const renderSubLabel = schema.formItemProps.subLabelRender(formModel.value, schema, props.disabled, props.dataSource)
+        if (!!renderSubLabel) {
+          return (
+            <div class="zw-form-item-label">
+              <div class="label">{label}</div>
+              <div class="sub-label">{renderSubLabel}</div>
+            </div>
+          )
+        } else {
+          return (
+            <div class="zw-form-item-label">
+              <div class="label">{label}</div>
+            </div>
+          )
+        }
+      }
+      // 如果未定义subLabelRender，则读取subLabel
       const subLabel = getSubLabel(schema, formModel.value, props)
       return (
         <div class="zw-form-item-label">

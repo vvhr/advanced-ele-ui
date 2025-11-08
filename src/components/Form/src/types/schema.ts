@@ -403,6 +403,13 @@ export interface FormItemProps {
    */
   subLabel?: FormSchemaFn<string> | string
   /**
+   * 副标题自定义渲染
+   * @default false
+   * @description 使用render函数自定义副标题的内容, 返回false则不显示, 优先级高于`subLabel`
+   * @notes 仅在`labelPosition`为`top`时显示在主标题下方，其他情况时无效
+   */
+  subLabelRender?: FormSchemaFn<VNode | false>
+  /**
    * formItem组件的标题宽度
    * @default 'auto'
    * @description 可单独设置某表单项的label宽度
