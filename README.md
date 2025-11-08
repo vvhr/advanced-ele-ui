@@ -50,6 +50,13 @@ pnpm add advanced-ele-ui
 
 ## 🔧 快速开始
 
+### 前期准备
+本组件库基于Vue 3和Element Plus，因此你的项目需先安装Element Plus组件库：
+```bash
+npm install element-plus
+```
+
+
 ### 完整引入
 
 在 `main.ts` 中引入所有组件：
@@ -77,7 +84,7 @@ app.mount('#app')
 只引入需要的组件：
 
 ```typescript
-import { ZwForm, ZwTable, ZwIcon } from 'advanced-ele-ui'
+import { ZwForm, ZwTable, ZwIcon, ZwEditor } from 'advanced-ele-ui'
 import 'advanced-ele-ui/dist/style.css'
 ```
 
@@ -117,16 +124,28 @@ import 'advanced-ele-ui/dist/style.css'
 基于 Iconify 的图标组件，支持海量图标库。
 
 **核心特性：**
-- 🎨 支持 Iconify 全部图标库（10 万+ 图标）
-- 📏 灵活的尺寸设置
-- 🌈 自定义颜色
-- ⚡ 按需加载，性能优秀
+- ✅ 支持 Iconify 全部图标库（10 万+ 图标）
+- ✅ 灵活的尺寸设置
+- ✅ 自定义颜色
+- ✅ 按需加载，性能优秀
 
 **图标资源：**
 - Element Plus 图标：`ep:icon-name`
 - Material Design：`mdi:icon-name`
 - Font Awesome：`fa:icon-name`
 - 更多图标库：访问 [Iconify](https://icon-sets.iconify.design/)
+
+---
+
+### 📝 ZwEditor - 富文本组件
+
+基于 [!AiEditor](https://aieditor.dev/docs) 二次封装的双向绑定富文本组件。
+
+**核心特性：**
+- ✅ 面向 AI 的下一代富文本编辑器，在常规富文本功能基础上额外提供了可配置的AI助手功能
+- ✅ 配置化驱动富文本组件渲染，支持自定义工具栏、自定义样式、自定义上传接口等
+- ✅ 双向绑定，只需`v-model`即可自动更新数据，无需手动调用编辑器实例的更新函数
+- ✅ 遵循 Element Plus 组件风格，支持 `placeholder`, `disabled`, `size`, `resizable` 等属性
 
 ---
 
@@ -177,6 +196,7 @@ import 'advanced-ele-ui/dist/style.css'
 - [Element Plus](https://element-plus.org/) - 基于 Vue 3 的组件库
 - [Iconify](https://iconify.design/) - 统一的图标框架
 - [VueUse](https://vueuse.org/) - Vue 组合式 API 工具集
+- [AiEditor](https://aieditor.dev/) - 智能文本编辑器
 
 ---
 
