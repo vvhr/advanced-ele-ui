@@ -40,7 +40,7 @@ export default defineConfig({
       '~': resolve(__dirname, '.')
     }
   },
-  base: './',
+  base: process.env.NODE_ENV === 'production' ? '/advanced-ele-ui/' : './',
   build: {
     target: 'es2015',
     outDir: 'dist',
