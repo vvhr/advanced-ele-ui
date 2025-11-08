@@ -113,7 +113,7 @@ const tablePagination = reactive({
 const tableColumns: ZwTableColumn[] = [
   { key: 'selection', type: 'selection', width: 55, fixed: 'left' },
   { key: 'index', type: 'index', label: '序号', width: 80 },
-  { field: 'name', label: '姓名', width: 120 },
+  { field: 'name', label: '姓名', width: 120, subLabel: '自定义副标题' },
   { field: 'age', label: '年龄', width: 100 },
   { field: 'email', label: '邮箱', minWidth: 180 },
   {

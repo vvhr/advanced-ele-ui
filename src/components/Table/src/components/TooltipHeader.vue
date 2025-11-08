@@ -4,7 +4,7 @@
     <el-tooltip v-if="subtitle" :content="subtitle" :disabled="!isOverflow" placement="top">
       <div
         ref="subtitleRef"
-        class="tooltip-header-subtitle font-thin text-nowrap text-ellipsis overflow-hidden mt-1"
+        class="tooltip-header-subtitle font-400 text-nowrap text-ellipsis overflow-hidden mt-1"
         style="font-size: clamp(12px, calc(1em - 1px), 16px)"
         @mouseenter="checkOverflowOnHover"
       >
