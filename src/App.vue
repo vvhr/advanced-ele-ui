@@ -6,19 +6,19 @@
     </header>
     <el-tabs v-model="activeTab" class="demo-tabs">
       <el-tab-pane label="🚀 快速开始" name="start">
-        <QuickStartExample />
+        <QuickStartExample v-if="activeTab === 'start'" />
       </el-tab-pane>
       <el-tab-pane label="📝 ZwForm 表单组件" name="form">
-        <FormExample />
+        <FormExample v-if="activeTab === 'form'" />
       </el-tab-pane>
       <el-tab-pane label="📊 ZwTable 表格组件" name="table">
-        <TableExample />
+        <TableExample v-if="activeTab === 'table'" />
       </el-tab-pane>
       <el-tab-pane label="🎨 ZwIcon 图标组件" name="icon">
-        <IconExample />
+        <IconExample v-if="activeTab === 'icon'" />
       </el-tab-pane>
-      <el-tab-pane label="📄 ZwEditor 富文本编辑器" name="aieditor">
-        <EditorExample />
+      <el-tab-pane label="📄 ZwEditor 富文本编辑器" name="editor">
+        <EditorExample v-if="activeTab === 'editor'" />
       </el-tab-pane>
     </el-tabs>
   </div>
