@@ -3,10 +3,20 @@
   <p>基于 Vue 3 + Element Plus 的高级组件库</p>
 
   [![npm version](https://img.shields.io/npm/v/advanced-ele-ui.svg?style=flat-square)](https://www.npmjs.com/package/advanced-ele-ui)
-  [![npm downloads](https://img.shields.io/npm/dm/advanced-ele-ui.svg?style=flat-square)](https://www.npmjs.com/package/advanced-ele-ui)
+  [![npm downloads](https://img.shields.io/npm/dt/advanced-ele-ui.svg?style=flat-square)](https://www.npmjs.com/package/advanced-ele-ui)
   [![license](https://img.shields.io/npm/l/advanced-ele-ui.svg?style=flat-square)](https://github.com/vvhr/advanced-ele-ui/blob/main/LICENSE)
   [![TypeScript](https://img.shields.io/badge/TypeScript-5.3-blue?style=flat-square)](https://www.typescriptlang.org/)
   [![Vue](https://img.shields.io/badge/Vue-3.4-green?style=flat-square)](https://vuejs.org/)
+
+  <br/>
+
+  <h3>
+    <a href="https://vvhr.github.io/advanced-ele-ui" target="_blank">📱 在线演示</a>
+    ·
+    <a href="#-安装">快速开始</a>
+    ·
+    <a href="./CHANGELOG.md">更新日志</a>
+  </h3>
 </div>
 
 ---
@@ -23,9 +33,19 @@
 
 
 ## 📚 介绍
-Element Plus 是一个非常优秀的基础组件库，相比其他Vue3组件库，他最大的特点就是没有过度包装，非常适合二次开发。
-本项目的`ZwForm`及`ZwTable`组件完全基于配置化数据来渲染组件，其目的是将页面、组件、业务代码解耦，开发者仅需关心组件的配置，即可快速实现业务需求。
-传统表单开发是"写代码画表单"，数据驱动表单开发是"写配置生成表单"——前者直观但重复劳动多，后者高效但需要理解配置规则。
+
+Advanced Element UI 是一个基于 Element Plus 深度封装的高级组件库，专注于提升中后台系统的开发效率。
+
+### 💡 设计理念
+
+Element Plus 作为 Vue 3 生态中最受欢迎的 UI 组件库之一，其最大优势在于**保持原生、不过度封装**，这为二次开发提供了极大的灵活性。基于这一特点，我们打造了 Advanced Element UI，通过**配置化驱动**的方式，让复杂的表单和表格开发变得简单高效。
+
+### 🎯 核心价值
+
+**传统开发方式：** "写代码画表单" —— 直观但重复劳动多，维护成本高  
+**配置化开发方式：** "写配置生成表单" —— 高效且易维护，专注业务逻辑
+
+本项目的 `ZwForm` 和 `ZwTable` 组件完全基于配置数据驱动渲染，实现了**页面、组件、业务逻辑的完全解耦**。开发者只需关注配置项，即可快速构建复杂的业务场景，大幅减少重复代码，提升开发效率。
 
 ---
 
@@ -162,13 +182,12 @@ import 'advanced-ele-ui/dist/style.css'
 
 ---
 
-## 📖 完整文档
+## 📖 文档与资源
 
-更多详细文档和示例，请访问：
-
-- [在线演示](https://vvhr.github.io/advanced-ele-ui)
-- [GitHub 仓库](https://github.com/vvhr/advanced-ele-ui)
-- [更新日志](./CHANGELOG.md)
+- 📱 [在线演示](https://vvhr.github.io/advanced-ele-ui) - 查看所有组件的实时示例
+- 📦 [NPM 包](https://www.npmjs.com/package/advanced-ele-ui) - 查看发布版本和下载统计
+- 📝 [更新日志](./CHANGELOG.md) - 了解版本更新内容
+- 🐛 [问题反馈](https://github.com/vvhr/advanced-ele-ui/issues) - 提交 Bug 或功能建议
 
 ---
 

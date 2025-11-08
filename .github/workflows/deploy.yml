@@ -4,6 +4,12 @@ on:
   push:
     branches:
       - main  # 或者你的主分支名称，如果是 master 就改成 master
+    paths-ignore:
+      - '**.md'
+      - 'LICENSE'
+      - '.gitignore'
+      - '.editorconfig'
+      - '.prettierrc'
 
   # 允许手动触发
   workflow_dispatch:
