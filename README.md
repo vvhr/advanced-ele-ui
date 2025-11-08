@@ -139,7 +139,7 @@ import 'advanced-ele-ui/dist/style.css'
 
 ### 📝 ZwEditor - 富文本组件
 
-基于 [!AiEditor](https://aieditor.dev/docs) 二次封装的双向绑定富文本组件。
+基于 [AiEditor](https://aieditor.dev/docs) 二次封装的双向绑定富文本组件。
 
 **核心特性：**
 - ✅ 面向 AI 的下一代富文本编辑器，在常规富文本功能基础上额外提供了可配置的AI助手功能

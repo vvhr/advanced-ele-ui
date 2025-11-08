@@ -24,8 +24,10 @@
     "dev": "vite",
     "check": "vue-tsc --noEmit",
     "build": "vue-tsc --noEmit && vite build",
+    "build:demo": "vite build --config vite.config.demo.ts",
     "build:types": "vue-tsc --declaration --emitDeclarationOnly --outDir dist",
     "preview": "vite preview",
+    "preview:demo": "vite preview --config vite.config.demo.ts --outDir dist-demo",
     "prepublishOnly": "npm run build",
     "publish:npm": "npm publish --registry=https://registry.npmjs.org/ --access public",
     "login:npm": "npm login --registry=https://registry.npmjs.org/"

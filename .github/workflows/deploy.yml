@@ -39,8 +39,8 @@ jobs:
       - name: Install dependencies
         run: pnpm install
 
-      - name: Build
-        run: pnpm run build
+      - name: Build Demo Site
+        run: pnpm run build:demo
         env:
           NODE_ENV: production
 
@@ -50,7 +50,7 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: './dist'
+          path: './dist-demo'
 
   deploy:
     environment:
