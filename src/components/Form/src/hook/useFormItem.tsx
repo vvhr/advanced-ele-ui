@@ -1,19 +1,19 @@
 import { ComponentProps, FormProps, FormSchema, FormSlots } from '../types'
 import {
   getComponentPropValue,
-  getLabel, getNoLabel,
-  getStyleWidth, getSubLabel,
-  getTrueComponentProps,
+  getLabel,
+  getNoLabel,
+  getTrueComponentProps
 } from '../utils'
 import type { FormItemRule } from 'element-plus'
 import { autoRulesMap } from '../constants'
-import { getSlot } from '../utils'
 
 interface UserFormItemData {
   trueComponentProps: ComponentProps
-  isDisabled: boolean
+  isDisabled: ComputedRef<boolean>
   getFormItemProps: () => Recordable
-  getFormItemSlots: () => Recordable
+  slotKey: string
+  formItemLabel: ComputedRef<string>
 }
 
 export function useFormItem(
@@ -25,17 +25,16 @@ export function useFormItem(
   const componentProps: ComponentProps = getTrueComponentProps(schema, formModel.value, props)
   const formItemLabel = computed<string>(() => getFormItemLabel())
   const isDisabled = computed<boolean>(() => getDisabled())
-  function getFormItemSlots() {
-    return setFormItemSlots(slots, schema.key || schema.field)
-  }
-
+  const slotKey = schema.key || schema.field
   function getFormItemProps() {
     return {
       ...(props.schemaProps.formItemProps || {}),
       ...(schema.formItemProps || {}),
       prop: schema.field || '',
-      label: formItemLabel.value,
-      class: ['zw-form-item', getNoMarginBottomClass(), getNoLabelClass(), getNormalLabelClass()].filter(name => !!name).join(' '),
+      // label: formItemLabel.value,
+      class: ['zw-form-item', getNoMarginBottomClass(), getNoLabelClass(), getNormalLabelClass()]
+        .filter(name => !!name)
+        .join(' '),
       required: getFormItemRequired(),
       rules: getFormItemRules()
     }
@@ -111,58 +110,11 @@ export function useFormItem(
     }
   }
 
-  /**
-   * @param slots 插槽
-   * @param field 字段名
-   * @returns 返回FormIiem插槽
-   */
-  function setFormItemSlots(slots: FormSlots, field: string): Recordable {
-    const slotObj: Recordable = {}
-    if (slots[`${field}--error`]) {
-      slotObj['error'] = (data: Recordable) => {
-        return getSlot(slots, `${field}-error`, data)
-      }
-    }
-    if (slots[`${field}--label`]) {
-      slotObj['label'] = (data: Recordable) => {
-        return getSlot(slots, `${field}-label`, data)
-      }
-    } else {
-      // 默认使用二次包装过的标题栏
-      slotObj['label'] = () => {
-        const labelPosition =
-          schema.formItemProps?.labelPosition ??
-          props.schemaProps?.formItemProps?.labelPosition ??
-          'right'
-        if (labelPosition === 'top') {
-          const subLabel = getSubLabel(schema, formModel.value, props)
-          return (
-            <div class="zw-form-item-label flex-col">
-              <div class="label">{formItemLabel.value}</div>
-              {!!subLabel && (<div class="sub-label">{subLabel}</div>)}
-            </div>
-          )
-        } else {
-          const labelStyle = {
-            width: getStyleWidth(schema.formItemProps?.labelMaxWidth) || 'fit-content',
-            lineHeight: schema.formItemProps?.labelMaxWidth ? "var(--el-font-size-base, '14px')" : '',
-            marginTop: schema.formItemProps?.labelMaxWidth ? '5px' : ''
-          }
-          return (
-            <div class="zw-form-item-label inline-flex">
-              <span class="label" style={labelStyle}>{formItemLabel.value}</span>
-            </div>
-          )
-        }
-      }
-    }
-    return slotObj
-  }
-
   return {
     trueComponentProps: componentProps,
-    isDisabled: isDisabled.value,
+    isDisabled,
     getFormItemProps,
-    getFormItemSlots
+    formItemLabel,
+    slotKey
   }
 }

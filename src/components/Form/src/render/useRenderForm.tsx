@@ -1,0 +1,424 @@
+import { ElForm, ElRow, ElFormItem } from 'element-plus'
+import type { ComponentProps, FormEmits, FormProps, FormSchema, FormSlots } from '../types'
+import { getSubLabel, isHidden } from '../utils/schema'
+import { useFormItem } from '../hook/useFormItem'
+import { SchemaLayout } from './SchemaLayout'
+import { getSlot, getStyleWidth } from '../utils'
+import type { ComputedRef, Ref, VNode } from 'vue'
+import { componentMap } from '../component'
+import { useComponent } from '../hook/useComponent'
+export function useRenderForm(
+  props: FormProps,
+  emits: FormEmits,
+  attrs: any,
+  slots: FormSlots,
+  formModel: Ref<Recordable>,
+  elFormRef: Ref<ComponentRef<typeof ElForm>>,
+  componentRefs: Ref<Recordable<ComponentRef<any>>>,
+  baseElRowRef: Ref<ComponentRef<typeof ElRow>>,
+  schemasKeys: Ref<string[]>
+) {
+
+  // 渲染容器类组件
+  function renderContainer(
+    schema: FormSchema,
+    componentProps: ComponentProps,
+    defaultRender?: () => VNode | undefined
+  ): VNode | undefined {
+    // 检查组件是否在组件映射中
+    if (!schema.component || !componentMap.hasOwnProperty(schema.component)) {
+      console.error(`[ZwForm]: 组件 ${schema.component} 不存在`)
+      return undefined
+    }
+    const { getAnyComponent, freshKey, setComponentProps, setInsideSlots } = useComponent(
+      props,
+      slots,
+      emits,
+      schema,
+      formModel,
+      componentProps
+    )
+
+    // 渲染组件
+    const renderAnyComponent = () => {
+      const AnyComponent = getAnyComponent()
+      if (AnyComponent !== undefined) {
+        return (
+          <AnyComponent {...setComponentProps()} key={freshKey}>
+            {{
+              ...setInsideSlots(),
+              default: () => defaultRender?.()
+            }}
+          </AnyComponent>
+        )
+      } else {
+        console.error(`[ZwForm]: 配置异常，请检查组件 ${schema.component} 是否正确！`)
+        return undefined
+      }
+    }
+
+    return renderAnyComponent()
+  }
+
+  // 渲染装饰类组件
+  function renderDecorator(schema: FormSchema, componentProps: ComponentProps): VNode | undefined {
+    // 检查组件是否在组件映射中
+    if (!schema.component || !componentMap.hasOwnProperty(schema.component)) {
+      console.error(`[ZwForm]: 组件 ${schema.component} 不存在`)
+      return undefined
+    }
+    const {
+      enableOutside,
+      setOutsideAppend,
+      setOutsidePrepend,
+      getAnyComponent,
+      freshKey,
+      setComponentProps,
+      setComponentEvent,
+      setInsideSlots
+    } = useComponent(props, slots, emits, schema, formModel, componentProps)
+
+    // 渲染组件
+    const renderAnyComponent = () => {
+      const AnyComponent = getAnyComponent()
+      if (AnyComponent !== undefined) {
+        return (
+          <AnyComponent {...setComponentProps()} {...setComponentEvent()} key={freshKey}>
+            {{ ...setInsideSlots() }}
+          </AnyComponent>
+        )
+      } else {
+        console.error(`[ZwForm]: 配置异常，请检查组件 ${schema.component} 是否正确！`)
+        return undefined
+      }
+    }
+
+    const renderAnyComponentWithOutside = () => {
+      const direction = schema?.outsideProps?.direction || 'row'
+      const style: Recordable = {
+        display: 'flex',
+        flexDirection: direction,
+        flexWrap: 'wrap',
+        alignItems: 'center',
+        width: '100%',
+        ...(schema?.outsideProps?.style || {})
+      }
+      return (
+        <div class="zw-form-item-outside" style={style}>
+          {setOutsidePrepend()}
+          {renderAnyComponent()}
+          {setOutsideAppend()}
+        </div>
+      )
+    }
+
+    // 是否激活渲染外部容器
+    return enableOutside ? renderAnyComponentWithOutside() : renderAnyComponent()
+  }
+
+  // 渲染输入类组件
+  function renderInputer(
+    schema: FormSchema,
+    componentProps: ComponentProps,
+    disabled: ComputedRef<boolean>
+  ): VNode | undefined {
+    // 检查组件是否在组件映射中
+    if (!schema.component || !componentMap.hasOwnProperty(schema.component)) {
+      console.error(`[ZwForm]: 组件 ${schema.component} 不存在`)
+      return undefined
+    }
+    const {
+      enableOutside,
+      setOutsideAppend,
+      setOutsidePrepend,
+      getAnyComponent,
+      freshKey,
+      setModelValue,
+      setComponentEvent,
+      setComponentProps,
+      setInsideSlots
+    } = useComponent(props, slots, emits, schema, formModel, componentProps)
+    const setComponentRef = (el: any) => {
+      const refKey = schema.key || schema.field || ''
+      // 只有部分特殊组件才存储ref
+      const enableComponents = ['Table']
+      if (el && refKey && enableComponents.includes(schema.component)) {
+        componentRefs.value[`${refKey}Ref`] = el
+      }
+    }
+    // 渲染组件
+    const renderAnyComponent = () => {
+      const AnyComponent = getAnyComponent()
+      if (AnyComponent !== undefined) {
+        return (
+          <AnyComponent
+            ref={(el: any) => setComponentRef(el)}
+            {...setModelValue()}
+            {...setComponentProps()}
+            {...setComponentEvent()}
+            disabled={disabled.value}
+            key={freshKey}
+          >
+            {{ ...setInsideSlots() }}
+          </AnyComponent>
+        )
+      } else {
+        console.error(`[ZwForm]: 配置异常，请检查组件 ${schema.component} 是否正确！`)
+        return undefined
+      }
+    }
+
+    const renderAnyComponentWithOutside = () => {
+      const direction = schema?.outsideProps?.direction || 'row'
+      const style: Recordable = {
+        display: 'flex',
+        flexDirection: direction,
+        flexWrap: 'wrap',
+        alignItems: 'center',
+        width: '100%',
+        ...(schema?.outsideProps?.style || {})
+      }
+      return (
+        <div class="zw-form-item-outside" style={style}>
+          {setOutsidePrepend()}
+          {renderAnyComponent()}
+          {setOutsideAppend()}
+        </div>
+      )
+    }
+
+    // 是否激活渲染外部容器
+    return enableOutside ? renderAnyComponentWithOutside() : renderAnyComponent()
+  }
+
+  // 渲染自定义类组件
+  function renderCustom(schema: FormSchema): VNode | undefined {
+    if (schema?.type === 'Custom') {
+      if (schema.render !== undefined) {
+        return schema.render(formModel.value, schema, props.disabled, props.dataSource)
+      }
+      const { slotKey } = useComponent(props, slots, emits, schema, formModel, {})
+      if (slots[slotKey]) {
+        return getSlot(slots, slotKey, formModel.value) as any
+      }
+      console.error(`
+      [ZwForm]: 配置异常，若您期望使用自定义渲染组件，请使用 render属性 或 slot插槽 编写组件内容！
+      例如: render: (form, column, disabled, dataSource) => ...
+      或在ZwForm组件内使用 <template #${slotKey}>...</template>
+    `)
+    }
+    console.error(
+      `[ZwForm]: 配置异常，若您期望使用自定义渲染组件，请使用 render属性 或 slot插槽 编写组件内容！`
+    )
+    return undefined
+  }
+
+  // 渲染表单项标签
+  function renderFormItemLabel(label: string, schema: FormSchema) {
+    const labelPosition =
+      schema.formItemProps?.labelPosition ??
+      props.schemaProps?.formItemProps?.labelPosition ??
+      'right'
+    if (labelPosition === 'top') {
+      const subLabel = getSubLabel(schema, formModel.value, props)
+      return (
+        <div class="zw-form-item-label">
+          <div class="label">{label}</div>
+          {!!subLabel && <div class="sub-label">{subLabel}</div>}
+        </div>
+      )
+    } else {
+      const labelStyle = {
+        width: getStyleWidth(schema.formItemProps?.labelMaxWidth) || 'fit-content',
+        lineHeight: schema.formItemProps?.labelMaxWidth ? "var(--el-font-size-base, '14px')" : '',
+        marginTop: schema.formItemProps?.labelMaxWidth ? '5px' : ''
+      }
+      return (
+        <div class="zw-form-item-label inline-flex">
+          <span class="label" style={labelStyle}>
+            {label}
+          </span>
+        </div>
+      )
+    }
+  }
+
+  // 渲染表单项
+  function renderSchema(schema: FormSchema) {
+    // 判断当前是否隐藏
+    const hidden = isHidden(schema, formModel.value, props)
+    if (hidden) {
+      return undefined
+    }
+    // 获取组件key
+    const key = schema.key ?? schema.field
+    if (!key) {
+      console.error(`[ZwForm]: 组件必须设置key属性或者field属性，无法渲染schema:`, schema)
+      return undefined
+    }
+    // 根据组件类型
+    const type = schema.type ?? 'Inputer'
+    switch (type) {
+      case 'Step':
+        console.error(`[ZwForm]: 不支持嵌套Step类型的子组件，无法渲染schema:`, schema)
+        return undefined
+      case 'Custom': {
+        const { getFormItemProps, slotKey, formItemLabel } = useFormItem(props, slots, schema, formModel)
+        return (
+          <SchemaLayout schema={schema} schemaProps={props.schemaProps} item-key={key}>
+            <ElFormItem {...getFormItemProps()}>
+              {{
+                ...(slots[`${slotKey}--label`]
+                    ? { label: slots[`${slotKey}--label`] }
+                    : { label: () => renderFormItemLabel(formItemLabel.value, schema) }
+                ),
+                ...(slots[`${slotKey}--error`]
+                    ? { error: slots[`${slotKey}--error`] }
+                    : {}
+                ),
+                default: () => renderCustom(schema)
+              }}
+            </ElFormItem>
+          </SchemaLayout>
+        )
+      }
+      case 'Container': {
+        const { trueComponentProps } = useFormItem(props, slots, schema, formModel)
+        return (
+          <SchemaLayout schema={schema} schemaProps={props.schemaProps} item-key={key}>
+            {
+              renderContainer(schema, trueComponentProps, () => (
+                <ElRow
+                  class="zw-form-main__container_row"
+                  data-id={`container-row-${key}`}
+                  key={`container-row-${key}`}
+                  gutter={10}
+                >
+                  {schema.children
+                    ? schema.children?.map(item =>
+                      renderSchema(item)
+                    )
+                    : undefined}
+                </ElRow>
+              ))
+            }
+          </SchemaLayout>
+        )
+      }
+      case 'Decorator': {
+        const { trueComponentProps } = useFormItem(props, slots, schema, formModel)
+        return (
+          <SchemaLayout schema={schema} schemaProps={props.schemaProps} item-key={key}>
+            {renderDecorator(schema, trueComponentProps)}
+          </SchemaLayout>
+        )
+      }
+      case 'Inputer':
+      default:
+        const { trueComponentProps, isDisabled, getFormItemProps, slotKey, formItemLabel } = useFormItem(
+          props,
+          slots,
+          schema,
+          formModel
+        )
+        return (
+          <SchemaLayout schema={schema} schemaProps={props.schemaProps} item-key={key}>
+            <ElFormItem {...getFormItemProps()}>
+              {{
+                ...(slots[`${slotKey}--label`]
+                    ? { label: slots[`${slotKey}--label`] }
+                    : { label: () => renderFormItemLabel(formItemLabel.value, schema) }
+                ),
+                ...(slots[`${slotKey}--error`]
+                    ? { error: slots[`${slotKey}--error`] }
+                    : {}
+                ),
+                default: () =>
+                  renderInputer(
+                    schema,
+                    trueComponentProps,
+                    isDisabled
+                  )
+              }}
+            </ElFormItem>
+          </SchemaLayout>
+        )
+    }
+  }
+
+ // 渲染ElForm
+  function renderForm() {
+    const filterStepSchemas = (schemas: FormSchema[]): FormSchema[] => {
+      if (props.stepValue !== null) {
+        // 找到对应步骤块
+        const stepSchema = schemas.find(
+          schema => schema?.type === 'Step' && schema.step === props.stepValue
+        )
+        return stepSchema ? stepSchema.children || [] : []
+      } else {
+        return schemas
+      }
+    }
+
+    /**
+     * 渲染表单所有组件
+     */
+    const renderSchemas = () => {
+      // 过滤出符合当前步骤值的表单项
+      const currentSchemas: FormSchema[] = filterStepSchemas(props.schemas)
+      const setBaseElFormRef = (el: ComponentRef<typeof ElRow>) => {
+        baseElRowRef.value = el
+      }
+      return (
+        <ElRow
+          ref={(el: any) => setBaseElFormRef(el)}
+          data-id="base-row"
+          key="base-row"
+          class="zw-form-main__base_row"
+          gutter={10}
+        >
+          {currentSchemas.map(item =>
+            renderSchema(item)
+          )}
+        </ElRow>
+      )
+    }
+
+    // 获取需要透传给el-form的属性
+    const getElFormProps = () => {
+      const elFormProps = { ...props, ...attrs }
+      const removeProps = [
+        'model',
+        'schemas',
+        'stepValue',
+        'disabled',
+        'type',
+        'designable',
+        'dataSource',
+        'schemaProps',
+        'showErrorNotice',
+        'scrollRef',
+        'autoInitField'
+      ]
+      // 将removeProps从elFormProps中删除
+      removeProps.forEach(prop => delete elFormProps[prop])
+      return elFormProps
+    }
+
+    const setElFormRef = (el: ComponentRef<typeof ElForm>) => {
+      elFormRef.value = el
+    }
+
+    return (
+      <ElForm class="zw-form-main" ref={(el: any) => setElFormRef(el)} {...getElFormProps()} model={formModel.value}>
+        {{
+          default: () => renderSchemas()
+        }}
+      </ElForm>
+    )
+  }
+
+  return {
+    renderForm
+  }
+}

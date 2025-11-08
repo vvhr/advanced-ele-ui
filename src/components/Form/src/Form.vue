@@ -9,7 +9,7 @@ import {
   unref
 } from 'vue'
 import type { FormSchema, SchemaProps } from './types'
-import { renderForm } from './render/RenderForm'
+import { useRenderForm } from './render/useRenderForm'
 import { useForm } from './hook/useForm'
 
 export default defineComponent({
@@ -94,7 +94,7 @@ export default defineComponent({
     }
   },
   emits: ['register', 'update:stepValue'],
-  setup(props, ctx) {
+  setup: (props, { emit, attrs, slots, expose }) => {
     const {
       formModel,
       elFormRef,
@@ -113,7 +113,7 @@ export default defineComponent({
       validate
     } = useForm(props, props.schemas)
     onMounted(() => {
-      ctx.emit('register', unref(elFormRef))
+      emit('register', unref(elFormRef))
       // 组件完成加载时会初始化一次表单,但如果组件配置或表单对象是异步传入的, 则需要手动调用初始化函数
       unref(props).autoInitField ? initValues(props.model) : setValues(props.model)
       // resetValidate()
@@ -151,7 +151,7 @@ export default defineComponent({
       }
     )
 
-    ctx.expose({
+    expose({
       initValues,
       getDefaultModel,
       getFormModel,
@@ -163,22 +163,18 @@ export default defineComponent({
       validate,
       resetValidate
     })
-
-    return () => (
-      <div class="zw-form">
-        {renderForm(
-          props,
-          ctx.emit,
-          ctx.attrs,
-          ctx.slots,
-          formModel,
-          elFormRef,
-          componentRefs,
-          baseElRowRef,
-          schemasKeys
-        )}
-      </div>
+    const { renderForm } = useRenderForm(
+      props,
+      emit,
+      attrs,
+      slots,
+      formModel,
+      elFormRef,
+      componentRefs,
+      baseElRowRef,
+      schemasKeys
     )
+    return () => <div class="zw-form">{renderForm()}</div>
   }
 })
 </script>

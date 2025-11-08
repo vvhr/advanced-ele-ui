@@ -28,6 +28,7 @@ import {
 import { ZwTable } from '@/components/Table'
 import Group from './components/Group.vue'
 import Blank from './components/Blank.vue'
+import { Editor } from '@/components/Editor'
 import { ComponentName } from '@/components/Form'
 
 const componentMap: Recordable<Component, ComponentName> = {
@@ -46,7 +47,7 @@ const componentMap: Recordable<Component, ComponentName> = {
   CheckboxButton: ElCheckboxGroup,
   ColorPicker: ElColorPicker,
   DatePicker: ElDatePicker,
-  Editor: ElInput,
+  Editor: Editor,
   Input: ElInput,
   InputNumber: ElInputNumber,
   InputTag: ElInputTag,
