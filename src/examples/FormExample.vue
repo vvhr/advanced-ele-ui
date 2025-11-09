@@ -20,7 +20,7 @@
               <el-radio-button value="right">居右</el-radio-button>
             </el-radio-group>
             <el-button type="primary" @click="onSubmit">提交</el-button>
-            <el-button @click="onReset" style="margin-left: 0">重置</el-button>
+            <el-button style="margin-left: 0" @click="onReset">重置</el-button>
           </div>
         </div>
       </template>
