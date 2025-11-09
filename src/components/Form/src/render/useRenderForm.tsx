@@ -141,7 +141,7 @@ export function useRenderForm(
     } = useComponent(props, slots, emits, schema, formModel, componentProps)
     const setComponentRef = (el: any) => {
       const refKey = schema.key || schema.field || ''
-      // 只有部分特殊组件才存储ref
+      // 只有部分特殊组件才存储ref, 比如存储Table组件的ref, 用于表单校验时自动调用Table的校验函数
       const enableComponents = ['Table']
       if (el && refKey && enableComponents.includes(schema.component)) {
         componentRefs.value[`${refKey}Ref`] = el

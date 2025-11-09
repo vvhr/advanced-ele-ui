@@ -29,6 +29,7 @@ import { ZwTable } from '@/components/Table'
 import Group from './components/Group.vue'
 import Blank from './components/Blank.vue'
 import { Editor } from '@/components/Editor'
+import { Upload } from '@/components/Upload'
 import { ComponentName } from '@/components/Form'
 
 const componentMap: Recordable<Component, ComponentName> = {
@@ -63,7 +64,8 @@ const componentMap: Recordable<Component, ComponentName> = {
   TimePicker: ElTimePicker,
   TimeSelect: ElTimeSelect,
   Transfer: ElTransfer,
-  TreeSelect: ElTreeSelect
+  TreeSelect: ElTreeSelect,
+  Upload: Upload
 }
 
 export { componentMap }

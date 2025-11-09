@@ -67,3 +67,4 @@ export type InputerName =
   | 'Mention'
   | 'Segmented'
   | 'Editor'
+  | 'Upload'
