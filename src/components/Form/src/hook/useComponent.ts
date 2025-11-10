@@ -9,7 +9,7 @@ import type {
   ComponentName,
   ComponentConfig
 } from '../types'
-import type { Component, Ref } from 'vue'
+import { defineComponent, type Component, type Ref, type VNode } from 'vue'
 import { get } from 'lodash-es'
 import { getComponentEventFunction, getSchemaPropValue } from '../utils/schema'
 import { getSlot } from '../utils/helpers'

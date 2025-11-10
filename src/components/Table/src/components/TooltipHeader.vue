@@ -15,6 +15,8 @@
 </template>
 
 <script setup lang="ts">
+import { ref, watch } from 'vue'
+
 interface Props {
   title: string
   subtitle?: string

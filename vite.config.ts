@@ -5,6 +5,7 @@ import AutoImport from 'unplugin-auto-import/vite'
 import Components from 'unplugin-vue-components/vite'
 import { ElementPlusResolver } from 'unplugin-vue-components/resolvers'
 import UnoCSS from 'unocss/vite'
+import dts from 'vite-plugin-dts'
 
 import { resolve } from 'path'
 
@@ -32,6 +33,21 @@ export default defineConfig({
       dirs: [], // 不扫描任何目录
       resolvers: [ElementPlusResolver()],
       dts: 'src/types/components.d.ts'
+    }),
+    dts({
+      include: ['src/**/*.ts', 'src/**/*.tsx', 'src/**/*.vue'],
+      exclude: [
+        'src/**/*.spec.ts',
+        'src/**/*.test.ts',
+        'src/main.ts',
+        'src/types/auto-imports.d.ts',
+        'src/types/components.d.ts'
+      ],
+      outDir: 'dist',
+      staticImport: true,
+      insertTypesEntry: true,
+      rollupTypes: false,
+      copyDtsFiles: true
     })
   ],
   resolve: {
@@ -48,7 +64,13 @@ export default defineConfig({
     lib: {
       entry: resolve(__dirname, 'src/index.ts'),
       name: 'AdvancedEleUI',
-      fileName: format => `advanced-ele-ui.${format}.js`
+      formats: ['es', 'cjs', 'umd'],
+      fileName: format => {
+        if (format === 'es') return 'index.js'
+        if (format === 'cjs') return 'index.cjs'
+        if (format === 'umd') return 'index.umd.js'
+        return `index.${format}.js`
+      }
     },
     rollupOptions: {
       external: ['vue', 'element-plus', '@iconify/vue', '@vueuse/core', 'lodash-es', 'dayjs'],

@@ -1,3 +1,4 @@
+import { defineComponent } from 'vue'
 import { ElRadio, ElRadioButton } from 'element-plus'
 // 局部
 import type { ComponentProps, FormSchema, FormProps } from '../types'

@@ -1,6 +1,6 @@
 <script setup lang="ts">
+import { ref, unref, type CSSProperties, type PropType } from 'vue'
 import { Icon } from '@/components/Icon'
-import type { CSSProperties, PropType } from 'vue'
 
 const props = defineProps({
   label: {

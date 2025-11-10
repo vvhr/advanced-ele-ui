@@ -1,4 +1,5 @@
 <script lang="tsx">
+import { defineComponent, ref, computed, onMounted, unref, type PropType, type VNode } from 'vue'
 import { ElTable, TableColumnCtx, ElForm } from 'element-plus'
 import type { TableProps, ZwTableColumn, Pagination, ElTableEventHanders } from './types'
 import type { DictMap } from '@/types/dict'

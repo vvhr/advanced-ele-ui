@@ -1,7 +1,7 @@
+import { ref, unref, type Component } from 'vue'
 import { ElForm, ElRow, ElNotification } from 'element-plus'
 import { get, set, unset } from 'lodash-es'
 import type { ComponentName, FormProps, FormSchema } from '../types'
-import type { Component } from 'vue'
 import { findNode, findNodes } from '../utils/tree'
 import { getFirstAttribute } from '../utils/get'
 import { getTrueComponentProps, getValue, isHidden } from '../utils/schema'
@@ -11,7 +11,23 @@ export function useForm(
   schemas: FormSchema[],
   components: Recordable<Component, ComponentName>,
   arrayStrategies: Partial<Record<ComponentName, (cps: Recordable) => boolean>>
-) {
+): {
+  formModel: any
+  elFormRef: any
+  baseElRowRef: any
+  schemasKeys: any
+  componentRefs: any
+  initValues: (initModel: Recordable) => void
+  getDefaultModel: (defaultModel: Recordable) => Recordable
+  getFormModel: () => Recordable
+  getElFormRef: () => any
+  setValues: (data: Recordable) => void
+  clearValues: (defaultModel: Recordable) => void
+  setValue: (key: string, value: any) => void
+  delValue: (key: string) => void
+  resetValidate: () => void
+  validate: () => Promise<any>
+} {
   const formModel = ref<Recordable>({})
   const elFormRef = ref<ComponentRef<typeof ElForm>>()
   const baseElRowRef = ref<ComponentRef<typeof ElRow>>()

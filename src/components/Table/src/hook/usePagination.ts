@@ -1,3 +1,4 @@
+import { ref, computed, watch, unref } from 'vue'
 import { TableEmits, TableProps } from '../types'
 
 export function usePagination(props: TableProps, emit: TableEmits) {

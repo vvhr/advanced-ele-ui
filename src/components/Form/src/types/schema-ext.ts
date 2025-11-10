@@ -1,3 +1,4 @@
+import type { VNode } from 'vue'
 import { FormSchema } from './schema'
 
 export type FormSchemaType = 'Step' | 'Container' | 'Decorator' | 'Custom' | 'Inputer'
@@ -56,7 +57,7 @@ export type ComponentEventFn<T> = (
  *  return [{ value: '10', label: '高一' }...{ value: '12', label: '高三' }]
  * }}`
  */
-export type FormSchemaExpression = `{{${string}}}`
+// export type FormSchemaExpression = `{{${string}}}`
 
 /**
  * 组件事件的文本表达式
@@ -79,7 +80,7 @@ export type FormSchemaExpression = `{{${string}}}`
  *   }
  * }
  */
-export type ComponentEventExpression = `{{${string}}}`
+// export type ComponentEventExpression = `{{${string}}}`
 
 /**
  * 组件布局方向
