@@ -1,11 +1,17 @@
 import { ElForm, ElRow, ElNotification } from 'element-plus'
 import { get, set, unset } from 'lodash-es'
-import type { FormProps, FormSchema } from '../types'
+import type { ComponentName, FormProps, FormSchema } from '../types'
+import type { Component } from 'vue'
 import { findNode, findNodes } from '../utils/tree'
 import { getFirstAttribute } from '../utils/get'
 import { getTrueComponentProps, getValue, isHidden } from '../utils/schema'
-import { arrayInitStrategies } from '../constants.ts'
-export function useForm(props: FormProps, schemas: FormSchema[]) {
+
+export function useForm(
+  props: FormProps,
+  schemas: FormSchema[],
+  components: Recordable<Component, ComponentName>,
+  arrayStrategies: Partial<Record<ComponentName, (cps: Recordable) => boolean>>
+) {
   const formModel = ref<Recordable>({})
   const elFormRef = ref<ComponentRef<typeof ElForm>>()
   const baseElRowRef = ref<ComponentRef<typeof ElRow>>()
@@ -53,9 +59,9 @@ export function useForm(props: FormProps, schemas: FormSchema[]) {
 
       // 4. 根据组件类型决定默认值
       const componentName = schema.component as string
-      if (componentName && arrayInitStrategies[componentName]) {
+      if (componentName && arrayStrategies[componentName]) {
         const componentProps = getTrueComponentProps(schema, model, props)
-        const shouldBeArray = arrayInitStrategies[componentName](componentProps)
+        const shouldBeArray = arrayStrategies[componentName](componentProps)
         set(model, schema.field, shouldBeArray ? [] : null)
         return
       }

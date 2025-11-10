@@ -48,6 +48,7 @@ export interface UploadProps {
   sizeLimit?: string | number
   disabled?: boolean
   listType?: 'picture' | 'text'
+  objectFit?: 'fill' | 'contain' | 'cover' | 'none' | 'scale-down'
   examples?: FileTemplate[]
   templates?: FileTemplate[]
   tips?: string

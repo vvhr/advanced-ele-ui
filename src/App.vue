@@ -13,7 +13,12 @@
           />
         </svg>
       </a>
-      <h1>Advanced Element UI</h1>
+      <img
+        src="https://image.howcat.cn/thumbnails/5d0a2d8352a09debab8f8d233a8fc67d.png"
+        title="logo"
+        width="400px"
+        alt="logo"
+      />
       <p class="subtitle">基于 Vue 3 + Element Plus 的高级组件库</p>
     </header>
     <el-tabs v-model="activeTab" class="demo-tabs">
@@ -48,13 +53,13 @@ import EditorExample from './examples/EditorExample.vue'
 import UploadExample from './examples/UploadExample.vue'
 import QuickStartExample from './examples/QuickStartExample.vue'
 
-const activeTab = ref('form')
+const activeTab = ref('start')
 </script>
 
 <style scoped>
 .demo-container {
   min-height: 100vh;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(180deg, #0069fc 0%, #6faffe 100%);
   padding: 20px;
 }
 
@@ -88,11 +93,13 @@ const activeTab = ref('form')
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
 
-.demo-header h1 {
-  font-size: 48px;
-  margin: 0 0 10px 0;
-  font-weight: 700;
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+.demo-header {
+  > h1 {
+    font-size: 48px;
+    margin: 0 0 10px 0;
+    font-weight: 700;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+  }
 }
 
 .subtitle {
@@ -108,16 +115,6 @@ const activeTab = ref('form')
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
   max-width: 1400px;
   margin: 0 auto;
-}
-
-:deep(.el-tabs__item) {
-  font-size: 16px;
-  font-weight: 500;
-}
-
-:deep(.el-card__header) {
-  background: #f5f7fa;
-  font-weight: 600;
 }
 </style>
 

@@ -1,4 +1,4 @@
-export type ComponentName = ContainerName | DecoratorName | InputerName
+export type ComponentName = ContainerName | DecoratorName | InputerName | string
 
 /**
  * 容器类组件名
@@ -42,6 +42,8 @@ export type DecoratorName = 'Divider' | 'Alert' | 'Image' | 'Result'
  * - TimePicker: 时间选择器组件，采用el-time-picker组件渲染，支持原生所有属性功能
  * - TimeSelect: 时间选择器组件，采用el-time-select组件渲染，支持原生所有属性功能
  * - Transfer: 穿梭框组件，采用el-transfer组件渲染，支持原生所有属性功能
+ * - TreeSelect: 树形选择框组件，采用el-tree-select组件渲染，支持原生所有属性功能
+ * - Upload: 上传组件，采用zw-upload组件渲染
  */
 export type InputerName =
   | 'Radio'

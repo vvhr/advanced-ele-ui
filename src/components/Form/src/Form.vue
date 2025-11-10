@@ -8,9 +8,10 @@ import {
   watch,
   unref
 } from 'vue'
-import type { FormSchema, SchemaProps } from './types'
+import { FormSchema, ImportComponent, SchemaProps } from './types'
 import { useRenderForm } from './render/useRenderForm'
 import { useForm } from './hook/useForm'
+import { useImport } from '@/components/Form/src/hook/useImport.ts'
 
 export default defineComponent({
   name: 'ZwForm',
@@ -91,10 +92,22 @@ export default defineComponent({
     autoInitField: {
       type: Boolean,
       default: true
+    },
+    /**
+     * 加载扩展组件
+     * @description 您可以通过此属性来按需加载一些组件
+     * @param {ImportComponent[]} imports - 需要导入的组件列表
+     */
+    imports: {
+      type: Array as PropType<ImportComponent[]>,
+      default: () => []
     }
   },
   emits: ['register', 'update:stepValue'],
   setup: (props, { emit, attrs, slots, expose }) => {
+    const { components, arrayStrategies, componentConfigs, registerComponents } = useImport()
+    registerComponents(props.imports)
+
     const {
       formModel,
       elFormRef,
@@ -111,13 +124,15 @@ export default defineComponent({
       delValue,
       resetValidate,
       validate
-    } = useForm(props, props.schemas)
+    } = useForm(props, props.schemas, components, arrayStrategies)
+
     onMounted(() => {
       emit('register', unref(elFormRef))
       // 组件完成加载时会初始化一次表单,但如果组件配置或表单对象是异步传入的, 则需要手动调用初始化函数
       unref(props).autoInitField ? initValues(props.model) : setValues(props.model)
       // resetValidate()
     })
+
     onBeforeUnmount(() => {
       // 清理表单数据
       formModel.value = {}
@@ -172,7 +187,9 @@ export default defineComponent({
       elFormRef,
       componentRefs,
       baseElRowRef,
-      schemasKeys
+      schemasKeys,
+      components,
+      componentConfigs
     )
     return () => <div class="zw-form">{renderForm()}</div>
   }

@@ -13,7 +13,7 @@ import type {
   InsidePropsRenders,
   InsidePropsSlots
 } from './schema-ext'
-import type { ComponentEvent, ComponentProps } from './schema-component'
+import type { ComponentEvent, ComponentProps } from '@/components/Form'
 
 /**
  * 表单配置项

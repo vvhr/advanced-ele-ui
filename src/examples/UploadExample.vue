@@ -93,87 +93,99 @@ const basicFiles = ref<UploadFile[]>([
   },
   {
     name: '示例不存在的图片1.png',
-    url: 'http://image.howcat.cn/thumbnails/123.png'
+    url: 'https://example.com/template.png'
   },
   {
     name: '示例不存在的图片2.jpg',
-    url: 'http://image.howcat.cn/thumbnails/123.jpg'
+    url: 'https://example.com/template.jpg'
   },
   {
     name: '较长的两行显示的文件名.pdf',
-    url: 'http://image.howcat.cn/thumbnails/d51a6dbd5758ab999d1246154f2d3178.pdf'
+    url: 'hhttps://example.com/template.pdf'
   },
   {
     name: '超长超长超长超长超长超长超长超长超长超长的文件名.pdf',
-    url: 'http://image.howcat.cn/thumbnails/d51a6dbd5758ab999d1246154f2d3178.pdf'
+    url: 'https://example.com/template.pdf'
   },
   {
     name: '示例文件.pdf',
-    url: 'http://image.howcat.cn/thumbnails/d51a6dbd5758ab999d1246154f2d3178.pdf'
+    url: 'https://example.com/template.pdf'
   },
   {
     name: '示例文件.xlsx',
-    url: 'http://image.howcat.cn/thumbnails/d51a6dbd5758ab999d1246154f2d3178.xlsx'
+    url: 'https://example.com/template.xlsx'
   },
   {
     name: '示例文件.docx',
-    url: 'http://image.howcat.cn/thumbnails/d51a6dbd5758ab999d1246154f2d3178.docx'
+    url: 'https://example.com/template.docx'
   },
   {
     name: '示例文件.pptx',
-    url: 'http://image.howcat.cn/thumbnails/d51a6dbd5758ab999d1246154f2d3178.pptx'
+    url: 'https://example.com/template.pptx'
   },
   {
     name: '示例文件.zip',
-    url: 'http://image.howcat.cn/thumbnails/d51a6dbd5758ab999d1246154f2d3178.zip'
+    url: 'https://example.com/template.zip'
   },
   {
     name: '示例文件.rar',
-    url: 'http://image.howcat.cn/thumbnails/d51a6dbd5758ab999d1246154f2d3178.rar'
+    url: 'https://example.com/template.rar'
   },
   {
     name: '示例文件.txt',
-    url: 'http://image.howcat.cn/thumbnails/d51a6dbd5758ab999d1246154f2d3178.txt'
+    url: 'https://example.com/template.txt'
+  },
+  {
+    name: '示例文件.mp3',
+    url: 'https://example.com/template.mp3'
+  },
+  {
+    name: '示例文件.mp4',
+    url: 'https://example.com/template.mp4'
   },
   {
     name: '示例文件.csv',
-    url: 'http://image.howcat.cn/thumbnails/d51a6dbd5758ab999d1246154f2d3178.csv'
+    url: 'https://example.com/template.csv'
   },
   {
     name: '示例文件.vue',
-    url: 'http://image.howcat.cn/thumbnails/d51a6dbd5758ab999d1246154f2d3178.vue'
+    url: 'https://example.com/template.vue'
   },
   {
     name: '示例文件.ts',
-    url: 'http://image.howcat.cn/thumbnails/d51a6dbd5758ab999d1246154f2d3178.ts'
+    url: 'https://example.com/template.ts'
   },
   {
     name: '示例文件.js',
-    url: 'http://image.howcat.cn/thumbnails/d51a6dbd5758ab999d1246154f2d3178.js'
+    url: 'https://example.com/template.js'
+  },
+  {
+    name: '示例文件.html',
+    url: 'https://example.com/template.html'
   },
   {
     name: '示例文件.css',
-    url: 'http://image.howcat.cn/thumbnails/d51a6dbd5758ab999d1246154f2d3178.css'
+    url: 'https://example.com/template.css'
   },
   {
-    name: '示例文件.ps',
-    url: 'http://image.howcat.cn/thumbnails/d51a6dbd5758ab999d1246154f2d3178.ps'
+    name: '示例文件.psd',
+    url: 'https://example.com/template.psd'
   },
   {
     name: '示例文件.ai',
-    url: 'http://image.howcat.cn/thumbnails/d51a6dbd5758ab999d1246154f2d3178.ai'
+    url: 'https://example.com/template.ai'
   },
   {
     name: '示例文件.md',
-    url: 'http://image.howcat.cn/thumbnails/d51a6dbd5758ab999d1246154f2d3178.md'
+    url: 'https://example.com/template.md'
   },
   {
     name: '示例文件.yml',
-    url: 'http://image.howcat.cn/thumbnails/d51a6dbd5758ab999d1246154f2d3178.yml'
+    url: 'https://example.com/template.yml'
   },
   {
     name: '未知类型文件',
-    url: 'http://image.howcat.cn/thumbnails/d51a6dbd5758ab999d1246154f2d3178'
+    url: 'https://example.com/template'
   }
 ])
 
@@ -225,5 +237,4 @@ async function handleUpload(file: UploadRawFile): Promise<UploadFile | false> {
   ElMessage.success(`${file.name} 上传成功`)
   return uploadedFile
 }
-
 </script>

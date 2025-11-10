@@ -5,17 +5,17 @@ import type {
   FormEmits,
   InsideProps,
   ComponentProps,
-  SchemaProps
+  SchemaProps,
+  ComponentName,
+  ComponentConfig
 } from '../types'
-
-import { componentMap } from '../component'
+import type { Component, Ref } from 'vue'
 import { get } from 'lodash-es'
 import { getComponentEventFunction, getSchemaPropValue } from '../utils/schema'
 import { getSlot } from '../utils/helpers'
-import { isFunction } from '../utils/is'
+import { isFunction, isExistComponent } from '../utils/is'
 import { setReactiveValue } from '../utils/get'
-import type { Ref } from 'vue'
-import { dateRangeTypes, needClearable, needOptions, noNeedOptions } from '../constants.ts'
+import { dateRangeTypes, needClearable, needOptions, noNeedOptions } from '../constants'
 import { useRenderCheckbox } from '../render/RenderCheckbox.tsx'
 import { useRenderRadio } from '../render/RenderRadio.tsx'
 
@@ -25,12 +25,17 @@ export function useComponent(
   emits: FormEmits,
   schema: FormSchema,
   formModel: Ref<Recordable>,
-  componentProps: ComponentProps // 由useFormItem生成的ComponentProps
+  componentProps: ComponentProps, // 由useFormItem生成的ComponentProps
+  components: Recordable<Component, ComponentName>,
+  componentConfigs: Recordable<ComponentConfig, ComponentName>
 ) {
   const type = schema.type ?? 'Inputer'
   const getAnyComponent = () => {
     if (['Container', 'Inputer', 'Decorator'].includes(type)) {
-      return componentMap[schema.component] as ReturnType<typeof defineComponent>
+      if (isExistComponent(components, schema.component)) {
+        return components[schema.component] as ReturnType<typeof defineComponent>
+      }
+      return undefined
     }
     return undefined
   }
@@ -44,9 +49,12 @@ export function useComponent(
    */
   function setModelValue() {
     if (schema.field) {
+      const modelValueKey = isExistComponent(components, schema.component)
+        ? componentConfigs[schema.component]?.modelValueKey || 'modelValue'
+        : 'modelValue'
       return {
-        [`modelValue`]: get(formModel.value, schema.field),
-        [`onUpdate:modelValue`]: (value: any) => {
+        [modelValueKey]: get(formModel.value, schema.field),
+        [`onUpdate:${modelValueKey}`]: (value: any) => {
           // 使用响应式安全的方式更新值
           setReactiveValue(formModel.value, schema.field, value)
         }

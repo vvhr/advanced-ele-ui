@@ -1,4 +1,5 @@
 import type { Component } from 'vue'
+import type { ComponentName } from './types'
 import {
   ElCascader,
   ElCheckboxGroup,
@@ -17,7 +18,6 @@ import {
   ElAutocomplete,
   ElDivider,
   ElAlert,
-  ElCard,
   ElImage,
   ElResult,
   ElSegmented,
@@ -30,9 +30,8 @@ import Group from './components/Group.vue'
 import Blank from './components/Blank.vue'
 import { Editor } from '@/components/Editor'
 import { Upload } from '@/components/Upload'
-import { ComponentName } from '@/components/Form'
 
-const componentMap: Recordable<Component, ComponentName> = {
+const defaultComponents: Recordable<Component, ComponentName> = {
   /** 容器类组件 */
   Group: Group,
   Blank: Blank,
@@ -68,4 +67,39 @@ const componentMap: Recordable<Component, ComponentName> = {
   Upload: Upload
 }
 
-export { componentMap }
+/**
+ * 定义不同组件的默认值初始化策略
+ * 策略函数接收组件的 props，返回 true 表示应初始化为数组 []
+ */
+const defaultArrayStrategies: Partial<Record<ComponentName, (cps: Recordable) => boolean>> = {
+  // 始终为数组的组件
+  Checkbox: () => true,
+  CheckboxButton: () => true,
+  Table: () => true,
+  InputTag: () => true,
+  Transfer: () => true,
+  // 根据 componentProps 条件判断的组件
+  Select: (cps: Recordable) => !!cps.multiple,
+  TreeSelect: (cps: Recordable) => !!cps.multiple,
+  TimePicker: (cps: Recordable) => !!cps.isRange,
+  DatePicker: (cps: Recordable) => {
+    const rangeTypes = [
+      'years',
+      'months',
+      'dates',
+      'datetimerange',
+      'daterange',
+      'monthrange',
+      'yearrange'
+    ]
+    return rangeTypes.includes(cps.type)
+  },
+  Cascader: (cps: Recordable) => {
+    // 根据 el-cascader 文档，默认 multiple=false, emitPath=true
+    // 只有当 multiple=false 且 emitPath=false 时，值才不是数组
+    const cascaderProps = { multiple: false, emitPath: true, ...cps.props }
+    return !(cascaderProps.multiple === false && cascaderProps.emitPath === false)
+  }
+}
+
+export { defaultComponents, defaultArrayStrategies }

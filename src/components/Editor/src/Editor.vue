@@ -6,7 +6,6 @@ import {
   ref,
   watch,
   computed,
-  unref,
   PropType,
   nextTick
 } from 'vue'
@@ -35,10 +34,15 @@ export default defineComponent({
       type: String,
       default: ''
     },
-    // 高度
-    height: {
+    // 编辑器高度
+    editorHeight: {
       type: [Number, String],
       default: 350
+    },
+    // 阅读模式最大高度
+    viewHeight: {
+      type: [Number, String],
+      default: 'fit-content'
     },
     // 模式 simple: 简单模式 full: 全功能模式 custom: 自定义模式
     mode: {
@@ -120,7 +124,7 @@ export default defineComponent({
     let aiEditor: AiEditor | null = null
 
     function getOptions(): AiEditorOptions {
-      let toolbarKeys: ToolbarKey[] = []
+      let toolbarKeys: ToolbarKey[]
       const toolbarExcludeKeys: ToolbarKey[] = props.toolbarExcludeKeys || []
       if (props.mode === 'custom') {
         toolbarKeys = props.toolbarKeys || []
@@ -224,7 +228,7 @@ export default defineComponent({
         onBlur: () => {
           emit('blur')
         },
-        onCreated: aiEditor => {
+        onCreated: () => {
           emit('created')
         },
         onDestroy: () => {
@@ -256,8 +260,13 @@ export default defineComponent({
     watch(
       () => props.disabled,
       value => {
-        if (aiEditor) {
-          aiEditor.setEditable(!value)
+        // 动态切换时候需要重新初始化编辑器
+        if (!value) {
+          nextTick(() => {
+            initEditor()
+          })
+        } else {
+          aiEditor && aiEditor.destroy()
         }
       },
       { immediate: false }
@@ -265,7 +274,7 @@ export default defineComponent({
     // 监听mode变化
     watch(
       () => props.mode,
-      value => {
+      () => {
         initEditor()
       },
       { immediate: false }
@@ -281,19 +290,35 @@ export default defineComponent({
 
     const editorStyle = computed(() => {
       return {
-        height: getStyleWidth(props.height) || '350px'
+        height: getStyleWidth(props.editorHeight) || '350px'
       }
     })
-
-    return () => (
-      <div
-        ref={(ref: any) => setEditorRef(ref)}
-        style={editorStyle.value}
-        class="zw-ai-editor"
-      ></div>
-    )
+    const viewStyle = computed(() => {
+      return {
+        height: getStyleWidth(props.viewHeight) || 'fit-content'
+      }
+    })
+    return () =>
+      props.disabled ? (
+        <div class="zw-ai-editor-view" style={viewStyle.value}>
+          <div v-html={props.modelValue}></div>
+        </div>
+      ) : (
+        <div
+          ref={(ref: any) => setEditorRef(ref)}
+          style={editorStyle.value}
+          class="zw-ai-editor"
+        ></div>
+      )
   }
 })
 </script>
 
-<style scoped lang="less"></style>
+<style scoped lang="less">
+.zw-ai-editor-view {
+  padding: 15px;
+  border: 1px solid var(--el-border-color);
+  border-radius: var(--el-border-radius-base);
+  overflow-y: auto;
+}
+</style>

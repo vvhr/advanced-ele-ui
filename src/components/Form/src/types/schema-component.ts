@@ -1,4 +1,4 @@
-import { ComponentEventFn, FormSchemaFn } from './schema-ext.ts'
+import type { ComponentEventFn, FormSchemaFn } from './schema-ext'
 import type { CSSProperties } from 'vue'
 
 /**

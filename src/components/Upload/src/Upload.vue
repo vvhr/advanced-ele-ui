@@ -45,6 +45,7 @@
               "
               :src="getFileUrl(item.data)"
               alt=""
+              :style="{ objectFit: objectFit }"
               class="zw-upload__image"
               @click="handlePreview(item.data!)"
               @error="handleImageError(item)"
@@ -67,10 +68,7 @@
 
             <!-- hover 遮罩 -->
             <div v-if="item.status === 'success'" class="zw-upload__mask">
-              <el-icon
-                v-if="previewable && disabled"
-                @click="item.data && handlePreview(item.data)"
-              >
+              <el-icon v-if="previewable" @click="item.data && handlePreview(item.data)">
                 <ZoomIn />
               </el-icon>
               <el-icon
@@ -118,7 +116,7 @@
           </el-icon>
           <div v-if="item.status === 'success'" class="zw-upload__item-actions">
             <el-icon
-              v-if="previewable && disabled"
+              v-if="previewable"
               class="zw-upload__item-action"
               @click="item.data && handlePreview(item.data)"
             >
@@ -227,6 +225,7 @@ const props = withDefaults(defineProps<UploadProps>(), {
   disabled: false,
   listType: 'picture',
   size: 'default',
+  objectFit: 'cover',
   autoCompress: false,
   previewable: true,
   downloadable: false

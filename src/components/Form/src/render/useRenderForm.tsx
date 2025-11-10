@@ -1,11 +1,18 @@
 import { ElForm, ElRow, ElFormItem } from 'element-plus'
-import type { ComponentProps, FormEmits, FormProps, FormSchema, FormSlots } from '../types'
+import type {
+  ComponentConfig,
+  ComponentName,
+  ComponentProps,
+  FormEmits,
+  FormProps,
+  FormSchema,
+  FormSlots
+} from '../types'
 import { getSubLabel, isHidden } from '../utils/schema'
 import { useFormItem } from '../hook/useFormItem'
 import { SchemaLayout } from './SchemaLayout'
-import { getSlot, getStyleWidth, isRenderFunction } from '../utils'
-import type { ComputedRef, Ref, VNode } from 'vue'
-import { componentMap } from '../component'
+import { getSlot, getStyleWidth, isExistComponent, isRenderFunction } from '../utils'
+import type {Component, ComputedRef, Ref, VNode} from 'vue'
 import { useComponent } from '../hook/useComponent'
 export function useRenderForm(
   props: FormProps,
@@ -16,7 +23,9 @@ export function useRenderForm(
   elFormRef: Ref<ComponentRef<typeof ElForm>>,
   componentRefs: Ref<Recordable<ComponentRef<any>>>,
   baseElRowRef: Ref<ComponentRef<typeof ElRow>>,
-  schemasKeys: Ref<string[]>
+  schemasKeys: Ref<string[]>,
+  components: Recordable<Component, ComponentName>,
+  componentConfigs: Recordable<ComponentConfig, ComponentName>
 ) {
 
   // 渲染容器类组件
@@ -26,7 +35,7 @@ export function useRenderForm(
     defaultRender?: () => VNode | undefined
   ): VNode | undefined {
     // 检查组件是否在组件映射中
-    if (!schema.component || !componentMap.hasOwnProperty(schema.component)) {
+    if (!schema.component || !isExistComponent(components, schema.component)) {
       console.error(`[ZwForm]: 组件 ${schema.component} 不存在`)
       return undefined
     }
@@ -36,7 +45,9 @@ export function useRenderForm(
       emits,
       schema,
       formModel,
-      componentProps
+      componentProps,
+      components,
+      componentConfigs
     )
 
     // 渲染组件
@@ -63,7 +74,7 @@ export function useRenderForm(
   // 渲染装饰类组件
   function renderDecorator(schema: FormSchema, componentProps: ComponentProps): VNode | undefined {
     // 检查组件是否在组件映射中
-    if (!schema.component || !componentMap.hasOwnProperty(schema.component)) {
+    if (!schema.component || !isExistComponent(components, schema.component)) {
       console.error(`[ZwForm]: 组件 ${schema.component} 不存在`)
       return undefined
     }
@@ -76,7 +87,7 @@ export function useRenderForm(
       setComponentProps,
       setComponentEvent,
       setInsideSlots
-    } = useComponent(props, slots, emits, schema, formModel, componentProps)
+    } = useComponent(props, slots, emits, schema, formModel, componentProps, components, componentConfigs)
 
     // 渲染组件
     const renderAnyComponent = () => {
@@ -124,7 +135,7 @@ export function useRenderForm(
     disabled: ComputedRef<boolean>
   ): VNode | undefined {
     // 检查组件是否在组件映射中
-    if (!schema.component || !componentMap.hasOwnProperty(schema.component)) {
+    if (!schema.component || !isExistComponent(components, schema.component)) {
       console.error(`[ZwForm]: 组件 ${schema.component} 不存在`)
       return undefined
     }
@@ -138,7 +149,7 @@ export function useRenderForm(
       setComponentEvent,
       setComponentProps,
       setInsideSlots
-    } = useComponent(props, slots, emits, schema, formModel, componentProps)
+    } = useComponent(props, slots, emits, schema, formModel, componentProps, components, componentConfigs)
     const setComponentRef = (el: any) => {
       const refKey = schema.key || schema.field || ''
       // 只有部分特殊组件才存储ref, 比如存储Table组件的ref, 用于表单校验时自动调用Table的校验函数
@@ -199,7 +210,7 @@ export function useRenderForm(
       if (isRenderFunction(schema.render)) {
         return schema.render(formModel.value, schema, props.disabled, props.dataSource)
       }
-      const { slotKey } = useComponent(props, slots, emits, schema, formModel, {})
+      const { slotKey } = useComponent(props, slots, emits, schema, formModel, {}, components, componentConfigs)
       if (slots[slotKey]) {
         return getSlot(slots, slotKey, formModel.value) as any
       }

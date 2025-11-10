@@ -93,31 +93,64 @@ export function getFileIcon(url: string, fileName?: string): string {
   }
 
   const iconMap: Record<string, string> = {
+    // Document
     pdf: 'material-icon-theme:pdf',
     doc: 'material-icon-theme:word',
     docx: 'material-icon-theme:word',
     xls: 'material-icon-theme:table',
     xlsx: 'material-icon-theme:table',
+    csv: 'material-icon-theme:table',
     ppt: 'material-icon-theme:powerpoint',
     pptx: 'material-icon-theme:powerpoint',
+    // Text
+    md: 'material-icon-theme:markdoc-config',
     txt: 'material-icon-theme:document',
+    yml: 'material-icon-theme:yaml',
+    json: 'material-icon-theme:json',
+    // Compression
     zip: 'material-icon-theme:zip',
     rar: 'solar:winrar-bold-duotone',
-    csv: 'material-icon-theme:table',
+    '7z': 'hugeicons:7z-02',
+    // Language
+    html: 'material-icon-theme:html',
+    htm: 'material-icon-theme:html',
+    jsx: 'file-icons:jsx-alt',
+    tsx: 'file-icons:tsx-alt',
     vue: 'material-icon-theme:vue-config',
     ts: 'material-icon-theme:typescript',
-    json: 'material-icon-theme:json',
-    md: 'material-icon-theme:markdoc-config',
     js: 'material-icon-theme:javascript',
-    css: 'material-icon-theme:css',
-    ps: 'material-icon-theme:adobe-photoshop-light',
+    py: 'devicon:python',
+    java: 'devicon:java',
+    go: 'devicon:go-wordmark',
+    rs: 'devicon:rust',
+    php: 'devicon:php',
+    sh: 'file-icons:powershell',
+    bash: 'file-icons:powershell',
+    // Database
+    sql: 'devicon:mysql-wordmark',
+    db: '',
+    git: 'devicon:git',
+    // Style
+    css: 'devicon:css3',
+    // Design
+    psd: 'material-icon-theme:adobe-photoshop-light',
     ai: 'material-icon-theme:adobe-illustrator-light',
-    yml: 'material-icon-theme:yaml',
+    // Media
+    mp3: 'teenyicons:mp3-solid',
+    mp4: 'teenyicons:mp4-solid',
+    mov: 'teenyicons:mov-solid',
+    avi: 'lsicon:file-avi-outline',
+    wav: 'hugeicons:wav-01',
+    // Image
     png: 'fluent-color:image-16',
     jpg: 'fluent-color:image-16',
     jpeg: 'fluent-color:image-16',
     bmp: 'fluent-color:image-16',
-    svg: 'fluent-color:image-16'
+    svg: 'fluent-color:image-16',
+    gif: 'fluent-color:image-16',
+    tiff: 'fluent-color:image-16',
+    webp: 'fluent-color:image-16',
+    ico: 'fluent-color:image-16'
   }
 
   return iconMap[ext] || 'material-icon-theme:document'

@@ -13,11 +13,11 @@ const props = defineProps({
   },
   toggleable: {
     type: Boolean,
-    default: false
+    default: true
   },
   expand: {
     type: Boolean,
-    default: false
+    default: true
   },
   headerStyle: {
     type: [Object as PropType<CSSProperties>, String] as PropType<CSSProperties | string>,
@@ -130,6 +130,7 @@ function onTransitionEnd() {
     padding: 10px 15px 10px 10px;
     background: #f5f7fa;
     font-size: 14px;
+    box-sizing: border-box;
 
     .zw-form-group-header__label {
       display: flex;

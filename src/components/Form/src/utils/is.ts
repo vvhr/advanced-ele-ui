@@ -36,3 +36,10 @@ export function isValidKey(value: any): value is string | number | symbol {
 export function isRenderFunction(fn: any): boolean {
   return fn !== undefined && isFunction(fn)
 }
+
+/**
+ * 判断组件是否存在
+ */
+export function isExistComponent(obj: Recordable, name: string) {
+  return Reflect.has(obj, name)
+}

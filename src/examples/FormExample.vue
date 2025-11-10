@@ -34,6 +34,7 @@
         :data-source="{}"
         :auto-init-field="true"
         :disabled="mode === 'detail'"
+        :imports="imports"
       />
     </el-card>
 
@@ -55,8 +56,24 @@
 
 <script setup lang="tsx">
 import { ref, reactive } from 'vue'
-import { ZwForm, FormSchema, SchemaProps } from '@/components/Form'
-import { ElMessage } from 'element-plus'
+import { ZwForm, FormSchema, SchemaProps, ImportComponent } from '@/components/Form'
+import { ElMessage, ElUpload, ElCard } from 'element-plus'
+import type { UploadRawFile } from '@/components/Upload'
+
+const imports: ImportComponent[] = [
+  {
+    name: 'ElUpload',
+    component: ElUpload,
+    config: {
+      modelValueKey: 'fileList'
+    },
+    isArrayFn: () => true
+  },
+  {
+    name: 'ElCard',
+    component: ElCard
+  }
+]
 
 const mode = ref('edit')
 
@@ -84,7 +101,45 @@ const formModel = ref({
   status: 'active',
   hobby: ['eat', 'sleep'],
   list: [{ name: '', age: '', sex: '' }],
-  longLabel: ''
+  longLabel: '',
+  images: [
+    {
+      id: 1,
+      name: '示例图片1.png',
+      url: 'http://image.howcat.cn/thumbnails/d51a6dbd5758ab999d1246154f2d3178.png'
+    },
+    {
+      id: 2,
+      name: '示例图片2.png',
+      url: 'https://image.howcat.cn/thumbnails/5d0a2d8352a09debab8f8d233a8fc67d.png'
+    }
+  ],
+  files: [
+    {
+      name: '示例文件.pdf',
+      url: 'https://example.com/template.pdf'
+    },
+    {
+      name: '示例文件.xlsx',
+      url: 'https://example.com/template.xlsx'
+    },
+    {
+      name: '示例文件.docx',
+      url: 'https://example.com/template.docx'
+    }
+  ],
+  files2: [
+    {
+      name: 'food.jpeg',
+      url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100'
+    },
+    {
+      name: 'food2.jpeg',
+      url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100'
+    }
+  ],
+  article:
+    '<h1><span style="color: #2972f4">Advanced Element UI</span></h1><p><span style="color: #2972f4">基于 Vue 3 + Element Plus 的面向低代码、AI的高级组件库</span></p><hr><p></p><p><span style="font-size: 20px"><strong>Introduction</strong></span><br>Advanced Element UI 是一个基于 Element Plus 深度封装的高级组件库，专注于提升中后台系统的开发效率。<br>Element Plus 作为 Vue 3 生态中最受欢迎的 UI 组件库之一，其最大优势在于<strong>保持原生、不过度封装</strong>，这为二次开发提供了极大的灵活性。基于这一特点，我们打造了 Advanced Element UI，通过<strong>配置化驱动</strong>的方式，让复杂的表单和表格开发变得简单高效。<br>本项目的 <code>ZwForm</code> 和 <code>ZwTable</code> 组件完全基于配置数据驱动渲染，实现了<strong>页面、组件、业务逻辑的完全解耦</strong>。开发者只需关注配置项，即可快速构建复杂的业务场景，大幅减少重复代码，提升开发效率。<br></p><p><span style="font-size: 20px"><strong>Features</strong></span><br>- <strong>开箱即用</strong>：基于 Element Plus，无缝集成到 Vue 3 项目<br>- <strong>风格统一</strong>：二次封装的组件在组件属性和样式上遵循 Element Plus 的风格<br>- <strong>数据驱动</strong>：所有组件都遵循<strong>由配置驱动渲染</strong>的核心思想，拒绝硬编码<br>- <strong>丰富图标</strong>：集成 Iconify，支持 10 万+ 图标库<br>- <strong>类型定义</strong>：完整的类型定义和注释，提供良好的开发体验<br>- <strong>自由扩展</strong>：<code>ZwForm</code> 和 <code>ZwTable</code> 提供了注册函数，可自行注册任何遵循 Element Plus 属性风格的组件。<br></p>'
 })
 
 const formSchemas = reactive<FormSchema[]>([
@@ -290,6 +345,160 @@ const formSchemas = reactive<FormSchema[]>([
     }
   },
   {
+    key: 'upload1',
+    field: 'images',
+    label: '内置图片上传',
+    value: [],
+    component: 'Upload',
+    componentProps: {
+      listType: 'picture',
+      previewable: true,
+      downloadable: true,
+      objectFit: 'contain',
+      size: 'default',
+      accept: 'image/*',
+      tips: '支持上传图片，最多可上传 5 张图片，每张图片不超过 2MB',
+      sizeLimit: '2MB',
+      limit: 5,
+      upload: async (file: UploadRawFile) => {
+        // 模拟异步上传
+        return new Promise(resolve => {
+          resolve({
+            url: URL.createObjectURL(file),
+            name: file.name
+          })
+        })
+      }
+    },
+    layoutProps: { span: 12 },
+    formItemProps: {
+      subLabel: '使用了内置的zw-upload组件的照片墙模式',
+      autoRules: ['isRequiredArray']
+    }
+  },
+  {
+    key: 'upload2',
+    field: 'files',
+    label: '内置列表上传',
+    value: [],
+    component: 'Upload',
+    componentProps: {
+      listType: 'text',
+      previewable: true,
+      downloadable: true,
+      size: 'default',
+      accept: '*/*',
+      tips: '支持上传任意文件，最多可上传 5 个文件，每个文件不超过 2MB',
+      sizeLimit: '2MB',
+      limit: 5,
+      upload: async (file: UploadRawFile) => {
+        // 模拟异步上传
+        return new Promise(resolve => {
+          resolve({
+            url: URL.createObjectURL(file),
+            name: file.name
+          })
+        })
+      }
+    },
+    layoutProps: { span: 12 },
+    formItemProps: {
+      subLabel: '使用了内置的zw-upload组件的文件列表模式',
+      autoRules: ['isRequiredArray']
+    }
+  },
+  {
+    key: 'upload3',
+    field: 'files2',
+    label: '使用el-upload',
+    value: [],
+    component: 'ElUpload',
+    componentProps: {
+      accept: '*/*',
+      limit: 5,
+      listType: 'picture',
+      style: { width: '100%' },
+      action: 'https://run.mocky.io/v3/9d059bf9-4660-45f2-925d-ce80ad6c4d15'
+    },
+    insideProps: {
+      renders: {
+        default: () =>
+          mode.value === 'edit' && <el-button type="primary">Click to upload</el-button>,
+        tip: () =>
+          mode.value === 'edit' && (
+            <div class="el-upload__tip">jpg/png files with a size less than 500kb</div>
+          )
+      }
+    },
+    layoutProps: { span: 12, alone: true },
+    formItemProps: {
+      subLabel: '通过imports按需加载了el-upload组件',
+      autoRules: ['isRequiredArray']
+    }
+  },
+  {
+    key: 'group',
+    label: '使用内置分组容器',
+    type: 'Container',
+    component: 'Group',
+    children: [
+      {
+        field: 'groupInput',
+        label: '输入框',
+        value: '',
+        component: 'Input'
+      },
+      {
+        field: 'groupInput2',
+        label: '输入框',
+        value: '',
+        component: 'Input'
+      }
+    ],
+    layoutProps: { span: 24 }
+  },
+  {
+    key: 'tip',
+    label: '使用内置提示容器',
+    type: 'Decorator',
+    component: 'Alert',
+    componentProps: {
+      type: 'info',
+      title: '提示',
+      description:
+        'Form组件本身未初始引入el-card组件，但您可以通过imports属性来按需引入任何组件，下方为按需引入后渲染的el-card作为新的容器组件，容器组件会默认将children中的组件渲染到默认插槽中'
+    }
+  },
+  {
+    key: 'card',
+    label: '使用el-card',
+    type: 'Container',
+    component: 'ElCard',
+    componentProps: {
+      shadow: 'never'
+    },
+    insideProps: {
+      renders: {
+        header: () => <span>卡片标题</span>
+      }
+    },
+    children: [
+      {
+        field: 'cardInput',
+        label: '输入框',
+        value: '',
+        component: 'Input'
+      },
+      {
+        field: 'cardInput2',
+        label: '输入框',
+        value: '',
+        component: 'Input'
+      }
+    ],
+    layoutProps: { span: 24 }
+  },
+  {
     field: 'list',
     label: '列表',
     component: 'Table',
@@ -332,6 +541,7 @@ const formSchemas = reactive<FormSchema[]>([
           key: 'action',
           label: '操作',
           type: 'action',
+          hidden: () => mode.value !== 'edit',
           fixed: 'right',
           width: 100,
           editable: false,
@@ -359,17 +569,34 @@ const formSchemas = reactive<FormSchema[]>([
         const onAdd = () => {
           form.list.push({ name: '', age: '', sex: '' })
         }
-        return (
-          <el-button type="primary" onclick={() => onAdd()}>
-            添加
-          </el-button>
-        )
+        if (mode.value === 'edit') {
+          return (
+            <el-button type="primary" onclick={() => onAdd()}>
+              添加
+            </el-button>
+          )
+        } else {
+          return false
+        }
       }
     },
     formItemProps: {
       autoRules: ['isRequiredArray']
     },
     layoutProps: { span: 24 }
+  },
+  {
+    field: 'article',
+    label: '文章',
+    component: 'Editor',
+    value: '',
+    componentProps: {
+      editorHeight: 600,
+      viewHeight: 500
+    },
+    layoutProps: {
+      span: 24
+    }
   }
 ])
 
