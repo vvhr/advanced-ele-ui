@@ -5,6 +5,13 @@
 格式基于 [Keep a Changelog](https://keepachangelog.com/zh-CN/1.0.0/)，
 版本号遵循 [语义化版本](https://semver.org/lang/zh-CN/)。
 
+---
+## [0.0.5-beta] - 2025-11-10
+
+- ✨ 新增：`ZwForm`新增`imports`属性，用于自定义按需注册组件。
+- ✨ 新增：**ZwUpload** - 新增上传组件，支持双模式文件展示，自动根据文件类型展示图标，由您自主控制上传请求。
+- 🔧 优化：`ZwEditor`组件的阅读模式不再显示工具栏，现在支持配置`editorHeight`及`viewHeight`来自定义高度。
+- 📖 文档：更新 README.md 使用文档
 
 ---
 ## [0.0.4] - 2025-11-08
