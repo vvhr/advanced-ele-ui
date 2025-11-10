@@ -16,11 +16,17 @@ pnpm add advanced-ele-ui</code></pre>
         <span>🔧 完整引入</span>
       </template>
       <pre class="code-block"><code>import { createApp } from 'vue'
+import App from './App.vue'
+/** 引入 Element Plus */
+import ElementPlus from 'element-plus'
+import 'element-plus/dist/index.css'
+
+/** 引入 AdvancedEleUI 组件库 */
 import AdvancedEleUI from 'advanced-ele-ui'
 import 'advanced-ele-ui/dist/style.css'
-import App from './App.vue'
 
 const app = createApp(App)
+app.use(ElementPlus)
 app.use(AdvancedEleUI)
 app.mount('#app')</code></pre>
     </el-card>
@@ -37,35 +43,82 @@ import 'advanced-ele-ui/dist/style.css'</code></pre>
 
     <el-card class="demo-card">
       <template #header>
-        <span>💡 使用示例</span>
+        <span>🎯 TypeScript 全局组件类型支持</span>
+      </template>
+      <div class="type-support-content">
+        <p class="description">完整引入后，为了让 IDE 识别全局注册的组件，需要配置类型声明：</p>
+        <div class="method-title">方式一：在 tsconfig.json 中配置</div>
+        <pre class="code-block"><code>{
+  "compilerOptions": {
+    "types": ["advanced-ele-ui/global"]
+  }
+}</code></pre>
+        <div class="method-title">方式二：在 env.d.ts 中引用</div>
+        <pre
+          class="code-block"
+        ><code>/// &lt;reference types="advanced-ele-ui/global" /&gt;</code></pre>
+        <p class="tip">💡 配置后重启 IDE，即可在 Vue 文件中直接使用组件并获得完整的类型提示</p>
+      </div>
+    </el-card>
+
+    <el-card class="demo-card">
+      <template #header>
+        <span>💡 使用示例（完整引入）</span>
       </template>
       <pre class="code-block"><code>&lt;template&gt;
-  &lt;ZwForm
-    ref="formRef"
-    :model="formModel"
-    :schemas="formSchemas"
-  /&gt;
+  &lt;!-- ✅ 全局注册后可直接使用，无需导入组件 --&gt;
+  &lt;ZwForm v-model="formModel" :schemas="formSchemas" /&gt;
+  &lt;ZwTable :columns="columns" :data="tableData" /&gt;
 &lt;/template&gt;
 
-&lt;script setup&gt;
+&lt;script setup lang="ts"&gt;
 import { ref } from 'vue'
-import { ZwForm } from 'advanced-ele-ui'
+// ✅ 只需导入类型定义
+import type { ZwFormSchema, ZwTableColumn } from 'advanced-ele-ui'
 
-const formModel = ref({
-  username: '',
-  email: ''
-})
+const formModel = ref&lt;Recordable&gt;({})
 
-const formSchemas = [
+const formSchemas: ZwFormSchema[] = [
   {
+    type: 'Inputer',
+    component: 'Input',
     field: 'username',
-    label: '用户名',
-    component: 'Input'
-  },
+    label: '用户名'
+  }
+]
+
+const columns: ZwTableColumn[] = [
+  { field: 'name', label: '姓名' }
+]
+
+const tableData = ref([
+  { name: '张三' }
+])
+&lt;/script&gt;</code></pre>
+    </el-card>
+
+    <el-card class="demo-card">
+      <template #header>
+        <span>📦 使用示例（按需引入）</span>
+      </template>
+      <pre class="code-block"><code>&lt;template&gt;
+  &lt;!-- ❌ 按需引入需要显式导入组件 --&gt;
+  &lt;ZwForm v-model="formModel" :schemas="formSchemas" /&gt;
+&lt;/template&gt;
+
+&lt;script setup lang="ts"&gt;
+import { ref } from 'vue'
+// ✅ 按需引入时需要导入组件和类型
+import { ZwForm, type ZwFormSchema } from 'advanced-ele-ui'
+
+const formModel = ref&lt;Recordable&gt;({})
+
+const formSchemas: ZwFormSchema[] = [
   {
-    field: 'email',
-    label: '邮箱',
-    component: 'Input'
+    type: 'Inputer',
+    component: 'Input',
+    field: 'username',
+    label: '用户名'
   }
 ]
 &lt;/script&gt;</code></pre>
@@ -73,10 +126,17 @@ const formSchemas = [
   </div>
 </template>
 
-<script setup lang="ts">
-</script>
+<script setup lang="ts"></script>
 
 <style scoped>
+.demo-section {
+  padding: 20px;
+}
+
+.demo-card {
+  margin-bottom: 20px;
+}
+
 .code-block {
   background: #282c34;
   color: #abb2bf;
@@ -90,5 +150,34 @@ const formSchemas = [
   font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
   font-size: 14px;
   line-height: 1.6;
+}
+
+.type-support-content {
+  padding: 10px 0;
+}
+
+.description {
+  margin: 0 0 16px 0;
+  color: #606266;
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.method-title {
+  margin: 16px 0 8px 0;
+  font-weight: 600;
+  color: #303133;
+  font-size: 14px;
+}
+
+.tip {
+  margin: 16px 0 0 0;
+  padding: 12px 16px;
+  background: #ecf5ff;
+  border-left: 4px solid #409eff;
+  color: #409eff;
+  font-size: 14px;
+  line-height: 1.6;
+  border-radius: 4px;
 }
 </style>

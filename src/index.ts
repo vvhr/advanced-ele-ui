@@ -1,25 +1,29 @@
 import type { App } from 'vue'
 import 'virtual:uno.css'
 
-// 导入组件
+// Import components
 import { ZwForm } from './components/Form'
 import { Icon } from './components/Icon'
 import { ZwTable } from './components/Table'
 import { Editor } from './components/Editor'
 import { Upload } from './components/Upload'
 
-// ============ 导出全局类型 ============
+// Export global types
 export * from './types'
 
-// ============ 导出组件 ============
+// Export components
 export { ZwForm, Icon as ZwIcon, ZwTable, Editor as ZwEditor, Upload as ZwUpload }
 
-// ============ 导出组件类型（推荐使用命名空间方式） ============
-// Form 组件类型
-export type * as FormTypes from './components/Form/src/types'
+// Export component's types
+// Form
+export type * as ZwFormTypes from './components/Form/src/types'
+export type { FormSchema as ZwFormSchema } from './components/Form/src/types'
+export type { SchemaProps as ZwFormSchemaProps } from './components/Form/src/types'
 export type { FormProps as ZwFormProps } from './components/Form/src/types'
+export type { ImportComponent as ZwFormImportComponent } from './components/Form/src/types'
 
-// Table 组件类型
+// Table
+export type * as ZwTableTypes from './components/Table/src/types'
 export type {
   ZwTableDefineProps,
   ZwTableInstance,
@@ -33,32 +37,32 @@ export type {
   ZwTableProps
 } from './components/Table'
 
-// Icon 组件类型
+// Icon
 export type { IconProps } from './components/Icon'
 
-// Editor 组件类型
+// Editor
 export type {
-  EditorProps,
-  EditorEmits,
-  ToolbarKey,
-  AddToolItem,
-  AddToolItemPosition
+  EditorProps as ZwEditorProps,
+  EditorEmits as ZwEditorEmits,
+  ToolbarKey as ZwEditorToolbarKey,
+  AddToolItem as ZwEditorAddToolItem,
+  AddToolItemPosition as ZwEditorAddToolItemPosition
 } from './components/Editor'
 export type { AiEditor } from 'aieditor'
 
-// Upload 组件类型
+// Upload
 export type {
-  UploadProps,
-  UploadFile,
-  UploadRawFile,
-  FileKeys,
-  FileTemplate
+  UploadProps as ZwUploadProps,
+  UploadFile as ZwUploadFile,
+  UploadRawFile as ZwUploadRawFile,
+  FileKeys as ZwUploadFileKeys,
+  FileTemplate as ZwUploadFileTemplate
 } from './components/Upload'
 
-// ============ 导出常量 ============
+// Export constants
 export { SIMPLE_TOOLBAR_KEYS, FULL_TOOLBAR_KEYS } from './components/Editor'
 
-// 安装函数
+// Install
 const install = (app: App) => {
   app.component('ZwForm', ZwForm)
   app.component('ZwTable', ZwTable)
@@ -66,8 +70,6 @@ const install = (app: App) => {
   app.component('ZwEditor', Editor)
   app.component('ZwUpload', Upload)
 }
-
-// 默认导出
 export default {
   install,
   version: '0.0.5'

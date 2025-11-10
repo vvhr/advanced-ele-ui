@@ -41,7 +41,7 @@ export default defineConfig({
         'src/**/*.test.ts',
         'src/main.ts',
         'src/types/auto-imports.d.ts',
-        'src/types/components.d.ts'
+        'src/types/components.d.ts' // unplugin-vue-components 生成的文件
       ],
       outDir: 'dist',
       staticImport: true,

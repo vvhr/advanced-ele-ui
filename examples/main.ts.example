@@ -1,0 +1,40 @@
+import { createApp } from 'vue'
+import App from './App.vue'
+
+// 引入 Element Plus
+import ElementPlus from 'element-plus'
+import 'element-plus/dist/index.css'
+import zhCn from 'element-plus/es/locale/lang/zh-cn'
+
+// 引入 Advanced Element UI
+import AdvancedEleUI from 'advanced-ele-ui'
+import 'advanced-ele-ui/dist/style.css'
+
+const app = createApp(App)
+
+// 配置 Element Plus（可选）
+app.use(ElementPlus, {
+  locale: zhCn,
+  size: 'default'
+})
+
+// 全局注册 Advanced Element UI 组件
+app.use(AdvancedEleUI)
+
+app.mount('#app')
+
+/**
+ * 注意事项：
+ * 
+ * 1. 确保在 tsconfig.json 中添加了全局组件类型支持：
+ *    "types": ["advanced-ele-ui/global"]
+ * 
+ * 2. 或者在 env.d.ts 中添加：
+ *    /// <reference types="advanced-ele-ui/global" />
+ * 
+ * 3. 配置完成后，重启 IDE 或重新加载 TypeScript 服务
+ * 
+ * 4. 现在可以在 Vue 文件中直接使用组件，无需导入：
+ *    <ZwTable :columns="columns" :data="data" />
+ *    <ZwForm v-model="model" :schemas="schemas" />
+ */

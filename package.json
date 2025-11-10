@@ -12,6 +12,9 @@
       "import": "./dist/index.js",
       "require": "./dist/index.cjs"
     },
+    "./global": {
+      "types": "./dist/types/global-components.d.ts"
+    },
     "./dist/style.css": "./dist/style.css",
     "./style.css": "./dist/style.css"
   },

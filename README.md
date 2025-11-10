@@ -14,7 +14,7 @@
   <h3>
     <a href="https://vvhr.github.io/advanced-ele-ui" target="_blank">📱 在线演示</a>
     ·
-    <a href="#Quick Start">快速开始</a>
+    <a href="#quick-start">快速开始</a>
     ·
     <a href="./CHANGELOG.md">更新日志</a>
   </h3>
@@ -93,6 +93,38 @@ const app = createApp(App)
 app.use(ElementPlus)
 app.use(AdvancedEleUI)
 app.mount('#app')
+```
+
+#### TypeScript 全局组件类型支持
+
+如果你使用 TypeScript，为了让 IDE 能够识别全局注册的组件，需要添加类型声明。
+
+**方式一：在 `tsconfig.json` 中添加**
+
+```json
+{
+  "compilerOptions": {
+    "types": ["advanced-ele-ui/global"]
+  }
+}
+```
+
+**方式二：在类型声明文件中添加**
+
+在 `src/env.d.ts` 或 `src/types/global.d.ts` 中添加：
+
+```typescript
+/// <reference types="advanced-ele-ui/global" />
+```
+
+配置完成后，重启 IDE，即可在 Vue 文件中直接使用组件并获得完整的类型提示：
+
+```vue
+<template>
+  <!-- ✅ IDE 能够识别组件并提供智能提示 -->
+  <ZwTable :columns="columns" :data="data" />
+  <ZwForm v-model="formModel" :schemas="schemas" />
+</template>
 ```
 
 ### 按需引入
