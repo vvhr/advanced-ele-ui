@@ -1,60 +1,31 @@
-# 📝 更新日志
+# 📝 ChangeLog
 
-所有重要的更改都将记录在此文件中。
-
-格式基于 [Keep a Changelog](https://keepachangelog.com/zh-CN/1.0.0/)，
-版本号遵循 [语义化版本](https://semver.org/lang/zh-CN/)。
+English | [简体中文](./CHANGELOG.zh.md)
 
 ---
-## [0.0.5] - 2025-11-10
-
-- ✨ 新增: `AeForm`新增`imports`属性，用于自定义按需注册组件。
-- ✨ 新增: **AeUpload** - 新增上传组件，支持双模式文件展示，自动根据文件类型展示图标，由您自主控制上传请求。
-- 🔧 修复: 构建的包体缺少组件和类型声明，现在已全部在入口函数中暴露。
-- 🔧 修复: 由于dts无法识别自动引入的vue类型，现在已在所有组件显示声明vue类型。
-- 🔧 优化: `AeEditor`组件的阅读模式不再显示工具栏，现在支持配置`editorHeight`及`viewHeight`来自定义高度。
-- 📖 文档: 更新 README.md 使用文档
-
----
-## [0.0.4] - 2025-11-08
-
-- ♻️ 重构：**AeForm** - 为避免插槽在render外调用的警告，已对表单组件代码进行重构。
-- 🔧 修复：**AeTable** - 修复副标题字体过细的Bug
-- ✨ 新增：**AeEditor** - 面向AI的富文本编辑器
-- 📦 依赖：aieditor 1.4.2
-- 📖 文档：更新 README.md 使用文档
-
----
-## [0.0.3] - 2025-11-06
-
-- ✨ 新增：**AeForm** - 高级表单组件
-- ✨ 新增：**AeTable** - 高级表格组件
-- ✨ 新增：**AeIcon** - 图标组件
-- 📦 依赖：Vue 3.4 + Element Plus 2.11.7 + TypeScript 5.3.3
-- 📦 依赖：@iconify/vue 5.0.0 + @vueuse/core 11.0.0 + lodash-es 4.17.21 + dayjs 1.11.13
-- 📦 依赖：Vite 5.0.0 + Less 4.2.0
-- 📖 文档：添加 README.md 使用文档
-- 📖 文档：添加 CHANGELOG.md 更新日志
-
+## [0.0.5] - 2025-11-11
+### Refactors
+* Refactored all component namespaces, replacing the `Zw` prefix with the `Ae` prefix, and updated all `zw-*` prefixed styles and type interfaces accordingly.
+* Refactored all component exports, standardized component type naming, now you can freely import the type interfaces from within the component library.
+* Refactored the compilation process; it now correctly compiles global component types and other global types, and excludes the component library's internal global type files.
+### Docs
+* Replaced the default README.md with an English version and added language switching; the original Chinese version has been moved to README.zh.md
+* Converted CHANGELOG.md to English and restructured the changelog.
 ---
 
-## 版本说明
+## ChangeLog Template
 
-### 版本号规则
-
-遵循语义化版本规范 (Semantic Versioning):
-
-- **主版本号 (Major)**: 不兼容的 API 修改
-- **次版本号 (Minor)**: 向下兼容的功能性新增
-- **修订号 (Patch)**: 向下兼容的问题修正
-
-### 更新类型
-
-- ✨ **新增** - 新功能
-- 🔧 **修复** - Bug 修复
-- ♻️ **重构** - 代码重构
-- ⚡ **性能** - 性能优化
-- 📖 **文档** - 文档更新
-- 📦 **依赖** - 依赖更新
-- 🗑️ **废弃** - 废弃功能
-- 💥 **破坏** - 破坏性变更
+```markdown
+## 0.0.0 - 2025-X-X
+### Features
+* Components [XXX] do something...
+* do something...
+### Bug fixes
+* Components [XXX] do something...
+* do something...
+### Refactors
+* Components [XXX] do something...
+* do something...
+### Docs
+* do something...
+```

@@ -157,26 +157,29 @@ import 'advanced-ele-ui/dist/style.css'
 
 ## Roadmap
 
-### Short-term Plan (v1.0.0)
-- [ ] Improve component documentation and examples
-- [ ] Increase unit test coverage
-- [ ] Optimize TypeScript type definitions
-- [ ] Performance optimization and bug fixes
-- [ ] Release the first official version
+### 🎯 Short-term Plan (v1.0.0)
+- ⬜ Release the first official version
+- ⬜ `AeForm`: Improve the `type`: `desc` mode, commonly used for displaying information on detail pages, to satisfy the idea of presenting forms in a Word-like form style.
+- ⬜ `AeForm`: Improve the `designable`: `true` mode, which will be used in `AeFormDesginer` to implement form toolbar, drag-and-drop, selection, etc. The plan is to adopt a non-intrusive design that only provides hook functions and does not embed directly into the `AeForm` component.
+- ⬜ `AeTable`: Improve the strategy for rendering editable components when `editable`: `true`; introduce more component types and support on-demand registration of components with `AeForm`.
+- ⬜ Build the `advanced-ele-ui-docs` component library documentation project to provide better usage guidance!
 
-### Mid-term Plan (v1.x)
-- [ ] `AeForm`: Support more form control types
-- [ ] `AeTable`: Enhanced virtual scrolling performance
-- [ ] `AeDialog`: Dialog component
-- [ ] `AeDrawer`: Drawer component
-- [ ] Theme customization
-
-### Long-term Plan (v2.x)
-- [ ] Visual form designer
-- [ ] Visual table configurator
-- [ ] AI-assisted configuration generation
-- [ ] Low-code platform integration solution
-- [ ] Mobile adaptation
+### 🔮 Mid-term Plan (v1.x)
+- ⬜ `AeDialog`: Enhance the dialog component. `el-dialog` is currently rough in style and functionality; we will encapsulate a more attractive and controllable dialog component.
+- ⬜ `AeDrawer`: Drawer component, same as above.
+> The following components will be released separately as the **advanced-ai-ui** component package for on-demand importing.
+- ⬜ `AeInputAI`: A dialog component specialized for AI chat scenarios, supporting a custom toolbar, text input, file upload, image upload, voice input, and theme switching.
+- ⬜ `AeMessageAI`: A chat bubble component for AI chat scenarios, supporting avatar, name, time, content area, deep-thought area, attached images and file display, buttons for copy, resend, like, feedback, voice playback, etc. Supports custom footer controls.
+> The following components will be released separately as the **advanced-lowcode-ui** component package for on-demand importing.
+- ⬜ `AeFormDesginer`: Visual form designer.
+- ⬜ `AeTableDesginer`: Visual table designer.
+- ⬜ `AeCodeViewer`: Lightweight code viewer with light/dark theme switching and syntax highlighting, supporting display of languages such as js, ts, vue2, vue3, css, less, etc. Supports line numbers and fold/unfold.
+- ⬜ `AeCodeEditor`: Code editor with two-way binding, theme switching, syntax highlighting, line numbers, folding/unfolding, custom completion, and basic syntax checking.
+- ⬜ `AeJsonViewer`: JSON viewer that supports theme switching, lightweight JSON display, node expand/collapse, and different highlight colors for different value types.
+- ⬜ `AeJsonEditor`: Lightweight JSON editor that displays JSON data as tree nodes, supports node expand/collapse, editing property names or values, adding or removing properties for objects, and adding or removing members for arrays.
+- ⬜ `AeJsFuncEditor`: JavaScript function editor that, unlike a code editor, focuses on editing the body of a single function while the function name, input parameters, and output types are predefined. Can be used in the form designer to configure component function properties.
+- ⬜ `AeOptionsEditor`: Options editor specialized for custom option data; allows predefining the option data structure, maximum count, and whether it's hierarchical, and renders input fields based on that structure. Supports quick import mode.
+- ⬜ `AeSandbox`: Code sandbox plugin that can execute and validate functions or code online, with built-in security checks to prevent illegal injection.
 
 > 💡 If you have good ideas or suggestions, feel free to raise them in [Issues](https://github.com/vvhr/advanced-ele-ui/issues)!
 
