@@ -80,9 +80,9 @@ function onTransitionEnd() {
 </script>
 
 <template>
-  <div class="zw-form-group">
+  <div class="ae-form-group">
     <div
-      class="zw-form-group-header"
+      class="ae-form-group-header"
       :class="{
         toggleable: toggleable,
         isExpanded: isExpanded
@@ -90,24 +90,24 @@ function onTransitionEnd() {
       :style="headerStyle"
       @click="toggleable ? handleExpandChange() : undefined"
     >
-      <div class="zw-form-group-header__label">
+      <div class="ae-form-group-header__label">
         <span class="title" :style="labelStyle">{{ label }}</span>
         <span v-if="subLabel" class="sub-title" :style="subLabelStyle">{{ subLabel }}</span>
       </div>
       <Icon
         v-if="toggleable"
         :icon="isExpanded ? 'ep:arrow-down-bold' : 'ep:arrow-up-bold'"
-        class="zw-form-group-header__icon"
+        class="ae-form-group-header__icon"
       />
     </div>
     <div
       ref="bodyRef"
-      class="zw-form-group-body"
+      class="ae-form-group-body"
       :class="{ expanded: isExpanded }"
       :style="bodyStyle"
       @transitionend="onTransitionEnd"
     >
-      <div class="zw-form-group-body__content">
+      <div class="ae-form-group-body__content">
         <slot></slot>
       </div>
     </div>
@@ -115,13 +115,13 @@ function onTransitionEnd() {
 </template>
 
 <style scoped lang="less">
-.zw-form-group {
+.ae-form-group {
   width: 100%;
   border: 1px solid #ebeef5;
   margin-bottom: 10px;
   position: relative;
 
-  .zw-form-group-header {
+  .ae-form-group-header {
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -132,7 +132,7 @@ function onTransitionEnd() {
     font-size: 14px;
     box-sizing: border-box;
 
-    .zw-form-group-header__label {
+    .ae-form-group-header__label {
       display: flex;
       flex-direction: column;
 
@@ -146,7 +146,7 @@ function onTransitionEnd() {
       }
     }
 
-    //.zw-form-group-header__icon {
+    //.ae-form-group-header__icon {
     //}
     &.toggleable {
       cursor: pointer;
@@ -157,7 +157,7 @@ function onTransitionEnd() {
     }
   }
 
-  .zw-form-group-body {
+  .ae-form-group-body {
     background: white;
     position: relative;
     overflow: hidden;
@@ -174,7 +174,7 @@ function onTransitionEnd() {
       padding: 0;
     }
 
-    .zw-form-group-body__content {
+    .ae-form-group-body__content {
       padding: 0;
     }
   }

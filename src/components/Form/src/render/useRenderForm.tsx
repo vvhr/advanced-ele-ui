@@ -1,6 +1,6 @@
 import { ElForm, ElRow, ElFormItem } from 'element-plus'
 import type {
-  ComponentConfig,
+  FormImportItemConfig,
   ComponentName,
   ComponentProps,
   FormEmits,
@@ -11,8 +11,9 @@ import type {
 import { getSubLabel, isHidden } from '../utils/schema'
 import { useFormItem } from '../hook/useFormItem'
 import { SchemaLayout } from './SchemaLayout'
-import { getSlot, getStyleWidth, isExistComponent, isRenderFunction } from '../utils'
-import type {Component, ComputedRef, Ref, VNode} from 'vue'
+import { getSlot, getStyleWidth } from '@/utils/get'
+import { isExistAttr, isFunction } from '@/utils/is'
+import type { Component, ComputedRef, Ref, VNode } from 'vue'
 import { useComponent } from '../hook/useComponent'
 export function useRenderForm(
   props: FormProps,
@@ -25,7 +26,7 @@ export function useRenderForm(
   baseElRowRef: Ref<ComponentRef<typeof ElRow>>,
   schemasKeys: Ref<string[]>,
   components: Recordable<Component, ComponentName>,
-  componentConfigs: Recordable<ComponentConfig, ComponentName>
+  componentConfigs: Recordable<FormImportItemConfig, ComponentName>
 ) {
 
   // 渲染容器类组件
@@ -35,8 +36,8 @@ export function useRenderForm(
     defaultRender?: () => VNode | undefined
   ): VNode | undefined {
     // 检查组件是否在组件映射中
-    if (!schema.component || !isExistComponent(components, schema.component)) {
-      console.error(`[ZwForm]: 组件 ${schema.component} 不存在`)
+    if (!schema.component || !isExistAttr(components, schema.component)) {
+      console.error(`[AeForm]: 组件 ${schema.component} 不存在`)
       return undefined
     }
     const { getAnyComponent, freshKey, setComponentProps, setInsideSlots } = useComponent(
@@ -63,7 +64,7 @@ export function useRenderForm(
           </AnyComponent>
         )
       } else {
-        console.error(`[ZwForm]: 配置异常，请检查组件 ${schema.component} 是否正确！`)
+        console.error(`[AeForm]: 配置异常，请检查组件 ${schema.component} 是否正确！`)
         return undefined
       }
     }
@@ -74,8 +75,8 @@ export function useRenderForm(
   // 渲染装饰类组件
   function renderDecorator(schema: FormSchema, componentProps: ComponentProps): VNode | undefined {
     // 检查组件是否在组件映射中
-    if (!schema.component || !isExistComponent(components, schema.component)) {
-      console.error(`[ZwForm]: 组件 ${schema.component} 不存在`)
+    if (!schema.component || !isExistAttr(components, schema.component)) {
+      console.error(`[AeForm]: 组件 ${schema.component} 不存在`)
       return undefined
     }
     const {
@@ -99,7 +100,7 @@ export function useRenderForm(
           </AnyComponent>
         )
       } else {
-        console.error(`[ZwForm]: 配置异常，请检查组件 ${schema.component} 是否正确！`)
+        console.error(`[AeForm]: 配置异常，请检查组件 ${schema.component} 是否正确！`)
         return undefined
       }
     }
@@ -116,7 +117,7 @@ export function useRenderForm(
         ...(schema?.outsideProps?.style || {})
       }
       return (
-        <div class="zw-form-item-outside" style={style}>
+        <div class="ae-form-item-outside" style={style}>
           {setOutsidePrepend()}
           {renderAnyComponent()}
           {setOutsideAppend()}
@@ -135,8 +136,8 @@ export function useRenderForm(
     disabled: ComputedRef<boolean>
   ): VNode | undefined {
     // 检查组件是否在组件映射中
-    if (!schema.component || !isExistComponent(components, schema.component)) {
-      console.error(`[ZwForm]: 组件 ${schema.component} 不存在`)
+    if (!schema.component || !isExistAttr(components, schema.component)) {
+      console.error(`[AeForm]: 组件 ${schema.component} 不存在`)
       return undefined
     }
     const {
@@ -175,7 +176,7 @@ export function useRenderForm(
           </AnyComponent>
         )
       } else {
-        console.error(`[ZwForm]: 配置异常，请检查组件 ${schema.component} 是否正确！`)
+        console.error(`[AeForm]: 配置异常，请检查组件 ${schema.component} 是否正确！`)
         return undefined
       }
     }
@@ -192,7 +193,7 @@ export function useRenderForm(
         ...(schema?.outsideProps?.style || {})
       }
       return (
-        <div class="zw-form-item-outside" style={style}>
+        <div class="ae-form-item-outside" style={style}>
           {setOutsidePrepend()}
           {renderAnyComponent()}
           {setOutsideAppend()}
@@ -207,7 +208,7 @@ export function useRenderForm(
   // 渲染自定义类组件
   function renderCustom(schema: FormSchema): VNode | undefined {
     if (schema?.type === 'Custom') {
-      if (isRenderFunction(schema.render)) {
+      if (isFunction(schema.render)) {
         return schema.render(formModel.value, schema, props.disabled, props.dataSource)
       }
       const { slotKey } = useComponent(props, slots, emits, schema, formModel, {}, components, componentConfigs)
@@ -215,13 +216,13 @@ export function useRenderForm(
         return getSlot(slots, slotKey, formModel.value) as any
       }
       console.error(`
-      [ZwForm]: 配置异常，若您期望使用自定义渲染组件，请使用 render属性 或 slot插槽 编写组件内容！
+      [AeForm]: 配置异常，若您期望使用自定义渲染组件，请使用 render属性 或 slot插槽 编写组件内容！
       例如: render: (form, column, disabled, dataSource) => ...
-      或在ZwForm组件内使用 <template #${slotKey}>...</template>
+      或在AeForm组件内使用 <template #${slotKey}>...</template>
     `)
     }
     console.error(
-      `[ZwForm]: 配置异常，若您期望使用自定义渲染组件，请使用 render属性 或 slot插槽 编写组件内容！`
+      `[AeForm]: 配置异常，若您期望使用自定义渲染组件，请使用 render属性 或 slot插槽 编写组件内容！`
     )
     return undefined
   }
@@ -234,18 +235,18 @@ export function useRenderForm(
       'right'
     if (labelPosition === 'top') {
       // 只要定义了subLabelRender，则优先使用
-      if (isRenderFunction(schema.formItemProps?.subLabelRender)) {
+      if (isFunction(schema.formItemProps?.subLabelRender)) {
         const renderSubLabel = schema.formItemProps.subLabelRender(formModel.value, schema, props.disabled, props.dataSource)
         if (!!renderSubLabel) {
           return (
-            <div class="zw-form-item-label">
+            <div class="ae-form-item-label">
               <div class="label">{label}</div>
               <div class="sub-label">{renderSubLabel}</div>
             </div>
           )
         } else {
           return (
-            <div class="zw-form-item-label">
+            <div class="ae-form-item-label">
               <div class="label">{label}</div>
             </div>
           )
@@ -254,7 +255,7 @@ export function useRenderForm(
       // 如果未定义subLabelRender，则读取subLabel
       const subLabel = getSubLabel(schema, formModel.value, props)
       return (
-        <div class="zw-form-item-label">
+        <div class="ae-form-item-label">
           <div class="label">{label}</div>
           {!!subLabel && <div class="sub-label">{subLabel}</div>}
         </div>
@@ -266,7 +267,7 @@ export function useRenderForm(
         marginTop: schema.formItemProps?.labelMaxWidth ? '5px' : ''
       }
       return (
-        <div class="zw-form-item-label inline-flex">
+        <div class="ae-form-item-label inline-flex">
           <span class="label" style={labelStyle}>
             {label}
           </span>
@@ -285,14 +286,14 @@ export function useRenderForm(
     // 获取组件key
     const key = schema.key ?? schema.field
     if (!key) {
-      console.error(`[ZwForm]: 组件必须设置key属性或者field属性，无法渲染schema:`, schema)
+      console.error(`[AeForm]: 组件必须设置key属性或者field属性，无法渲染schema:`, schema)
       return undefined
     }
     // 根据组件类型
     const type = schema.type ?? 'Inputer'
     switch (type) {
       case 'Step':
-        console.error(`[ZwForm]: 不支持嵌套Step类型的子组件，无法渲染schema:`, schema)
+        console.error(`[AeForm]: 不支持嵌套Step类型的子组件，无法渲染schema:`, schema)
         return undefined
       case 'Custom': {
         const { getFormItemProps, slotKey, formItemLabel } = useFormItem(props, slots, schema, formModel)
@@ -321,7 +322,7 @@ export function useRenderForm(
             {
               renderContainer(schema, trueComponentProps, () => (
                 <ElRow
-                  class="zw-form-main__container_row"
+                  class="ae-form-main__container_row"
                   data-id={`container-row-${key}`}
                   key={`container-row-${key}`}
                   gutter={10}
@@ -406,7 +407,7 @@ export function useRenderForm(
           ref={(el: any) => setBaseElFormRef(el)}
           data-id="base-row"
           key="base-row"
-          class="zw-form-main__base_row"
+          class="ae-form-main__base_row"
           gutter={10}
         >
           {currentSchemas.map(item =>
@@ -442,7 +443,7 @@ export function useRenderForm(
     }
 
     return (
-      <ElForm class="zw-form-main" ref={(el: any) => setElFormRef(el)} {...getElFormProps()} model={formModel.value}>
+      <ElForm class="ae-form-main" ref={(el: any) => setElFormRef(el)} {...getElFormProps()} model={formModel.value}>
         {{
           default: () => renderSchemas()
         }}

@@ -25,7 +25,7 @@ import {
   ElTreeSelect,
   ElInputTag
 } from 'element-plus'
-import { ZwTable } from '@/components/Table'
+import { Table } from '@/components/Table'
 import Group from './components/Group.vue'
 import Blank from './components/Blank.vue'
 import { Editor } from '@/components/Editor'
@@ -59,7 +59,7 @@ const defaultComponents: Recordable<Component, ComponentName> = {
   Select: ElSelect,
   Slider: ElSlider,
   Switch: ElSwitch,
-  Table: ZwTable,
+  Table: Table,
   TimePicker: ElTimePicker,
   TimeSelect: ElTimeSelect,
   Transfer: ElTransfer,

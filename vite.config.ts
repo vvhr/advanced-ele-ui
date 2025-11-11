@@ -21,7 +21,7 @@ export default defineConfig({
     AutoImport({
       imports: ['vue', '@vueuse/core'],
       resolvers: [ElementPlusResolver()],
-      dts: 'src/types/auto-imports.d.ts',
+      dts: 'types/auto-imports.d.ts',
       eslintrc: {
         enabled: true,
         filepath: '.eslintrc-auto-import.json',
@@ -32,22 +32,46 @@ export default defineConfig({
       // 只包含 Element Plus 组件，排除所有自定义组件
       dirs: [], // 不扫描任何目录
       resolvers: [ElementPlusResolver()],
-      dts: 'src/types/components.d.ts'
+      dts: 'types/components.d.ts'
     }),
     dts({
-      include: ['src/**/*.ts', 'src/**/*.tsx', 'src/**/*.vue'],
+      include: [
+        'src/**/*.ts',
+        'src/**/*.tsx',
+        'src/**/*.vue',
+        'src/global.d.ts',
+        'types/global-components.d.ts'
+      ],
       exclude: [
         'src/**/*.spec.ts',
         'src/**/*.test.ts',
         'src/main.ts',
-        'src/types/auto-imports.d.ts',
-        'src/types/components.d.ts' // unplugin-vue-components 生成的文件
+        'src/App.vue',
+        'src/examples/**/*',
+        'types/env.d.ts',
+        'types/auto-imports.d.ts',
+        'types/uno.d.ts',
+        'types/components.d.ts' // unplugin-vue-components 生成的文件
       ],
       outDir: 'dist',
       staticImport: true,
       insertTypesEntry: true,
-      rollupTypes: false,
-      copyDtsFiles: true
+      rollupTypes: true,
+      copyDtsFiles: false,
+      tsconfigPath: './tsconfig.json',
+      compilerOptions: {
+        declarationMap: false
+      },
+      beforeWriteFile: (filePath, content) => {
+        // 在生成的类型文件顶部添加全局类型引用
+        if (filePath.endsWith('index.d.ts')) {
+          const globalTypes = `/// <reference types="./global" />
+
+`
+          return { filePath, content: globalTypes + content }
+        }
+        return { filePath, content }
+      }
     })
   ],
   resolve: {

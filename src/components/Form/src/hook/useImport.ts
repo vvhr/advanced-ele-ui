@@ -1,4 +1,4 @@
-import type { ComponentName, ImportComponent, ComponentConfig } from '../types'
+import type { ComponentName, FormImportItem, FormImportItemConfig } from '../types'
 import type { Component } from 'vue'
 import { shallowReactive } from 'vue'
 import { defaultComponents, defaultArrayStrategies } from '../component'
@@ -17,7 +17,7 @@ export function useImport() {
   /**
    * 组件配置
    */
-  const componentConfigs = shallowReactive<Recordable<ComponentConfig, ComponentName>>({})
+  const componentConfigs = shallowReactive<Recordable<FormImportItemConfig, ComponentName>>({})
 
   /**
    * 组件值初始化为数组的策略
@@ -43,7 +43,7 @@ export function useImport() {
     }
   }
 
-  function addConfig(name: string, config: ComponentConfig) {
+  function addConfig(name: string, config: FormImportItemConfig) {
     if (componentConfigs[name]) {
       console.warn(`组件配置 ${name} 已经存在，将被覆盖`)
     }
@@ -53,7 +53,7 @@ export function useImport() {
   function registerComponent(
     name: string,
     component: Component,
-    config?: ComponentConfig,
+    config?: FormImportItemConfig,
     isArrayFn?: (cps: Recordable) => boolean
   ) {
     addComponent(name, component)
@@ -66,7 +66,7 @@ export function useImport() {
     console.log(`注册组件 ${name} 成功`)
   }
 
-  function registerComponents(imports: ImportComponent[]) {
+  function registerComponents(imports: FormImportItem[]) {
     imports.forEach(item => {
       registerComponent(item.name, item.component, item.config, item.isArrayFn)
     })

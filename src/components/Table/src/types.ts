@@ -3,7 +3,7 @@ import Table from './Table.vue'
 import { DictItem, DictMap } from '@/types/dict'
 import type { VNode, Component } from 'vue'
 
-// ZwTable Emits 事件类型声明
+// AeTable Emits 事件类型声明
 export interface TableEmits {
   (e: 'update:modelValue', value: Recordable[]): void
   (e: 'update:editable', value: boolean): void
@@ -37,7 +37,7 @@ export interface TableProps {
   // 双向绑定列表数据
   modelValue: Recordable[]
   // 表格的列配置
-  columns: ZwTableColumn[]
+  columns: TableColumn[]
   // 表格的参考表单对象数据
   form: Recordable
   // 表格的参考数据
@@ -108,10 +108,10 @@ export interface Pagination {
  * // 自定义格式化某行某列的值
  * { column.formatter: (row, index) => row.money + ' 元' }
  */
-export type ZwTableColumnFn<T> = (
+export type TableColumnFn<T> = (
   row: Recordable,
   index: number,
-  column: ZwTableColumn,
+  column: TableColumn,
   form: Recordable,
   dataSource: Recordable
 ) => T
@@ -131,7 +131,7 @@ export type ZwTableColumnFn<T> = (
  * @typeParam 'amount'     - 金额列，自动格式化金额显示（如千分位）
  * @typeParam 'sensitive'  - 敏感信息列，自动进行脱敏处理
  */
-export type ZwTableColumnType =
+export type TableColumnType =
   | 'default'
   | 'radio'
   | 'selection'
@@ -143,7 +143,7 @@ export type ZwTableColumnType =
   | 'amount'
   | 'sensitive'
 
-export type ZwTableColumnTypeProps = {
+export type TableColumnTypeProps = {
   /**
    * 自定义索引列的索引值
    * @default row.$index + 1
@@ -165,7 +165,7 @@ export type ZwTableColumnTypeProps = {
    * @notes 仅当 `column.type === 'selection'` 时生效。
    * @example { selectable: (row, index) => true }
    */
-  selectable?: ZwTableColumnFn<boolean>
+  selectable?: TableColumnFn<boolean>
   /**
    * 数据刷新后是否保留选项
    * @default false
@@ -184,7 +184,7 @@ export type ZwTableColumnTypeProps = {
    * // 修改按钮
    * [{ label: '修改', value: 'edit', icon: 'icon-park-outline:edit', event: () => void }]
    */
-  actions?: ZwTableColumnFn<ZwTableAction[]> | ZwTableAction[]
+  actions?: TableColumnFn<TableAction[]> | TableAction[]
   /**
    * 操作列按钮组下拉菜单属性
    * @description 仅对 type=action 的列有效，类型为 Object，操作列按钮组下拉菜单属性
@@ -320,7 +320,7 @@ export type ZwTableColumnTypeProps = {
 /**
  * 表格列定义
  */
-export interface ZwTableColumn {
+export interface TableColumn {
   // 字段名(列默认根据字段名渲染内容)
   field?: string
   // 列唯一标识(对不需要设置field的列必须设置key)
@@ -335,17 +335,17 @@ export interface ZwTableColumn {
    * 自定义渲染标题
    * @description 自定义渲染标题组件替代默认表头，已定义的column.label和column.subLabel属性将无效，赋值时，请忽略row和index参数。
    * @note 对type=index、type=selection、type=radio、type=expand或多级表头的父表头无效
-   * @example { headerRender: (r, i, column: ZwTableColumn) => <div>{column.label}</div> }
+   * @example { headerRender: (r, i, column: AeTableColumn) => <div>{column.label}</div> }
    */
-  headerRender?: ZwTableColumnFn<VNode | string>
+  headerRender?: TableColumnFn<VNode | string>
   /**
    * 列是否隐藏
    * @default false
    * @description 常用于因业务要求的动态隐藏，属于业务性隐藏，而非功能性隐藏，优先级高于visible属性。
-   * @note 当使用ZwTableColumnFn来赋值时，请忽略row和index参数。
-   * @example { hidden: (r, i, column: ZwTableColumn, form: any) => form.type === 1 }
+   * @note 当使用AeTableColumnFn来赋值时，请忽略row和index参数。
+   * @example { hidden: (r, i, column: AeTableColumn, form: any) => form.type === 1 }
    */
-  hidden?: ZwTableColumnFn<boolean> | boolean
+  hidden?: TableColumnFn<boolean> | boolean
   /**
    * 列是否可见
    * @default true
@@ -358,7 +358,7 @@ export interface ZwTableColumn {
    * 实现多级表头（父+多子表头）
    * @note 注意事项：children中的子表头不支持TablePlus的表头管理功能。
    */
-  children?: ZwTableColumn[]
+  children?: TableColumn[]
   // 列宽度
   width?: number | string
   // 列最小宽
@@ -372,27 +372,27 @@ export interface ZwTableColumn {
    */
   fixed?: string | boolean
   // 表格列类型
-  type?: ZwTableColumnType
+  type?: TableColumnType
   // 列类型的可配置属性
-  typeProps?: ZwTableColumnTypeProps
+  typeProps?: TableColumnTypeProps
   // 列对齐方式
   align?: 'left' | 'center' | 'right'
   // 列标题对齐方式
   headerAlign?: 'left' | 'center' | 'right'
   // 仅在未设置type或type=default时可自定义列文本格式化显示
-  formatter?: ZwTableColumnFn<string>
+  formatter?: TableColumnFn<string>
   // 仅在未设置type或type=default时可自定义列渲染组件
-  render?: ZwTableColumnFn<VNode | string | number>
+  render?: TableColumnFn<VNode | string | number>
   // 超出隐藏
   ellipsis?: boolean
   // 可复制
-  copyable?: ZwTableColumnFn<boolean> | boolean
+  copyable?: TableColumnFn<boolean> | boolean
   // 自定义复制内容
-  copyValueMethod?: ZwTableColumnFn<string>
+  copyValueMethod?: TableColumnFn<string>
   // 可点击
-  clickable?: ZwTableColumnFn<boolean> | boolean
+  clickable?: TableColumnFn<boolean> | boolean
   // 自定义点击事件
-  clickMethod?: ZwTableColumnFn<void>
+  clickMethod?: TableColumnFn<void>
   /**
    * 是否可导出
    * @default true
@@ -403,10 +403,10 @@ export interface ZwTableColumn {
    * 自定义导出值
    * @description 服务于TablePlus的导出功能，导出值会默认根据`column.type`或`column.formatter`取值，你也可以通过本函数自定义导出值
    * @note 列导出时，如果使用column.render渲染的列，则必须使用本函数来取值，否则默认输出field字段的值
-   * @example { exportValueMethod: (row, index, column: ZwTableColumn) => row.name }
+   * @example { exportValueMethod: (row, index, column: AeTableColumn) => row.name }
    * @return { string | number }
    */
-  exportValueMethod?: ZwTableColumnFn<string | number>
+  exportValueMethod?: TableColumnFn<string | number>
   /**
    * 列原生属性透传
    * @description `column`本身拥有一些特殊属性（比如`field`,`label`）经过处理后会传给`<el-table-column>`，
@@ -424,7 +424,7 @@ export interface ZwTableColumn {
    * @default true
    * @note 当`Table`的`editable`为`true`时，表格所有列将根据本字段的值显示编辑组件
    */
-  editable?: ZwTableColumnFn<boolean> | boolean
+  editable?: TableColumnFn<boolean> | boolean
   /**
    * 列编辑组件配置
    * @description 简化版的高级表单组件配置
@@ -436,7 +436,7 @@ export interface ZwTableColumn {
     field?: string
     // 编辑组件的属性
     componentProps?: {
-      options: ZwTableColumnFn<any[]> | any[]
+      options: TableColumnFn<any[]> | any[]
     } & Recordable
     // 默认值(添加一行时或未取到field的值时默认显示的值)
     defaultValue?: string | number | boolean | Recordable
@@ -480,7 +480,7 @@ export type TablePlusHeaderKey = 'drag' | 'width' | 'fixed' | 'align' | 'visible
  * 列按钮属性
  * @description 配置按钮属性
  */
-export interface ZwTableAction {
+export interface TableAction {
   /**
    * 按钮文字内容
    * @description 必须设置按钮文字内容，若不希望显示文本，请设置`noLabel`属性为`true`
@@ -532,30 +532,30 @@ export interface ZwTableAction {
   /**
    * 按钮点击事件
    * @description 自定义按钮点击事件，虽然Table组件会通过action事件通知父页面，你也可以通过本属性直接配置点击事件
-   * @example { event: (row, index, column: ZwTableColumn) => console.log(row, index, column) }
+   * @example { event: (row, index, column: AeTableColumn) => console.log(row, index, column) }
    */
-  event?: ZwTableColumnFn<void>
+  event?: TableColumnFn<void>
   /**
    * 是否加载中
    * @default false
    * @description el-button原生属性，可通过函数赋值，当返回`true`时按钮将显示加载中状态
-   * @example { loading: (row, index, column: ZwTableColumn) => true }
+   * @example { loading: (row, index, column: AeTableColumn) => true }
    */
-  loading?: ZwTableColumnFn<boolean> | false
+  loading?: TableColumnFn<boolean> | false
   /**
    * 是否禁用
    * @default false
    * @description el-button原生属性，可通过函数赋值，当返回`true`时按钮将显示禁用状态
-   * @example { disabled: (row, index, column: ZwTableColumn) => true }
+   * @example { disabled: (row, index, column: AeTableColumn) => true }
    */
-  disabled?: ZwTableColumnFn<boolean> | boolean
+  disabled?: TableColumnFn<boolean> | boolean
   /**
    * 是否隐藏
    * @default false
    * @description 可通过函数赋值，当返回`true`时按钮将不显示
-   * @example { hidden: (row, index, column: ZwTableColumn) => true }
+   * @example { hidden: (row, index, column: AeTableColumn) => true }
    */
-  hidden?: ZwTableColumnFn<boolean> | boolean
+  hidden?: TableColumnFn<boolean> | boolean
   /**
    * 按钮原生属性透传
    * @description 透传el-button原生属性，可配置`ElButtonProps`中的属性

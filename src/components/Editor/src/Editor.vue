@@ -13,7 +13,7 @@ import { AiEditor, type AiEditorOptions } from 'aieditor'
 import 'aieditor/dist/style.css'
 import { AddToolItem, ToolbarKey } from './types'
 import { FULL_TOOLBAR_KEYS, SIMPLE_TOOLBAR_KEYS } from './constants'
-import { getStyleWidth } from './utils'
+import { getStyleWidth } from '@/utils/get'
 import { useDebounceFn } from '@vueuse/core'
 
 export default defineComponent({
@@ -87,7 +87,7 @@ export default defineComponent({
     // 自动保存的缓存key
     contentRetentionKey: {
       type: String,
-      default: 'zw-ai-editor-content'
+      default: 'ae-ai-editor-content'
     },
     // 允许自由调整尺寸 org: draggable
     resizable: {
@@ -116,8 +116,8 @@ export default defineComponent({
   setup(props, { emit }) {
     let isInternalUpdate = false
     let lastEmittedValue = ''
-    const editorRef = ref<ComponentRef<AiEditor>>()
-    function setEditorRef(ref: ComponentRef<AiEditor>) {
+    const editorRef = ref<HTMLDivElement>()
+    function setEditorRef(ref: any) {
       editorRef.value = ref
     }
 
@@ -176,7 +176,7 @@ export default defineComponent({
         content: props.modelValue,
         contentIsMarkdown: props.contentIsMarkdown || false,
         contentRetention: props.contentRetention || false,
-        contentRetentionKey: props.contentRetentionKey || 'zw-ai-editor-content',
+        contentRetentionKey: props.contentRetentionKey || 'ae-ai-editor-content',
         draggable: props.resizable,
         toolbarTipEnable: props.toolbarTipEnable || true
       }
@@ -210,7 +210,7 @@ export default defineComponent({
       }
       aiEditor = new AiEditor({
         ...options,
-        element: editorRef.value as Element,
+        element: editorRef.value!,
         onChange: aiEditor => {
           if (isInternalUpdate) {
             return
@@ -300,14 +300,14 @@ export default defineComponent({
     })
     return () =>
       props.disabled ? (
-        <div class="zw-ai-editor-view" style={viewStyle.value}>
+        <div class="ae-ai-editor-view" style={viewStyle.value}>
           <div v-html={props.modelValue}></div>
         </div>
       ) : (
         <div
           ref={(ref: any) => setEditorRef(ref)}
           style={editorStyle.value}
-          class="zw-ai-editor"
+          class="ae-ai-editor"
         ></div>
       )
   }
@@ -315,7 +315,7 @@ export default defineComponent({
 </script>
 
 <style scoped lang="less">
-.zw-ai-editor-view {
+.ae-ai-editor-view {
   padding: 15px;
   border: 1px solid var(--el-border-color);
   border-radius: var(--el-border-radius-base);

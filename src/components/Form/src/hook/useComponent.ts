@@ -5,16 +5,16 @@ import type {
   FormEmits,
   InsideProps,
   ComponentProps,
-  SchemaProps,
+  FormSchemaProps,
   ComponentName,
-  ComponentConfig
+  FormImportItemConfig
 } from '../types'
 import { defineComponent, type Component, type Ref, type VNode } from 'vue'
 import { get } from 'lodash-es'
 import { getComponentEventFunction, getSchemaPropValue } from '../utils/schema'
-import { getSlot } from '../utils/helpers'
-import { isFunction, isExistComponent } from '../utils/is'
-import { setReactiveValue } from '../utils/get'
+import { getSlot } from '@/utils/get'
+import { isFunction, isExistAttr } from '@/utils/is'
+import { setReactiveValue } from '@/utils/set'
 import { dateRangeTypes, needClearable, needOptions, noNeedOptions } from '../constants'
 import { useRenderCheckbox } from '../render/RenderCheckbox.tsx'
 import { useRenderRadio } from '../render/RenderRadio.tsx'
@@ -27,12 +27,12 @@ export function useComponent(
   formModel: Ref<Recordable>,
   componentProps: ComponentProps, // 由useFormItem生成的ComponentProps
   components: Recordable<Component, ComponentName>,
-  componentConfigs: Recordable<ComponentConfig, ComponentName>
+  componentConfigs: Recordable<FormImportItemConfig, ComponentName>
 ) {
   const type = schema.type ?? 'Inputer'
   const getAnyComponent = () => {
     if (['Container', 'Inputer', 'Decorator'].includes(type)) {
-      if (isExistComponent(components, schema.component)) {
+      if (isExistAttr(components, schema.component)) {
         return components[schema.component] as ReturnType<typeof defineComponent>
       }
       return undefined
@@ -49,7 +49,7 @@ export function useComponent(
    */
   function setModelValue() {
     if (schema.field) {
-      const modelValueKey = isExistComponent(components, schema.component)
+      const modelValueKey = isExistAttr(components, schema.component)
         ? componentConfigs[schema.component]?.modelValueKey || 'modelValue'
         : 'modelValue'
       return {
@@ -371,7 +371,7 @@ function setAttrsOptions(
 }
 
 // 自动为组件添加clearable属性
-function getClearable(schema: FormSchema, schemaProps: SchemaProps) {
+function getClearable(schema: FormSchema, schemaProps: FormSchemaProps) {
   const clearable = schemaProps?.componentProps?.clearable ?? true
   if (clearable) {
     const type = schema.type ?? 'Inputer'
@@ -384,7 +384,7 @@ function getClearable(schema: FormSchema, schemaProps: SchemaProps) {
   return {}
 }
 
-function getPlaceholder(schema: FormSchema, schemaProps: SchemaProps) {
+function getPlaceholder(schema: FormSchema, schemaProps: FormSchemaProps) {
   const autoPlaceholder = schemaProps?.componentProps?.autoPlaceholder ?? true
   if (autoPlaceholder) {
     const type = schema.type ?? 'Inputer'

@@ -38,7 +38,7 @@ import type { CSSProperties } from 'vue'
  *   }
  * }
  */
-type AnyComponentProps = {
+export type AnyComponentProps = {
   [K in `_v_${string}`]?: FormSchemaFn<any>
 }
 

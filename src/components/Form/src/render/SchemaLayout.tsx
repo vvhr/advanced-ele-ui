@@ -1,5 +1,5 @@
 import { defineComponent, computed, type PropType } from 'vue'
-import type { FormSchema, SchemaProps } from '../types'
+import type { FormSchema, FormSchemaProps } from '../types'
 import { ElCol, ElRow } from 'element-plus'
 
 export const SchemaLayout = defineComponent({
@@ -10,7 +10,7 @@ export const SchemaLayout = defineComponent({
       required: true
     },
     schemaProps: {
-      type: Object as PropType<SchemaProps>,
+      type: Object as PropType<FormSchemaProps>,
       required: true
     },
     itemKey: {

@@ -12,6 +12,8 @@ export type { ToolbarKey, AddToolItem, AddToolItemPosition }
 export { SIMPLE_TOOLBAR_KEYS, FULL_TOOLBAR_KEYS } from './src/constants'
 
 // 导出 Editor 组件的 Props 类型
+export type EditorDefineProps = InstanceType<typeof Editor>['$props']
+export type EditorInstance = InstanceType<typeof Editor>
 export interface EditorProps {
   /** 双向绑定编辑器的`content` */
   modelValue?: string
@@ -71,3 +73,4 @@ export interface EditorEmits {
 
 // 导出编辑器实例类型（用于 ref 引用）
 export type { AiEditor } from 'aieditor'
+export default Editor

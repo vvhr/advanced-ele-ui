@@ -5,9 +5,9 @@ import {
   getLabel,
   getNoLabel,
   getTrueComponentProps
-} from '../utils'
+} from '../utils/schema'
 import type { FormItemRule } from 'element-plus'
-import { autoRulesMap } from '../constants'
+import { AUTO_RULES_MAP } from '../constants'
 
 interface UserFormItemData {
   trueComponentProps: ComponentProps
@@ -33,7 +33,7 @@ export function useFormItem(
       ...(schema.formItemProps || {}),
       prop: schema.field || '',
       // label: formItemLabel.value,
-      class: ['zw-form-item', getNoMarginBottomClass(), getNoLabelClass(), getNormalLabelClass()]
+      class: ['ae-form-item', getNoMarginBottomClass(), getNoLabelClass(), getNormalLabelClass()]
         .filter(name => !!name)
         .join(' '),
       required: getFormItemRequired(),
@@ -46,8 +46,8 @@ export function useFormItem(
     if (schema.formItemProps?.autoRules?.length) {
       const rules: FormItemRule[] = []
       schema.formItemProps.autoRules.forEach((ruleName: string) => {
-        if (autoRulesMap[ruleName] !== undefined) {
-          const rule = Object.assign({}, autoRulesMap[ruleName])
+        if (AUTO_RULES_MAP[ruleName] !== undefined) {
+          const rule = Object.assign({}, AUTO_RULES_MAP[ruleName])
           rule.message = rule.message.replace('{label}', formItemLabel.value)
           rules.push(rule)
         }

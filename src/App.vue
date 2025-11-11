@@ -25,19 +25,19 @@
       <el-tab-pane label="🚀 快速开始" name="start">
         <QuickStartExample v-if="activeTab === 'start'" />
       </el-tab-pane>
-      <el-tab-pane label="📝 ZwForm 表单组件" name="form">
+      <el-tab-pane label="📝 AeForm 表单组件" name="form">
         <FormExample v-if="activeTab === 'form'" />
       </el-tab-pane>
-      <el-tab-pane label="📊 ZwTable 表格组件" name="table">
+      <el-tab-pane label="📊 AeTable 表格组件" name="table">
         <TableExample v-if="activeTab === 'table'" />
       </el-tab-pane>
-      <el-tab-pane label="🎨 ZwIcon 图标组件" name="icon">
+      <el-tab-pane label="🎨 AeIcon 图标组件" name="icon">
         <IconExample v-if="activeTab === 'icon'" />
       </el-tab-pane>
-      <el-tab-pane label="📄 ZwEditor 富文本编辑器" name="editor">
+      <el-tab-pane label="📄 AeEditor 富文本编辑器" name="editor">
         <EditorExample v-if="activeTab === 'editor'" />
       </el-tab-pane>
-      <el-tab-pane label="📄 ZwUpload 文件上传" name="upload">
+      <el-tab-pane label="📄 AeUpload 文件上传" name="upload">
         <UploadExample v-if="activeTab === 'upload'" />
       </el-tab-pane>
     </el-tabs>

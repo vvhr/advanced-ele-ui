@@ -16,8 +16,8 @@
         </div>
       </template>
 
-      <ZwTable
-        ref="zwTableRef"
+      <AeTable
+        ref="AeTableRef"
         v-model="tableData"
         :columns="tableColumns"
         :form="{}"
@@ -35,7 +35,7 @@
         <span>可编辑表格示例</span>
       </template>
 
-      <ZwTable
+      <AeTable
         v-model="editableTableData"
         :columns="editableTableColumns"
         :form="{}"
@@ -66,10 +66,10 @@
 
 <script setup lang="ts">
 import { ref, reactive } from 'vue'
-import { ZwTable, ZwTableColumn } from '@/components/Table'
+import { Table as AeTable, TableColumn } from '@/components/Table'
 import { ElMessage } from 'element-plus'
 
-const zwTableRef = ref()
+const AeTableRef = ref()
 const tableLoading = ref(false)
 const tableData = ref([
   {
@@ -110,7 +110,7 @@ const tablePagination = reactive({
   layout: 'total, sizes, prev, pager, next, jumper'
 })
 
-const tableColumns: ZwTableColumn[] = [
+const tableColumns: TableColumn[] = [
   { key: 'selection', type: 'selection', width: 55, fixed: 'left' },
   { key: 'index', type: 'index', label: '序号', width: 80 },
   { field: 'name', label: '姓名', width: 120, subLabel: '自定义副标题' },
@@ -192,7 +192,7 @@ const editableTableData = ref([
   { id: 3, name: '产品C', price: 300, quantity: 30 }
 ])
 
-const editableTableColumns: ZwTableColumn[] = [
+const editableTableColumns: TableColumn[] = [
   { key: 'index', type: 'index', label: '序号', width: 80 },
   {
     field: 'name',

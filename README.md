@@ -1,47 +1,57 @@
 <div align="center">
+
+English | [简体中文](./README.zh.md)
+
   <h1> Advanced Element UI</h1>
-  <p>基于 Vue 3 + Element Plus 的面向低代码、AI的高级组件库</p>
+  <p>Advanced component library for low-code and AI based on Vue 3 + Element Plus</p>
   <img alt="logo" height="154px" src="https://image.howcat.cn/thumbnails/5d0a2d8352a09debab8f8d233a8fc67d.png" title="logo" width="400px"/>
 
   [![npm version](https://img.shields.io/npm/v/advanced-ele-ui.svg?style=flat-square)](https://www.npmjs.com/package/advanced-ele-ui)
   [![npm downloads](https://img.shields.io/npm/dt/advanced-ele-ui.svg?style=flat-square)](https://www.npmjs.com/package/advanced-ele-ui)
   [![license](https://img.shields.io/npm/l/advanced-ele-ui.svg?style=flat-square)](https://github.com/vvhr/advanced-ele-ui/blob/main/LICENSE)
-  [![TypeScript](https://img.shields.io/badge/TypeScript-5.3-blue?style=flat-square)](https://www.typescriptlang.org/)
-  [![Vue](https://img.shields.io/badge/Vue-3.4-green?style=flat-square)](https://vuejs.org/)
+  [![pnpm](https://img.shields.io/badge/maintained%20with-pnpm-cc00ff.svg?style=flat-square)](https://pnpm.io/)
+  
+  [![Vue](https://img.shields.io/badge/Vue-≥3.2.0-green?style=flat-square&logo=vue.js)](https://vuejs.org/)
+  [![Element Plus](https://img.shields.io/badge/Element%20Plus-≥2.9.0-409eff?style=flat-square)](https://element-plus.org/)
+  [![TypeScript](https://img.shields.io/badge/TypeScript-5.3-blue?style=flat-square&logo=typescript)](https://www.typescriptlang.org/)
 
   <br/>
 
   <h3>
-    <a href="https://vvhr.github.io/advanced-ele-ui" target="_blank">📱 在线演示</a>
+    <a href="https://vvhr.github.io/advanced-ele-ui" target="_blank">📱 Live Demo</a>
     ·
-    <a href="#quick-start">快速开始</a>
+    <a href="#QuickStart">Quick Start</a>
     ·
-    <a href="./CHANGELOG.md">更新日志</a>
+    <a href="./CHANGELOG.md">Changelog</a>
+    ·
+    <a href="#Roadmap">Roadmap</a>
   </h3>
 </div>
 
 ---
-> Warning： 项目正处于前期建设、高速迭代过程中，可能存在bug，建议您持续关注本仓库，暂时请勿用于生产环境，保持更新，本项目将在近期确定第一个正式版本。
+> Warning: This project is in early development and rapid iteration. There may be bugs. Please follow this repository and avoid using it in production environments for now. Stay tuned for the first official release.
 > 2025.11.10
 
 ## Introduction
-Advanced Element UI 是一个基于 Element Plus 深度封装的高级组件库，专注于提升中后台系统的开发效率。
-Element Plus 作为 Vue 3 生态中最受欢迎的 UI 组件库之一，其最大优势在于**保持原生、不过度封装**，这为二次开发提供了极大的灵活性。基于这一特点，我们打造了 Advanced Element UI，通过**配置化驱动**的方式，让复杂的表单和表格开发变得简单高效。
-本项目的 `ZwForm` 和 `ZwTable` 组件完全基于配置数据驱动渲染，实现了**页面、组件、业务逻辑的完全解耦**。开发者只需关注配置项，即可快速构建复杂的业务场景，大幅减少重复代码，提升开发效率。
+Advanced Element UI is an advanced component library deeply encapsulated based on Element Plus, focusing on improving the development efficiency of middle and back-end systems.
+
+Element Plus, as one of the most popular UI component libraries in the Vue 3 ecosystem, has its greatest advantage in **staying native and not over-encapsulating**, which provides great flexibility for secondary development. Based on this feature, we created Advanced Element UI, making complex form and table development simple and efficient through **configuration-driven** approach.
+
+The `AeForm` and `AeTable` components of this project are completely driven by configuration data, achieving **complete decoupling of pages, components, and business logic**. Developers only need to focus on configuration items to quickly build complex business scenarios, greatly reducing repetitive code and improving development efficiency.
 
 ## Features
-- **开箱即用**：基于 Element Plus，无缝集成到 Vue 3 项目
-- **风格统一**：二次封装的组件在组件属性和样式上遵循 Element Plus 的风格
-- **数据驱动**：所有组件都遵循**由配置驱动渲染**的核心思想，拒绝硬编码
-- **丰富图标**：集成 Iconify，支持 10 万+ 图标库
-- **类型定义**：完整的类型定义和注释，提供良好的开发体验
-- **自由扩展**：`ZwForm` 和 `ZwTable` 提供了注册函数，可自行注册任何遵循 Element Plus 属性风格的组件。
+- **Out of the Box**: Based on Element Plus, seamlessly integrated into Vue 3 projects
+- **Unified Style**: Secondary encapsulated components follow Element Plus style in component properties and styles
+- **Data Driven**: All components follow the core idea of **rendering driven by configuration**, rejecting hard coding
+- **Rich Icons**: Integrated with Iconify, supporting 100,000+ icon libraries
+- **Type Definitions**: Complete type definitions and comments, providing a good development experience
+- **Free Extension**: `AeForm` and `AeTable` provide registration functions, allowing you to register any component that follows Element Plus property style
 
 ---
 
 ## Install
 
-1. 确保您的项目已安装 Vue 3 和 Element Plus
+1. Make sure Vue 3 and Element Plus are installed in your project
 ```bash
 // use npm
 npm install element-plus --save
@@ -53,10 +63,8 @@ yarn add element-plus
 pnpm install element-plus
 ```
 
-> 中国大陆用户可使用镜像加速: npm config set registry https://registry.npmmirror.com
 
-
-2. 安装AdvancedEleUI 组件库
+2. Install AdvancedEleUI component library
 ```bash
 // use npm
 npm install advanced-ele-ui
@@ -70,20 +78,20 @@ pnpm add advanced-ele-ui
 
 ---
 
-## Quick Start
+## QuickStart
 
-### 完整引入
+### Full Import
 
-在 `main.ts` 中引入所有组件：
+Import all components in `main.ts`:
 
 ```typescript
 import { createApp } from 'vue'
 
-/** 引入 Element Plus */
+/** Import Element Plus */
 import ElementPlus from 'element-plus'
 import 'element-plus/dist/index.css'
 
-/** 引入 AdvancedEleUI 组件库 */
+/** Import AdvancedEleUI component library */
 import AdvancedEleUI from 'advanced-ele-ui'
 import 'advanced-ele-ui/dist/style.css'
 
@@ -95,11 +103,11 @@ app.use(AdvancedEleUI)
 app.mount('#app')
 ```
 
-#### TypeScript 全局组件类型支持
+#### TypeScript Global Component Type Support
 
-如果你使用 TypeScript，为了让 IDE 能够识别全局注册的组件，需要添加类型声明。
+If you use TypeScript, to enable IDE recognition of globally registered components, you need to add type declarations.
 
-**方式一：在 `tsconfig.json` 中添加**
+**Method 1: Add in `tsconfig.json`**
 
 ```json
 {
@@ -109,83 +117,110 @@ app.mount('#app')
 }
 ```
 
-**方式二：在类型声明文件中添加**
+**Method 2: Add in type declaration file**
 
-在 `src/env.d.ts` 或 `src/types/global.d.ts` 中添加：
+Add in `src/env.d.ts` or `src/types/global.d.ts`:
 
 ```typescript
 /// <reference types="advanced-ele-ui/global" />
 ```
 
-配置完成后，重启 IDE，即可在 Vue 文件中直接使用组件并获得完整的类型提示：
+After configuration, restart your IDE, and you can use components directly in Vue files with full type hints:
 
 ```vue
 <template>
-  <!-- ✅ IDE 能够识别组件并提供智能提示 -->
-  <ZwTable :columns="columns" :data="data" />
-  <ZwForm v-model="formModel" :schemas="schemas" />
+  <!-- ✅ IDE can recognize components and provide intelligent hints -->
+  <AeTable :columns="columns" :data="data" />
+  <AeForm :model="formModel" :schemas="schemas" />
 </template>
 ```
 
-### 按需引入
+### On-Demand Import
 
-只引入需要的组件：
+Import only the components you need:
 
 ```typescript
-import { ZwForm, ZwTable, ZwIcon, ZwEditor } from 'advanced-ele-ui'
+import { AeForm, AeTable, AeIcon, AeEditor } from 'advanced-ele-ui'
 import 'advanced-ele-ui/dist/style.css'
 ```
 
 ---
 
-## Component
-- ✅ `ZwForm`: 高级表单组件: 基于数据驱动的功能强大的表单组件，支持多种表单控件，专注于解决数据联动，动态属性的复杂场景。
-- ✅ `ZwTable`: 高级表格组件: 基于数据驱动的功能丰富的表格组件，支持多种列类型和行内编辑。
-- ✅ `ZwIcon`: 动态图标组件: 基于 [Iconify](https://icon-sets.iconify.design/)，支持 10 万+ 图标库动态渲染。
-- ✅ `ZwEditor`: 富文本组件: 基于 [AiEditor](https://aieditor.dev/docs) 二次封装的富文本组件，支持 AI 助手功能。
-- ✅ `ZwUpload`: 上传组件: 原生实现的功能丰富的上传组件，组件本身不控制上传，完全交由您实现上传请求，组件专注于数据和样式。
+## Components
+- ✅ `AeForm`: Advanced form component: A powerful data-driven form component that supports multiple form controls, focusing on solving complex scenarios of data linkage and dynamic properties.
+- ✅ `AeTable`: Advanced table component: A feature-rich data-driven table component that supports multiple column types and inline editing.
+- ✅ `AeIcon`: Dynamic icon component: Based on [Iconify](https://icon-sets.iconify.design/), supporting 100,000+ icon libraries for dynamic rendering.
+- ✅ `AeEditor`: Rich text component: A rich text component based on [AiEditor](https://aieditor.dev/docs) with AI assistant functionality.
+- ✅ `AeUpload`: Upload component: A feature-rich native upload component. The component itself does not control uploading, leaving it entirely to you to implement upload requests. The component focuses on data and styles.
+
+---
+
+## Roadmap
+
+### Short-term Plan (v1.0.0)
+- [ ] Improve component documentation and examples
+- [ ] Increase unit test coverage
+- [ ] Optimize TypeScript type definitions
+- [ ] Performance optimization and bug fixes
+- [ ] Release the first official version
+
+### Mid-term Plan (v1.x)
+- [ ] `AeForm`: Support more form control types
+- [ ] `AeTable`: Enhanced virtual scrolling performance
+- [ ] `AeDialog`: Dialog component
+- [ ] `AeDrawer`: Drawer component
+- [ ] Theme customization
+
+### Long-term Plan (v2.x)
+- [ ] Visual form designer
+- [ ] Visual table configurator
+- [ ] AI-assisted configuration generation
+- [ ] Low-code platform integration solution
+- [ ] Mobile adaptation
+
+> 💡 If you have good ideas or suggestions, feel free to raise them in [Issues](https://github.com/vvhr/advanced-ele-ui/issues)!
 
 ---
 
 ## Documents and Resources
 
-- [在线演示](https://vvhr.github.io/advanced-ele-ui) - 查看所有组件的实时示例
-- [NPM 包](https://www.npmjs.com/package/advanced-ele-ui) - 查看发布版本和下载统计
-- [更新日志](./CHANGELOG.md) - 了解版本更新内容
-- [问题反馈](https://github.com/vvhr/advanced-ele-ui/issues) - 提交 Bug 或功能建议
+- [Live Demo](https://vvhr.github.io/advanced-ele-ui) - View live examples of all components
+- [NPM Package](https://www.npmjs.com/package/advanced-ele-ui) - View release versions and download statistics
+- [Changelog](./CHANGELOG.md) - Learn about version updates
+- [Issue Feedback](https://github.com/vvhr/advanced-ele-ui/issues) - Submit bugs or feature suggestions
 
 ---
 
 ## Contribution
 
-欢迎提交 Issue 和 Pull Request！
+Issues and Pull Requests are welcome!
 
-1. Fork 本仓库
-2. 创建特性分支 (`git checkout -b feature/AmazingFeature`)
-3. 提交更改 (`git commit -m 'Add some AmazingFeature'`)
-4. 推送到分支 (`git push origin feature/AmazingFeature`)
-5. 提交 Pull Request
+1. Fork this repository
+2. Create a feature branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the branch (`git push origin feature/AmazingFeature`)
+5. Submit a Pull Request
 
 ---
 
-## OSL
-本项目基于 [MIT](./LICENSE) 协议开源。
+## License
+This project is open source under the [MIT](./LICENSE) license.
 
 ---
 
 ## Thanks For
-- [Vue.js](https://vuejs.org/) - 渐进式 JavaScript 框架
-- [Element Plus](https://element-plus.org/) - 基于 Vue 3 的组件库
-- [Iconify](https://iconify.design/) - 统一的图标框架
-- [VueUse](https://vueuse.org/) - Vue 组合式 API 工具集
-- [AiEditor](https://aieditor.dev/) - 智能文本编辑器
+- [Vue.js](https://vuejs.org/) - The Progressive JavaScript Framework
+- [Element Plus](https://element-plus.org/) - Vue 3 based component library
+- [Iconify](https://iconify.design/) - Unified icon framework
+- [VueUse](https://vueuse.org/) - Collection of Vue Composition Utilities
+- [AiEditor](https://aieditor.dev/) - Intelligent text editor
 
 ---
 
 ## Contact
-- 作者：vvhr
-- 邮箱：vvhr_anen@163.com
-- GitHub：[@vvhr](https://github.com/vvhr)
+- Author: vvhr
+- Email: vvhr_anen@163.com
+- GitHub: [@vvhr](https://github.com/vvhr)
 
 ---
 

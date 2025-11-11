@@ -1,12 +1,12 @@
 import type { Component } from 'vue'
 
-export interface ComponentConfig {
+export interface FormImportItemConfig {
   modelValueKey?: string
 }
 
-export interface ImportComponent {
+export interface FormImportItem {
   name: string
   component: Component
-  config?: ComponentConfig
+  config?: FormImportItemConfig
   isArrayFn?: (cps: Recordable) => boolean
 }

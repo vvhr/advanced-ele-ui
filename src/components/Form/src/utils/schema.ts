@@ -1,5 +1,5 @@
 import type { FormProps, FormSchema, ComponentProps } from '../types'
-import { isFunction } from 'lodash-es'
+import { isFunction } from '@/utils/is'
 
 export function isHidden(schema: FormSchema, formModel: Recordable, props: FormProps) {
   return getSchemaPropValue(schema.hidden, schema, formModel, props, 'boolean', false)

@@ -12,7 +12,7 @@ export function renderPagination(
     <ElPagination
       v-model:pageSize={pageSizeRef.value}
       v-model:currentPage={currentPageRef.value}
-      class="zw-table-pagination"
+      class="ae-table-pagination"
       {...unref(pagination)}
       onChange={handlePageChange}
     ></ElPagination>

@@ -27,7 +27,7 @@ export type DecoratorName = 'Divider' | 'Alert' | 'Image' | 'Result'
  * - CheckboxButton: 多选框按钮组件，采用el-checkbox-group组件渲染，根据componentProps.options属性渲染el-checkbox-button
  * - ColorPicker: 颜色选择器组件，采用el-color-picker组件渲染，支持原生所有属性功能
  * - DatePicker: 日期选择器组件，采用el-date-picker组件渲染，支持原生所有属性功能
- * - Editor: 富文本组件，采用zw-editor组件渲染
+ * - Editor: 富文本组件，采用ae-editor组件渲染
  * - Input: 输入框组件，采用el-input组件渲染，支持原生所有属性功能
  * - InputNumber: 数字输入框组件，采用el-input-number组件渲染，支持原生所有属性功能
  * - Mention: 提及组件，采用el-mention组件渲染，支持原生所有属性功能
@@ -38,12 +38,12 @@ export type DecoratorName = 'Divider' | 'Alert' | 'Image' | 'Result'
  * - Select: 下拉选择框组件，采用el-select组件渲染，根据componentProps.options属性渲染el-option
  * - Slider: 滑块组件，采用el-slider组件渲染，支持原生所有属性功能
  * - Switch: 开关组件，采用el-switch组件渲染，支持原生所有属性功能
- * - Table: 表格组件，采用zw-table组件渲染
+ * - Table: 表格组件，采用ae-table组件渲染
  * - TimePicker: 时间选择器组件，采用el-time-picker组件渲染，支持原生所有属性功能
  * - TimeSelect: 时间选择器组件，采用el-time-select组件渲染，支持原生所有属性功能
  * - Transfer: 穿梭框组件，采用el-transfer组件渲染，支持原生所有属性功能
  * - TreeSelect: 树形选择框组件，采用el-tree-select组件渲染，支持原生所有属性功能
- * - Upload: 上传组件，采用zw-upload组件渲染
+ * - Upload: 上传组件，采用ae-upload组件渲染
  */
 export type InputerName =
   | 'Radio'

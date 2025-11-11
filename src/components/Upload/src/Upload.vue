@@ -1,12 +1,12 @@
 <template>
-  <div class="zw-upload" :class="`zw-upload--${size}`">
+  <div class="ae-upload" :class="`ae-upload--${size}`">
     <!-- 示例图和模板 -->
-    <div v-if="examples?.length || templates?.length" class="zw-upload__header">
-      <span v-if="examples?.length" class="zw-upload__link" @click="handleViewExamples">
+    <div v-if="examples?.length || templates?.length" class="ae-upload__header">
+      <span v-if="examples?.length" class="ae-upload__link" @click="handleViewExamples">
         查看示例
       </span>
       <el-dropdown v-if="templates?.length" @command="handleDownloadTemplate">
-        <span class="zw-upload__link">
+        <span class="ae-upload__link">
           下载模板
           <el-icon class="el-icon--right">
             <arrow-down />
@@ -27,15 +27,15 @@
     </div>
 
     <!-- 文件列表 -->
-    <div class="zw-upload__list" :class="`zw-upload__list--${listType}`">
+    <div class="ae-upload__list" :class="`ae-upload__list--${listType}`">
       <!-- picture 模式 -->
       <template v-if="listType === 'picture'">
         <div
           v-for="item in internalFileList"
           :key="item.uid"
-          class="zw-upload__item zw-upload__item--picture"
+          class="ae-upload__item ae-upload__item--picture"
         >
-          <div class="zw-upload__item-content">
+          <div class="ae-upload__item-content">
             <!-- 图片预览 -->
             <img
               v-if="
@@ -46,28 +46,28 @@
               :src="getFileUrl(item.data)"
               alt=""
               :style="{ objectFit: objectFit }"
-              class="zw-upload__image"
+              class="ae-upload__image"
               @click="handlePreview(item.data!)"
               @error="handleImageError(item)"
             />
             <!-- 非图片文件或图片加载失败 -->
-            <div v-else class="zw-upload__file-icon" @click="item.data && handlePreview(item.data)">
+            <div v-else class="ae-upload__file-icon" @click="item.data && handlePreview(item.data)">
               <Icon
                 :size="pictureFileIconSize"
                 :icon="getFileIcon(getFileUrl(item.data), getFileName(item.data))"
               />
-              <div class="zw-upload__file-name">{{ item.data ? getFileName(item.data) : '' }}</div>
+              <div class="ae-upload__file-name">{{ item.data ? getFileName(item.data) : '' }}</div>
             </div>
 
             <!-- loading 状态 -->
-            <div v-if="item.status === 'uploading'" class="zw-upload__loading">
+            <div v-if="item.status === 'uploading'" class="ae-upload__loading">
               <el-icon class="is-loading">
                 <Loading />
               </el-icon>
             </div>
 
             <!-- hover 遮罩 -->
-            <div v-if="item.status === 'success'" class="zw-upload__mask">
+            <div v-if="item.status === 'success'" class="ae-upload__mask">
               <el-icon v-if="previewable" @click="item.data && handlePreview(item.data)">
                 <ZoomIn />
               </el-icon>
@@ -87,7 +87,7 @@
         <!-- 上传按钮 -->
         <div
           v-if="showUploadButton"
-          class="zw-upload__trigger zw-upload__trigger--picture"
+          class="ae-upload__trigger ae-upload__trigger--picture"
           @click="handleTriggerClick"
         >
           <el-icon :size="iconSize">
@@ -101,35 +101,35 @@
         <div
           v-for="item in internalFileList"
           :key="item.uid"
-          class="zw-upload__item zw-upload__item--text"
+          class="ae-upload__item ae-upload__item--text"
         >
           <Icon
-            class="zw-upload__item-icon"
+            class="ae-upload__item-icon"
             :size="listFileIconSize"
             :icon="getFileIcon(getFileUrl(item.data), getFileName(item.data))"
           />
-          <span class="zw-upload__item-name">
+          <span class="ae-upload__item-name">
             {{ item.data ? getFileName(item.data) : '' }}
           </span>
-          <el-icon v-if="item.status === 'uploading'" class="zw-upload__item-loading is-loading">
+          <el-icon v-if="item.status === 'uploading'" class="ae-upload__item-loading is-loading">
             <Loading />
           </el-icon>
-          <div v-if="item.status === 'success'" class="zw-upload__item-actions">
+          <div v-if="item.status === 'success'" class="ae-upload__item-actions">
             <el-icon
               v-if="previewable"
-              class="zw-upload__item-action"
+              class="ae-upload__item-action"
               @click="item.data && handlePreview(item.data)"
             >
               <ZoomIn />
             </el-icon>
             <el-icon
               v-if="downloadable && disabled"
-              class="zw-upload__item-action"
+              class="ae-upload__item-action"
               @click="item.data && handleDownload(item.data)"
             >
               <Download />
             </el-icon>
-            <el-icon v-if="!disabled" class="zw-upload__item-delete" @click="handleRemove(item)">
+            <el-icon v-if="!disabled" class="ae-upload__item-delete" @click="handleRemove(item)">
               <Close />
             </el-icon>
           </div>
@@ -138,7 +138,7 @@
         <!-- 上传按钮 -->
         <div
           v-if="showUploadButton"
-          class="zw-upload__trigger zw-upload__trigger--text"
+          class="ae-upload__trigger ae-upload__trigger--text"
           @click="handleTriggerClick"
         >
           <el-icon>
@@ -150,7 +150,7 @@
     </div>
 
     <!-- 提示文字 -->
-    <div v-if="tips || $slots.tip" class="zw-upload__tips">
+    <div v-if="tips || $slots.tip" class="ae-upload__tips">
       <slot name="tip">{{ tips }}</slot>
     </div>
 
@@ -158,7 +158,7 @@
     <input
       ref="inputRef"
       type="file"
-      class="zw-upload__input"
+      class="ae-upload__input"
       :accept="accept"
       :multiple="multiple"
       @change="handleFileChange"
@@ -215,7 +215,7 @@ import {
 } from './utils'
 
 defineOptions({
-  name: 'ZwUpload'
+  name: 'AeUpload'
 })
 
 const props = withDefaults(defineProps<UploadProps>(), {
@@ -496,7 +496,7 @@ function handleImageError(item: InternalUploadFile) {
 </script>
 
 <style scoped lang="less">
-.zw-upload {
+.ae-upload {
   width: 100%;
 
   &__header {
@@ -742,75 +742,75 @@ function handleImageError(item: InternalUploadFile) {
 
   // 尺寸变体
   &--small {
-    .zw-upload__file-icon {
+    .ae-upload__file-icon {
       padding: 2px;
       gap: 2px;
     }
 
-    .zw-upload__file-name {
+    .ae-upload__file-name {
       -webkit-line-clamp: 1;
       line-clamp: 1;
     }
 
-    .zw-upload__item--picture {
+    .ae-upload__item--picture {
       width: 64px;
       height: 64px;
     }
 
-    .zw-upload__trigger--picture {
+    .ae-upload__trigger--picture {
       width: 64px;
       height: 64px;
     }
 
-    .zw-upload__item--text {
+    .ae-upload__item--text {
       height: 32px;
       padding: 6px 8px;
       font-size: 12px;
     }
 
-    .zw-upload__trigger--text {
+    .ae-upload__trigger--text {
       height: 32px;
       padding: 6px 8px;
       font-size: 12px;
     }
 
-    .zw-upload__list--picture {
+    .ae-upload__list--picture {
       gap: 8px;
     }
 
-    .zw-upload__file-name {
+    .ae-upload__file-name {
       font-size: 10px;
     }
   }
 
   &--large {
-    .zw-upload__item--picture {
+    .ae-upload__item--picture {
       width: 256px;
       height: 256px;
     }
 
-    .zw-upload__trigger--picture {
+    .ae-upload__trigger--picture {
       width: 256px;
       height: 256px;
     }
 
-    .zw-upload__item--text {
+    .ae-upload__item--text {
       height: 48px;
       padding: 10px 16px;
       font-size: 16px;
     }
 
-    .zw-upload__trigger--text {
+    .ae-upload__trigger--text {
       height: 48px;
       padding: 10px 16px;
       font-size: 16px;
     }
 
-    .zw-upload__list--picture {
+    .ae-upload__list--picture {
       gap: 16px;
     }
 
-    .zw-upload__file-name {
+    .ae-upload__file-name {
       font-size: 14px;
     }
   }

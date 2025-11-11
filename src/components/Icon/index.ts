@@ -1,4 +1,5 @@
 import Icon from './src/Icon.vue'
+export type { IconProps } from './src/types'
 
 export { Icon }
-export type { IconProps } from './src/types'
+export default Icon

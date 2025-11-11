@@ -75,7 +75,7 @@ export interface FormEmits {
   (e: 'update:stepValue', stepValue: number | null): void
 }
 
-export interface SchemaProps {
+export interface FormSchemaProps {
   layoutProps?: {
     span?: number // 默认: 12, 设置所有组件的栅格占位格数
     alone?: boolean // 默认: false, 设置所有组件是否都独占一行

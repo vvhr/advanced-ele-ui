@@ -2,9 +2,9 @@ import type { App } from 'vue'
 import 'virtual:uno.css'
 
 // Import components
-import { ZwForm } from './components/Form'
+import { Form } from './components/Form'
 import { Icon } from './components/Icon'
-import { ZwTable } from './components/Table'
+import { Table } from './components/Table'
 import { Editor } from './components/Editor'
 import { Upload } from './components/Upload'
 
@@ -12,29 +12,59 @@ import { Upload } from './components/Upload'
 export * from './types'
 
 // Export components
-export { ZwForm, Icon as ZwIcon, ZwTable, Editor as ZwEditor, Upload as ZwUpload }
+export { Form as AeForm, Icon as AeIcon, Table as AeTable, Editor as AeEditor, Upload as AeUpload }
 
 // Export component's types
 // Form
-export type * as ZwFormTypes from './components/Form/src/types'
-export type { FormSchema as ZwFormSchema } from './components/Form/src/types'
-export type { SchemaProps as ZwFormSchemaProps } from './components/Form/src/types'
-export type { FormProps as ZwFormProps } from './components/Form/src/types'
-export type { ImportComponent as ZwFormImportComponent } from './components/Form/src/types'
+export type {
+  FormDefineProps,
+  FormInstance,
+  ComponentName,
+  FormImportItem,
+  FormImportItemConfig,
+  FormSchema,
+  FormSlots,
+  FormEmits,
+  FormSchemaProps,
+  AutoRules,
+  FormSchemaBase,
+  StepSchema,
+  ContainerSchema,
+  DecoratorSchema,
+  InputerSchema,
+  CustomSchema,
+  ComponentProps,
+  ComponentEvent,
+  OptionKeys,
+  FormSchemaType,
+  FormSchemaFn,
+  ComponentEventFn,
+  OutsidePropsDirection,
+  OutsidePropsPrependSlot,
+  OutsidePropsAppendSlot,
+  OutsidePropsPrependRender,
+  OutsidePropsAppendRender,
+  InsidePropsSlots,
+  InsidePropsRenders,
+  InsidePropsRender
+} from './components/Form'
+export { AUTO_RULES_MAP } from './components/Form'
 
 // Table
-export type * as ZwTableTypes from './components/Table/src/types'
 export type {
-  ZwTableDefineProps,
-  ZwTableInstance,
-  ZwTablePagination,
-  ZwTableColumn,
-  ZwTableColumnFn,
-  ZwTableColumnType,
-  ZwTableColumnTypeProps,
-  ZwTableAction,
-  ZwTableEmits,
-  ZwTableProps
+  TableDefineProps,
+  TableInstance,
+  TablePagination,
+  TableColumn,
+  TableColumnFn,
+  TableColumnType,
+  TableColumnTypeProps,
+  TableAction,
+  TableEmits,
+  TableProps,
+  TableSlotDefault,
+  TablePlusHeaderKey,
+  ElButtonProps
 } from './components/Table'
 
 // Icon
@@ -42,33 +72,36 @@ export type { IconProps } from './components/Icon'
 
 // Editor
 export type {
-  EditorProps as ZwEditorProps,
-  EditorEmits as ZwEditorEmits,
-  ToolbarKey as ZwEditorToolbarKey,
-  AddToolItem as ZwEditorAddToolItem,
-  AddToolItemPosition as ZwEditorAddToolItemPosition
+  EditorDefineProps,
+  EditorInstance,
+  EditorProps,
+  EditorEmits,
+  ToolbarKey,
+  AddToolItem,
+  AddToolItemPosition
 } from './components/Editor'
 export type { AiEditor } from 'aieditor'
+export { SIMPLE_TOOLBAR_KEYS, FULL_TOOLBAR_KEYS } from './components/Editor'
 
 // Upload
 export type {
-  UploadProps as ZwUploadProps,
-  UploadFile as ZwUploadFile,
-  UploadRawFile as ZwUploadRawFile,
-  FileKeys as ZwUploadFileKeys,
-  FileTemplate as ZwUploadFileTemplate
+  UploadDefineProps,
+  UploadInstance,
+  UploadProps,
+  UploadEmits,
+  UploadFile,
+  UploadRawFile,
+  FileKeys,
+  FileTemplate
 } from './components/Upload'
-
-// Export constants
-export { SIMPLE_TOOLBAR_KEYS, FULL_TOOLBAR_KEYS } from './components/Editor'
 
 // Install
 const install = (app: App) => {
-  app.component('ZwForm', ZwForm)
-  app.component('ZwTable', ZwTable)
-  app.component('ZwIcon', Icon)
-  app.component('ZwEditor', Editor)
-  app.component('ZwUpload', Upload)
+  app.component('AeForm', Form)
+  app.component('AeTable', Table)
+  app.component('AeIcon', Icon)
+  app.component('AeEditor', Editor)
+  app.component('AeUpload', Upload)
 }
 export default {
   install,

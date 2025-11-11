@@ -42,7 +42,7 @@ export type FormSchema =
  * - `label`: 标题，可用于存放步骤名称。
  * - `hidden`: 是否隐藏，用于隐藏当前步骤块及步骤内所有子组件。
  */
-interface StepSchema extends FormSchemaBase {
+export interface StepSchema extends FormSchemaBase {
   key: string
   type: 'Step'
   step: number
@@ -76,7 +76,7 @@ interface StepSchema extends FormSchemaBase {
  * - `componentProps`: 为容器组件添加属性
  * - `layoutProps`: 布局属性，可设置容器外层的el-col的属性
  */
-interface ContainerSchema extends FormSchemaBase {
+export interface ContainerSchema extends FormSchemaBase {
   key: string
   type: 'Container'
   component: ComponentName
@@ -111,7 +111,7 @@ interface ContainerSchema extends FormSchemaBase {
  * - `outsideProps`: 为任何组件前置及后置添加自定义组件
  * - `insideProps`: 为组件自身添加插槽内容
  */
-interface DecoratorSchema extends FormSchemaBase {
+export interface DecoratorSchema extends FormSchemaBase {
   key: string
   type: 'Decorator'
   component: ComponentName
@@ -149,7 +149,7 @@ interface DecoratorSchema extends FormSchemaBase {
  * - `outsideProps`: 为任何组件前置及后置添加自定义组件
  * - `insideProps`: 为组件自身添加插槽内容
  */
-interface InputerSchema extends FormSchemaBase {
+export interface InputerSchema extends FormSchemaBase {
   field: string
   component: ComponentName
   key?: string
@@ -183,7 +183,7 @@ interface InputerSchema extends FormSchemaBase {
  * - `formItemProps`: 为组件添加表单属性
  * - `layoutProps`: 布局属性，可设置组件外层的el-col的属性
  */
-interface CustomSchema extends FormSchemaBase {
+export interface CustomSchema extends FormSchemaBase {
   field: string
   type: 'Custom'
   key?: string
@@ -206,7 +206,7 @@ interface CustomSchema extends FormSchemaBase {
 /**
  * 表单项配置基类
  */
-interface FormSchemaBase {
+export interface FormSchemaBase {
   /**
    * 组件唯一键
    * @description 标识组件的唯一标志，若未定义时默认取该组件的`field`属性值。

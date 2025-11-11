@@ -1,16 +1,20 @@
 import Table from './src/Table.vue'
 
-export type ZwTableDefineProps = InstanceType<typeof Table>['$props']
-export type ZwTableInstance = InstanceType<typeof Table>
+export type TableDefineProps = InstanceType<typeof Table>['$props']
+export type TableInstance = InstanceType<typeof Table>
 export type {
-  Pagination as ZwTablePagination,
-  ZwTableColumn,
-  ZwTableColumnFn,
-  ZwTableColumnType,
-  ZwTableColumnTypeProps,
-  ZwTableAction,
-  TableEmits as ZwTableEmits,
-  TableProps as ZwTableProps
+  Pagination as TablePagination,
+  TableColumn,
+  TableColumnFn,
+  TableColumnType,
+  TableColumnTypeProps,
+  TableAction,
+  TableEmits,
+  TableProps,
+  TableSlotDefault,
+  ElButtonProps,
+  TablePlusHeaderKey
 } from './src/types'
 
-export { Table as ZwTable }
+export { Table }
+export default Table

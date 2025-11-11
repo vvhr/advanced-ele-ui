@@ -39,7 +39,7 @@ export const dateRangeTypes = [
   'monthrange',
   'yearrange'
 ]
-export const autoRulesMap: Record<AutoRules, FormItemRule> = {
+export const AUTO_RULES_MAP: Record<AutoRules, FormItemRule> = {
   isRequired: {
     required: true,
     message: '{label}不能为空',

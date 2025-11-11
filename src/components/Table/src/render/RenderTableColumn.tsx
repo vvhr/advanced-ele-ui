@@ -3,9 +3,9 @@ import type {
   TableEmits,
   TableProps,
   TableSlotDefault,
-  ZwTableAction,
-  ZwTableColumn,
-  ZwTableColumnFn
+  TableAction,
+  TableColumn,
+  TableColumnFn
 } from '../types'
 import {
   ElTableColumn,
@@ -28,18 +28,16 @@ import { Icon } from '@/components/Icon'
 import DotTag from '@/components/Table/src/components/DotTag.vue'
 import SensitiveSwitch from '@/components/Table/src/components/SensitiveSwitch.vue'
 import TooltipHeader from '@/components/Table/src/components/TooltipHeader.vue'
+import { getSlot } from '@/utils/get'
+import { copyToClipboard } from '@/utils/copy'
+import { isArray, isFunction } from '@/utils/is'
+import { formatAmount, formatDate, formatSensitive } from '@/utils/format'
 import {
-  getSlot,
   setIndex,
   isHidden,
   isClickable,
   isCopyable,
   isEditable,
-  isArray,
-  formatAmount,
-  formatDate,
-  formatSensitive,
-  isFunction,
   isDisabled,
   isHiddenAction,
   isDisabledAction,
@@ -47,7 +45,6 @@ import {
 } from '@/components/Table/src/utils.ts'
 import type { Slots, Ref } from 'vue'
 import { CopyDocument } from '@element-plus/icons-vue'
-import { copyToClipboard } from '../utils'
 import type { DictItem } from '@/types/dict'
 import type { UseDictTools } from '@/utils/dict.ts'
 
@@ -74,7 +71,7 @@ export function renderTableColumns(
     const radioColumn = validColumns.find(column => column.type === 'radio')
 
     // 单选列渲染
-    const renderRadioColumn = (column: ZwTableColumn) => {
+    const renderRadioColumn = (column: TableColumn) => {
       return radioColumn ? (
         <ElTableColumn
           label={column.label || ''}
@@ -98,7 +95,7 @@ export function renderTableColumns(
       ) : undefined
     }
     // 复选列渲染
-    const renderSelectionColumn = (column: ZwTableColumn) => {
+    const renderSelectionColumn = (column: TableColumn) => {
       const setSelectable = (row: any, index: number) => {
         return column.typeProps?.selectable !== undefined
           ? column.typeProps?.selectable(row, index, column, props.form, props.dataSource)
@@ -119,7 +116,7 @@ export function renderTableColumns(
       ) : undefined
     }
     // 展开列渲染
-    const renderExpandColumn = (column: ZwTableColumn) => {
+    const renderExpandColumn = (column: TableColumn) => {
       return expandColumn ? (
         <ElTableColumn
           label={column.label || ''}
@@ -137,13 +134,13 @@ export function renderTableColumns(
       ) : undefined
     }
     // 渲染列的default插槽
-    const renderTableColumnDefault = (column: ZwTableColumn, row: Recordable, index: number) => {
+    const renderTableColumnDefault = (column: TableColumn, row: Recordable, index: number) => {
       // 是否编辑模式且是否可编辑
       if (isEditable(props, column)) {
         const component = column.editProps?.component || 'Input'
         const field = column.editProps?.field || column.field
         if (!field) {
-          console.warn(`[ZwTable] 编辑组件未设置field属性.`)
+          console.warn(`[AeTable] 编辑组件未设置field属性.`)
         }
         const formItemProps = {
           prop: `${index}.${field}`,
@@ -294,7 +291,7 @@ export function renderTableColumns(
               } else {
                 value = value || emptyValue
                 console.warn(
-                  `[ZwTable] column ${column.label} 使用了 dict 类型但未配置 typeProps，无法正常解析字典。`
+                  `[AeTable] column ${column.label} 使用了 dict 类型但未配置 typeProps，无法正常解析字典。`
                 )
               }
               break
@@ -375,12 +372,12 @@ export function renderTableColumns(
                     )
                     break
                   default:
-                    console.warn(`[ZwTable] 不存在${column.typeProps.sensitiveType}类型的脱敏方法`)
+                    console.warn(`[AeTable] 不存在${column.typeProps.sensitiveType}类型的脱敏方法`)
                     break
                 }
               } else {
                 console.warn(
-                  `[ZwTable] 使用了 sensitive 类型，但未设置 sensitiveType 或 sensitiveRegex 属性`
+                  `[AeTable] 使用了 sensitive 类型，但未设置 sensitiveType 或 sensitiveRegex 属性`
                 )
               }
               break
@@ -412,7 +409,7 @@ export function renderTableColumns(
                     : align === 'right'
                       ? 'justify-end'
                       : 'justify-center'
-                const handleClick = (name: string, event?: ZwTableColumnFn<void>) => {
+                const handleClick = (name: string, event?: TableColumnFn<void>) => {
                   // 发送表格action事件
                   emit('action', name, row)
                   // 执行用户自定义事件
@@ -427,10 +424,10 @@ export function renderTableColumns(
                   if (findAction) {
                     handleClick(findAction.name, findAction.event)
                   } else {
-                    console.warn(`[ZwTable] dropdownActions 中不存在 ${command}`)
+                    console.warn(`[AeTable] dropdownActions 中不存在 ${command}`)
                   }
                 }
-                const renderAction = (action: ZwTableAction) => {
+                const renderAction = (action: TableAction) => {
                   const buttonAttrs: any = {
                     type: 'default',
                     ...(action.buttonAttrs || {}),
@@ -463,7 +460,7 @@ export function renderTableColumns(
                 }
                 return (
                   <div
-                    class={`zw-table-cell-value w-full flex flex-row items-center gap-2 ${rowClassAlign}`}
+                    class={`ae-table-cell-value w-full flex flex-row items-center gap-2 ${rowClassAlign}`}
                   >
                     {normalActions.length > 0 && normalActions.map(action => renderAction(action))}
                     {showMoreButton && (
@@ -502,7 +499,7 @@ export function renderTableColumns(
                 )
               } else {
                 console.warn(
-                  `[ZwTable] column ${column?.label} 使用了 action 类型，但未配置 actions 属性`
+                  `[AeTable] column ${column?.label} 使用了 action 类型，但未配置 actions 属性`
                 )
                 return emptyValue
               }
@@ -550,18 +547,18 @@ export function renderTableColumns(
           }
           return (
             <div
-              class={`zw-table-cell-value w-full flex flex-row items-center gap-2.5 ${rowClassAlign}`}
+              class={`ae-table-cell-value w-full flex flex-row items-center gap-2.5 ${rowClassAlign}`}
             >
               {copyable && (
                 <ElIcon
-                  class="zw-table-cell-value__icon copyable-icon"
+                  class="ae-table-cell-value__icon copyable-icon"
                   onClick={() => onClickCopy()}
                 >
                   <CopyDocument />
                 </ElIcon>
               )}
               <div
-                class={`zw-table-cell-value__text flex-1 ${textClassEllipsis} ${textClickable}`}
+                class={`ae-table-cell-value__text flex-1 ${textClassEllipsis} ${textClickable}`}
                 onClick={() => onClickValue()}
               >
                 {valueRender !== '' ? valueRender : value}
@@ -574,11 +571,11 @@ export function renderTableColumns(
       }
     }
     // 渲染列
-    const renderTableColumn = (column: ZwTableColumn) => {
+    const renderTableColumn = (column: TableColumn) => {
       const columnKey = column.key || column.field
       // 如果缺少key则警告
       if (!columnKey) {
-        console.warn(`[ZwTable] column ${column.label} is missing key, please add key to column.`)
+        console.warn(`[AeTable] column ${column.label} is missing key, please add key to column.`)
       }
       // 序号列
       if (column?.type === 'index') {
@@ -619,7 +616,7 @@ export function renderTableColumns(
           <ElTableColumn
             align={column.align || props.align || 'center'}
             headerAlign={column.headerAlign || props.headerAlign || 'center'}
-            className={'zw-table-column-parent'}
+            className={'ae-table-column-parent'}
           >
             {{
               default: () => renderColumns(validChildColumns),
@@ -640,7 +637,7 @@ export function renderTableColumns(
           minWidth: column.minWidth || '',
           prop: column.field || '',
           ...(column.columnAttrs || {}),
-          className: isEditable(props, column) ? 'zw-table-column-editable' : 'zw-table-column'
+          className: isEditable(props, column) ? 'ae-table-column-editable' : 'ae-table-column'
         }
         return (
           <ElTableColumn {...columnAttrs}>
@@ -659,7 +656,7 @@ export function renderTableColumns(
       }
     }
     // 循环渲染列
-    const renderColumns = (columns: ZwTableColumn[]) => {
+    const renderColumns = (columns: TableColumn[]) => {
       return columns
         .filter(column => !(column.type && ['expand', 'selection', 'radio'].includes(column.type)))
         .map(column => renderTableColumn(column))
@@ -672,7 +669,7 @@ export function renderTableColumns(
       ...[renderExpandColumn(expandColumn)]
     ].concat([renderColumns(validColumns)])
   } else {
-    // console.log('[ZwTable]:组件的columns为空，无法渲染表格！')
+    // console.log('[AeTable]:组件的columns为空，无法渲染表格！')
     return undefined
   }
 }

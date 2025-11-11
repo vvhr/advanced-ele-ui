@@ -1,13 +1,13 @@
 <script setup lang="ts"></script>
 
 <template>
-  <div class="zw-form-blank">
+  <div class="ae-form-blank">
     <slot style="filter: blur()"></slot>
   </div>
 </template>
 
 <style scoped lang="less">
-.zw-form-blank {
+.ae-form-blank {
   width: 100%;
   position: relative;
 }

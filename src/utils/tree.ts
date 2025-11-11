@@ -1,26 +1,8 @@
-export const findNode = <T = any>(
-  tree: any,
-  func: Fn,
-  config: Partial<{
-    id: string
-    children: string
-    pid: string
-  }> = {}
-): T | null => {
-  config = Object.assign(
-    {},
-    {
-      id: 'id',
-      children: 'children',
-      pid: 'pid'
-    },
-    config
-  )
-  const { children } = config
-  const list = [...tree]
+export const findNode = <T = any>(tree: any, func: (node: any) => boolean): T | null => {
+  const list = Array.isArray(tree) ? tree : [...tree]
   for (const node of list) {
     if (func(node)) return node
-    node[children!] && list.push(...node[children!])
+    node.children && list.push(...node.children)
   }
   return null
 }

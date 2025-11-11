@@ -2,8 +2,8 @@ import { ref, unref, type Component } from 'vue'
 import { ElForm, ElRow, ElNotification } from 'element-plus'
 import { get, set, unset } from 'lodash-es'
 import type { ComponentName, FormProps, FormSchema } from '../types'
-import { findNode, findNodes } from '../utils/tree'
-import { getFirstAttribute } from '../utils/get'
+import { findNode, findNodes } from '@/utils/tree'
+import { getFirstAttr } from '@/utils/get'
 import { getTrueComponentProps, getValue, isHidden } from '../utils/schema'
 
 export function useForm(
@@ -184,7 +184,7 @@ export function useForm(
       (await unref(elFormRef)?.validate((valid, fields) => {
         // 如果配置了props.validateNotice = true 则自动提醒哪个字段校验未通过
         if (!valid && props.showErrorNotice) {
-          const firstRule = getFirstAttribute(fields)
+          const firstRule = getFirstAttr(fields)
           const findSchema = findNode(
             props.schemas,
             (schema: FormSchema) => schema.field === firstRule[0].field

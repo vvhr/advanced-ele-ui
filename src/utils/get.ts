@@ -31,3 +31,13 @@ export function getStyleWidth(widthValue: string | number) {
     return ''
   }
 }
+
+/**
+ * 获取对象的第一个属性名称
+ * @param data
+ */
+export function getFirstAttr(data: Recordable) {
+  for (const key in data) {
+    return data[key]
+  }
+}

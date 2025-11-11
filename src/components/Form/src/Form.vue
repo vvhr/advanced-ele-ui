@@ -8,13 +8,13 @@ import {
   watch,
   unref
 } from 'vue'
-import { FormSchema, ImportComponent, SchemaProps } from './types'
+import { FormSchema, FormImportItem, FormSchemaProps } from './types'
 import { useRenderForm } from './render/useRenderForm'
 import { useForm } from './hook/useForm'
 import { useImport } from '@/components/Form/src/hook/useImport.ts'
 
 export default defineComponent({
-  name: 'ZwForm',
+  name: 'AeForm',
   props: {
     // 表单数据对象
     model: {
@@ -70,7 +70,7 @@ export default defineComponent({
      * @description 针对一些特殊场景,避免重复对所有schema进行配置，可在本属性中统一配置
      */
     schemaProps: {
-      type: Object as PropType<SchemaProps>,
+      type: Object as PropType<FormSchemaProps>,
       default: () => ({})
     },
     // 表单标题宽度
@@ -96,10 +96,10 @@ export default defineComponent({
     /**
      * 加载扩展组件
      * @description 您可以通过此属性来按需加载一些组件
-     * @param {ImportComponent[]} imports - 需要导入的组件列表
+     * @param {FormImportItem[]} imports - 需要导入的组件列表
      */
     imports: {
-      type: Array as PropType<ImportComponent[]>,
+      type: Array as PropType<FormImportItem[]>,
       default: () => []
     }
   },
@@ -191,19 +191,19 @@ export default defineComponent({
       components,
       componentConfigs
     )
-    return () => <div class="zw-form">{renderForm()}</div>
+    return () => <div class="ae-form">{renderForm()}</div>
   }
 })
 </script>
 
 <style lang="less">
-.zw-form {
+.ae-form {
   // 居上布局时
   .el-form-item--label-top {
     // 没有使用自定义label插槽时
     &.is-normal-label {
       // 设置副标题的颜色和尺寸
-      .zw-form-item-label {
+      .ae-form-item-label {
         > .sub-label {
           // 副标题默认小于主标题1px的尺寸
           font-size: clamp(12px, calc(var(--el-font-size-base, '14px') - 1px), 16px);
@@ -221,7 +221,7 @@ export default defineComponent({
           }
         }
         // 由于必填*号被绝对定位, 因此需要将主标题往右移动10px
-        .zw-form-item-label {
+        .ae-form-item-label {
           > .label {
             margin-left: 10px;
           }

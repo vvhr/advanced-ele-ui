@@ -37,7 +37,7 @@ app.mount('#app')</code></pre>
       </template>
       <pre
         class="code-block"
-      ><code>import { ZwForm, ZwTable, ZwIcon, ZwEditor } from 'advanced-ele-ui'
+      ><code>import { AeForm, AeTable, AeIcon, AeEditor } from 'advanced-ele-ui'
 import 'advanced-ele-ui/dist/style.css'</code></pre>
     </el-card>
 
@@ -67,18 +67,18 @@ import 'advanced-ele-ui/dist/style.css'</code></pre>
       </template>
       <pre class="code-block"><code>&lt;template&gt;
   &lt;!-- ✅ 全局注册后可直接使用，无需导入组件 --&gt;
-  &lt;ZwForm v-model="formModel" :schemas="formSchemas" /&gt;
-  &lt;ZwTable :columns="columns" :data="tableData" /&gt;
+  &lt;AeForm :model="formModel" :schemas="formSchemas" /&gt;
+  &lt;AeTable :columns="columns" :data="tableData" /&gt;
 &lt;/template&gt;
 
 &lt;script setup lang="ts"&gt;
 import { ref } from 'vue'
 // ✅ 只需导入类型定义
-import type { ZwFormSchema, ZwTableColumn } from 'advanced-ele-ui'
+import type { FormSchema, TableColumn } from 'advanced-ele-ui'
 
 const formModel = ref&lt;Recordable&gt;({})
 
-const formSchemas: ZwFormSchema[] = [
+const formSchemas: FormSchema[] = [
   {
     type: 'Inputer',
     component: 'Input',
@@ -87,7 +87,7 @@ const formSchemas: ZwFormSchema[] = [
   }
 ]
 
-const columns: ZwTableColumn[] = [
+const columns: TableColumn[] = [
   { field: 'name', label: '姓名' }
 ]
 
@@ -103,17 +103,17 @@ const tableData = ref([
       </template>
       <pre class="code-block"><code>&lt;template&gt;
   &lt;!-- ❌ 按需引入需要显式导入组件 --&gt;
-  &lt;ZwForm v-model="formModel" :schemas="formSchemas" /&gt;
+  &lt;AeForm v-model="formModel" :schemas="formSchemas" /&gt;
 &lt;/template&gt;
 
 &lt;script setup lang="ts"&gt;
 import { ref } from 'vue'
 // ✅ 按需引入时需要导入组件和类型
-import { ZwForm, type ZwFormSchema } from 'advanced-ele-ui'
+import { AeForm, type AeFormSchema } from 'advanced-ele-ui'
 
 const formModel = ref&lt;Recordable&gt;({})
 
-const formSchemas: ZwFormSchema[] = [
+const formSchemas: AeFormSchema[] = [
   {
     type: 'Inputer',
     component: 'Input',
@@ -126,7 +126,8 @@ const formSchemas: ZwFormSchema[] = [
   </div>
 </template>
 
-<script setup lang="ts"></script>
+<script setup lang="ts">
+</script>
 
 <style scoped>
 .demo-section {

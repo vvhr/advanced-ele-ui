@@ -78,8 +78,8 @@ export default [
       '.output',
       '.nuxt',
       '.eslintrc-auto-import.json',
-      'src/types/auto-imports.d.ts',
-      'src/types/components.d.ts'
+      'types/auto-imports.d.ts',
+      'types/components.d.ts'
     ]
   }
 ]

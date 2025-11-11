@@ -1,22 +1,23 @@
 <script lang="tsx">
 import { defineComponent, ref, computed, onMounted, unref, type PropType, type VNode } from 'vue'
 import { ElTable, TableColumnCtx, ElForm } from 'element-plus'
-import type { TableProps, ZwTableColumn, Pagination, ElTableEventHanders } from './types'
+import type { TableProps, TableColumn, Pagination, ElTableEventHanders } from './types'
 import type { DictMap } from '@/types/dict'
 import { renderPagination } from './render/RenderPagination'
 import { renderTable } from './render/RenderTable'
 import { usePagination } from './hook/usePagination'
-import { findColumnByField, findColumnByKey, formatAmount } from './utils'
+import { findColumnByField, findColumnByKey } from './utils'
+import { formatAmount } from '@/utils/format'
 import { useDict, UseDictTools } from '@/utils/dict'
 export default defineComponent({
-  name: 'ZwTable',
+  name: 'AeTable',
   props: {
     modelValue: {
       type: Array as PropType<Recordable[]>,
       default: () => []
     },
     columns: {
-      type: Array as PropType<ZwTableColumn[]>,
+      type: Array as PropType<TableColumn[]>,
       default: () => []
     },
     form: {
@@ -112,7 +113,7 @@ export default defineComponent({
   setup(props, { attrs, slots, emit, expose }) {
     // 声明 elTableRef 实例
     const elTableRef = ref<ComponentRef<typeof ElTable>>()
-    const zwTableRef = ref()
+    const aeTableRef = ref()
     const elFormRef = ref<ComponentRef<typeof ElForm>>()
     const selections = ref<Recordable[]>([])
     const currentRowRef = ref<Recordable>()
@@ -220,7 +221,7 @@ export default defineComponent({
     }
 
     onMounted(() => {
-      emit('register', unref(zwTableRef)?.$parent, elTableRef.value)
+      emit('register', unref(aeTableRef)?.$parent, elTableRef.value)
     })
 
     const elTableHanders: ElTableEventHanders = {
@@ -241,7 +242,7 @@ export default defineComponent({
     function updateSelections(rows: Recordable[]) {
       selections.value = rows
       if (!props.rowKey) {
-        console.warn('[ZwTable] rowKey is required when selection is enabled')
+        console.warn('[AeTable] rowKey is required when selection is enabled')
         return
       }
       if (rows.length) {
@@ -277,7 +278,7 @@ export default defineComponent({
     })
 
     return () => (
-      <div class={`zw-table ${props.adaptive ? 'is-adaptive' : ''}`} ref="zwTableRef">
+      <div class={`ae-table ${props.adaptive ? 'is-adaptive' : ''}`} ref="aeTableRef">
         {renderTable(
           props,
           slots,
@@ -301,7 +302,7 @@ export default defineComponent({
 </script>
 
 <style lang="less">
-.zw-table {
+.ae-table {
   width: 100%;
   &.is-adaptive {
     height: 100%;
@@ -309,16 +310,16 @@ export default defineComponent({
     flex-direction: column;
     width: 100%;
     // 仅修改顶层的子级表单样式, 避免影响嵌套的子级表单样式
-    > .zw-table-form {
+    > .ae-table-form {
       flex: 1;
       width: 100%;
       height: 0;
-      > .zw-table-main {
+      > .ae-table-main {
         height: 100%;
       }
     }
     // 仅修改顶层的表格样式, 避免影响嵌套的子级表格样式
-    > .zw-table-main {
+    > .ae-table-main {
       flex: 1;
       width: 100%;
       height: 0;
@@ -341,7 +342,7 @@ export default defineComponent({
     }
   }
   .el-table__body {
-    .zw-table-column-editable {
+    .ae-table-column-editable {
       padding: 4px 0;
     }
   }
@@ -352,7 +353,7 @@ export default defineComponent({
         margin-bottom: 15px;
         margin-top: 15px;
       }
-      > .zw-table-cell-value {
+      > .ae-table-cell-value {
         // 移除el-button默认的相邻间距
         .el-button + .el-button {
           margin-left: 0;
@@ -367,12 +368,12 @@ export default defineComponent({
       height: 42px;
     }
   }
-  .zw-table-append {
+  .ae-table-append {
     position: absolute;
     bottom: 0;
     width: 100%;
     z-index: 2;
-    .zw-table-append-selection {
+    .ae-table-append-selection {
       padding: 10px 15px;
       width: 100%;
       border-top: 1px solid #f2f3f6;
@@ -382,7 +383,7 @@ export default defineComponent({
       }
     }
   }
-  .zw-table-pagination {
+  .ae-table-pagination {
     padding: 15px 0;
   }
 }
