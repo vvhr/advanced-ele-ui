@@ -1,7 +1,7 @@
 export type ComponentName = ContainerName | DecoratorName | InputerName | string
 
 /**
- * 容器类组件名
+ * 容器型组件
  * @description 容器类组件，用于包裹其他组件
  * - Group: 具有标题/副标题/折叠展开功能的卡片型容器组件
  * - Blank: 空白容器组件，该组件无可见样式，一般用于统一控制子组件的显隐
@@ -9,7 +9,7 @@ export type ComponentName = ContainerName | DecoratorName | InputerName | string
 export type ContainerName = 'Group' | 'Blank'
 
 /**
- * 装饰类组件名
+ * 装饰型组件
  * @description 装饰类组件，一般用于展示信息
  * - Divider: 分割线组件，采用el-divider组件渲染，支持原生所有属性功能
  * - Alert: 警告提示组件，采用el-alert组件渲染，支持原生所有属性功能

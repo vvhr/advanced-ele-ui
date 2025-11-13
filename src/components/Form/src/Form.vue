@@ -52,6 +52,13 @@ export default defineComponent({
       default: 'form'
     },
     /**
+     * 表单尺寸
+     */
+    size: {
+      type: String as PropType<'small' | 'default' | 'large'>,
+      default: 'default'
+    },
+    /**
      * 是否为设计模式
      * @default false
      * @description 是否为设计模式，将显示设计模式下的工具栏以及允许组件被拖拽
@@ -60,8 +67,11 @@ export default defineComponent({
       type: Boolean,
       default: false
     },
-    // 上下文-共享数据
-    dataSource: {
+    /**
+     * 表单扩展上下文
+     * @description 表单扩展上下文，您可以通过此属性来传递一些额外的数据给表单，表单会自动将此数据传递给所有组件来实现数据联动
+     */
+    excontext: {
       type: Object as PropType<Recordable>,
       default: () => ({})
     },
@@ -198,6 +208,24 @@ export default defineComponent({
 
 <style lang="less">
 .ae-form {
+  .ae-description-item-label.is-required {
+    &::before {
+      left: 0;
+      content: '*';
+      color: var(--el-color-danger);
+      margin-right: 4px;
+    }
+  }
+  .ae-description-item-content {
+    .ae-form-item {
+      margin-top: 11px;
+      margin-bottom: 11px;
+      &.no-margin-bottom {
+        margin-bottom: 0;
+        margin-top: 0;
+      }
+    }
+  }
   // 居上布局时
   .el-form-item--label-top {
     // 没有使用自定义label插槽时

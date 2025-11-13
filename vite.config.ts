@@ -8,6 +8,62 @@ import UnoCSS from 'unocss/vite'
 import dts from 'vite-plugin-dts'
 
 import { resolve } from 'path'
+import { readFileSync, writeFileSync } from 'fs'
+
+/**
+ * 自动生成全局组件类型声明文件
+ * 从 src/index.ts 中提取组件导出，生成 dist/global.d.ts
+ */
+async function generateGlobalDts() {
+  const indexFile = resolve(__dirname, 'src/index.ts')
+  const targetFile = resolve(__dirname, 'dist/global.d.ts')
+
+  // 读取 src/index.ts 并提取组件导出
+  const indexContent = readFileSync(indexFile, 'utf-8')
+
+  // 匹配 // Export components 后面的 export { ... } 语句
+  const exportMatch = indexContent.match(/\/\/\s*Export components\s*\nexport\s*{\s*([^}]+)}/)
+
+  if (!exportMatch) {
+    console.warn('⚠ Could not find component exports in src/index.ts')
+    return
+  }
+
+  // 提取组件名称 (AeForm, AeIcon, etc.)
+  const components = exportMatch[1]
+    .split(',')
+    .map(item => {
+      const match = item.trim().match(/as\s+(\w+)/)
+      return match ? match[1] : null
+    })
+    .filter(Boolean)
+
+  if (components.length === 0) {
+    console.warn('⚠ No components found in exports')
+    return
+  }
+
+  // 生成导入语句
+  const imports = `import type { ${components.join(', ')} } from './index'`
+
+  // 生成组件声明
+  const declarations = components.map(name => `    ${name}: typeof ${name}`).join('\n')
+
+  const content = `// GlobalComponents for Volar
+${imports}
+
+declare module 'vue' {
+  export interface GlobalComponents {
+${declarations}
+  }
+}
+
+export {}
+`
+
+  writeFileSync(targetFile, content, 'utf-8')
+  console.log(`✓ Created dist/global.d.ts with ${components.length} components`)
+}
 
 export default defineConfig({
   plugins: [
@@ -35,13 +91,7 @@ export default defineConfig({
       dts: 'types/components.d.ts'
     }),
     dts({
-      include: [
-        'src/**/*.ts',
-        'src/**/*.tsx',
-        'src/**/*.vue',
-        'src/global.d.ts',
-        'types/global-components.d.ts'
-      ],
+      include: ['src/**/*.ts', 'src/**/*.tsx', 'src/**/*.vue', 'src/global.d.ts'],
       exclude: [
         'src/**/*.spec.ts',
         'src/**/*.test.ts',
@@ -51,7 +101,8 @@ export default defineConfig({
         'types/env.d.ts',
         'types/auto-imports.d.ts',
         'types/uno.d.ts',
-        'types/components.d.ts' // unplugin-vue-components 生成的文件
+        'types/components.d.ts',
+        'types/global-components.d.ts' // 排除，手动处理
       ],
       outDir: 'dist',
       staticImport: true,
@@ -62,16 +113,7 @@ export default defineConfig({
       compilerOptions: {
         declarationMap: false
       },
-      beforeWriteFile: (filePath, content) => {
-        // 在生成的类型文件顶部添加全局类型引用
-        if (filePath.endsWith('index.d.ts')) {
-          const globalTypes = `/// <reference types="./global" />
-
-`
-          return { filePath, content: globalTypes + content }
-        }
-        return { filePath, content }
-      }
+      afterBuild: generateGlobalDts
     })
   ],
   resolve: {

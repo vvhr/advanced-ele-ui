@@ -1,7 +1,13 @@
 import type { VNode } from 'vue'
 import { FormSchema } from './schema'
 
-export type FormSchemaType = 'Step' | 'Container' | 'Decorator' | 'Custom' | 'Inputer'
+export type FormSchemaType =
+  | 'Step'
+  | 'Container'
+  | 'Decorator'
+  | 'Custom'
+  | 'Inputer'
+  | 'Descriptions'
 
 /**
  * 动态取值函数
@@ -9,13 +15,13 @@ export type FormSchemaType = 'Step' | 'Container' | 'Decorator' | 'Custom' | 'In
  * @param form - 表单数据对象
  * @param column - 当前列配置
  * @param disabled - 表单自身是否禁用
- * @param dataSource - 表单数据源上下文
+ * @param excontext - 表单数据源上下文
  */
 export type FormSchemaFn<T> = (
   form: Recordable,
   column: FormSchema,
   disabled: boolean,
-  dataSource: Recordable
+  excontext: Recordable
 ) => T
 
 /**
@@ -25,14 +31,14 @@ export type FormSchemaFn<T> = (
  * @param form - 表单数据对象
  * @param column - 当前列配置
  * @param disabled - 表单自身是否禁用
- * @param dataSource - 表单数据源上下文
+ * @param excontext - 表单数据源上下文
  */
 export type ComponentEventFn<T> = (
   event: T,
   form: Recordable,
   column: FormSchema,
   disabled: boolean,
-  dataSource: Recordable
+  excontext: Recordable
 ) => void
 
 /**
@@ -43,13 +49,13 @@ export type ComponentEventFn<T> = (
  * -- `form`: 表单数据对象
  * -- `column`: 当前列对象
  * -- `disabled`: 表单禁用状态
- * -- `dataSource`: 表单数据源上下文
+ * -- `excontext`: 表单数据源上下文
  * -- `tools`: 工具对象（包含lodash/dateFn等工具函数）
  * @example
  * // 1.动态隐藏示例: 当form.status等于1时，该组件被隐藏
  * hidden: '{{ form.status === 1 }}'
  * // 2.动态标题示例: 根据数据源中的type属性值返回对应的标题
- * label: '{{ return dataSource.type === 1 ? '类型1' : '类型2' }}'
+ * label: '{{ return excontext.type === 1 ? '类型1' : '类型2' }}'
  * // 3.动态选项示例: 根据数据源中的xxlx属性值返回对应的选项
  * componentProps.options: `{{
  *  if(form.xxlx === '小学') return [{ value: '1', label: '一年级' }...{ value: '6', label: '六年级' }]
@@ -68,7 +74,7 @@ export type ComponentEventFn<T> = (
  * -- `form`: 表单数据对象
  * -- `column`: 当前列对象
  * -- `disabled`: 表单禁用状态
- * -- `dataSource`: 表单数据源上下文
+ * -- `excontext`: 表单数据源上下文
  * -- `tools`: 工具对象（包含lodash/dateFn等工具函数）
  * @example
  * // 监听输入框的值被改变: 当用户名称变化时，将idCard字段置空
@@ -123,11 +129,11 @@ export type OutsidePropsAppendSlot = FormSchemaFn<boolean> | boolean
  * @example
  * {
  *  // 在Form组件下为用户名输入框的前面添加一个查询按钮
- *  outsideProps.prependRender: (form, column, disabled, dataSource) => (
+ *  outsideProps.prependRender: (form, column, disabled, excontext) => (
  *    <el-button>查询</el-button>
  *  ),
  *  // 仅在表单可编辑时添加一个查询按钮
- *  outsideProps.prependRender: (form, column, disabled, dataSource) => (
+ *  outsideProps.prependRender: (form, column, disabled, excontext) => (
  *    if(disabled) return false
  *    else return <el-button>查询</el-button>
  *  )
@@ -142,11 +148,11 @@ export type OutsidePropsPrependRender = FormSchemaFn<VNode | false> | false
  * @example
  * {
  *  // 在Form组件下为用户名输入框的后面添加一个查询按钮
- *  outsideProps.appendRender: (form, column, disabled, dataSource) => (
+ *  outsideProps.appendRender: (form, column, disabled, excontext) => (
  *    <el-button>查询</el-button>
  *  ),
  *  // 仅在表单可编辑时添加一个查询按钮
- *  outsideProps.appendRender: (form, column, disabled, dataSource) => (
+ *  outsideProps.appendRender: (form, column, disabled, excontext) => (
  *    if(disabled) return false
  *    else return <el-button>查询</el-button>
  *  )
@@ -163,7 +169,7 @@ export type OutsidePropsAppendRender = FormSchemaFn<VNode | false> | false
  * 组件配置: { insideProps.slots.prepend: true }
  * 页面编写: <template #key--perpend={ form }>...</template>
  * // 2.根据某种条件激活Input组件的自身插槽
- * 组件配置: { insideProps.slots.append: (form, column, disabled, dataSource) => form.type === '1' }
+ * 组件配置: { insideProps.slots.append: (form, column, disabled, excontext) => form.type === '1' }
  * 页面编写: <template #key--append={ form }>...</template>
  */
 export type InsidePropsSlots = Recordable<FormSchemaFn<boolean> | boolean>
@@ -174,11 +180,11 @@ export type InsidePropsSlots = Recordable<FormSchemaFn<boolean> | boolean>
  * @description 如果你希望直接在schema配置中直接编写组件自身的插槽代码, 你需要将插槽名称添加到renders中, 并返回对应的页面代码
  * @example
  * // 1.Input组件的自身插槽 添加一个查询按钮
- * { insideProps.renders.prepend: (form, column, disabled, dataSource) => (
+ * { insideProps.renders.prepend: (form, column, disabled, excontext) => (
  *  <el-button>查询</el-button>
  * )}
  * // 2.条件判断(动态化) 仅在表单可编辑时添加一个查询按钮
- * { insideProps.renders.append: (form, column, disabled, dataSource) => (
+ * { insideProps.renders.append: (form, column, disabled, excontext) => (
  *   if(disabled) return undefined
  *   else return <el-button>查询</el-button>
  * )}

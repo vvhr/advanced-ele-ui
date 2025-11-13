@@ -41,7 +41,7 @@ export interface TableProps {
   // 表格的参考表单对象数据
   form: Recordable
   // 表格的参考数据
-  dataSource: Recordable
+  excontext: Recordable
   // 表格的字典集对象
   dict: DictMap
   // 双向绑定的是否开启全局编辑模式
@@ -100,9 +100,9 @@ export interface Pagination {
  * 比如：column.hidden，这是一个表列是否隐藏的属性，它与表格的行数据无关，因此row和index是无效的
  * @example
  * // 根据上下文form的type决定是否隐藏当前列
- * { column.hidden: (row, index, column, form, dataSource) => form.type === '1' }
- * // 根据上下文dataSource的type决定是否隐藏当前列
- * { column.hidden: (row, index, column, form, dataSource) => dataSource.type === '1' }
+ * { column.hidden: (row, index, column, form, excontext) => form.type === '1' }
+ * // 根据上下文excontext的type决定是否隐藏当前列
+ * { column.hidden: (row, index, column, form, excontext) => excontext.type === '1' }
  * // 根据当前行的状态决定当前行是否可勾选
  * { column.typeProps.selectable: (row, index) => row.status !== '0' }
  * // 自定义格式化某行某列的值
@@ -113,7 +113,7 @@ export type TableColumnFn<T> = (
   index: number,
   column: TableColumn,
   form: Recordable,
-  dataSource: Recordable
+  excontext: Recordable
 ) => T
 
 /**

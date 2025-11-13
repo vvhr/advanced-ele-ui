@@ -192,7 +192,7 @@ export default defineComponent({
         } else {
           aiEditor.setContent(value)
         }
-        aiEditor.focus()
+        // aiEditor.focus()
       }
     }
 

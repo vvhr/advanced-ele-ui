@@ -13,13 +13,14 @@ import type {
   InsidePropsRenders,
   InsidePropsSlots
 } from './schema-ext'
-import type { ComponentEvent, ComponentProps } from '@/components/Form'
+import type { ComponentEvent, ComponentProps, DescriptionsProps } from './schema-component'
 
 /**
  * 表单配置项
  * @description 根据配置块的类型参阅具体的配置项说明
  * - {@link StepSchema} - 步骤块配置声明
  * - {@link ContainerSchema} - 容器块配置声明
+ * - {@link DescriptionsSchema} - 仅在`desc`模式下可用，用于渲染描述组件
  * - {@link DecoratorSchema} - 装饰类组件配置声明
  * - {@link InputerSchema} - 输入类组件配置声明
  * - {@link CustomSchema} - 自定义组件配置声明
@@ -30,6 +31,7 @@ export type FormSchema =
   | DecoratorSchema
   | InputerSchema
   | CustomSchema
+  | DescriptionsSchema
 
 /**
  * 步骤块类型声明
@@ -94,6 +96,39 @@ export interface ContainerSchema extends FormSchemaBase {
   componentEvent?: never
   formItemProps?: never
   outsideProps?: never
+}
+
+/**
+ * 描述块类型声明
+ * @description 这是一种专用于`desc`模式下的特殊容器，当处于`desc`模式下，`Container`类型的容器会自动转换为`Descriptions`容器，可配置参数如下:
+ * @properties
+ * - `key`: 必传参数，标识组件的唯一标志。
+ * - `type`: 必传参数且始终为`Descriptions`，标识组件为描述块容器。
+ * - `children`: 必传参数，标识组件的子级。
+ * - `label`: 标题，用于`容器组件`的标题。
+ * - `hidden`: 是否隐藏，用于隐藏当前容器块及容器内所有子组件。
+ * - `insideProps`: 为容器组件自身添加插槽内容
+ * - `componentProps`: {@link DescriptionsProps} 为描述组件添加属性
+ * - `layoutProps`: 布局属性，可设置容器外层的el-col的属性
+ */
+export interface DescriptionsSchema extends FormSchemaBase {
+  key: string
+  type: 'Descriptions'
+  children: FormSchema[]
+  label?: FormSchemaFn<string> | string
+  hidden?: FormSchemaFn<boolean> | boolean
+  insideProps?: InsideProps
+  componentProps?: DescriptionsProps
+  layoutProps?: LayoutProps
+  // Container类型不需要的属性
+  field?: never
+  step?: never
+  value?: never
+  render?: never
+  component?: never
+  componentEvent?: never
+  outsideProps?: never
+  formItemProps?: never
 }
 
 /**
@@ -243,7 +278,7 @@ export interface FormSchemaBase {
    * 标题
    * @description 用于`FormItem`的标题或`容器组件`的标题。
    * @remarks 若希望不显示标题，建议通过`formItemProps.noLabel`属性控制，而不要将本字符串设置为空字符串。
-   * - 函数式：`label: (form, column, disabled, dataSource) => '标题'`
+   * - 函数式：`label: (form, column, disabled, excontext) => '标题'`
    * - 静态：`label: '标题'`
    * - 表达式：`label: '{{ return form.status === 1 ? '标题1' : '标题2' }}'`
    */
@@ -252,7 +287,7 @@ export interface FormSchemaBase {
    * 是否隐藏
    * @default false 默认不隐藏
    * @description 隐藏当前块或组件
-   * - 函数式：`hidden: (form, column, disabled, dataSource) => true`
+   * - 函数式：`hidden: (form, column, disabled, excontext) => true`
    * - 静态：`hidden: true`
    * - 表达式：`hidden: '{{ form.status === 1 }}'`
    */
@@ -263,7 +298,7 @@ export interface FormSchemaBase {
    * - null - 非数组型组件默认为空
    * - Array([]) - 多选/表格组件的初始值默认为空数组
    * @description 输入组件的初始值，初始化或重置表单时会根据此属性进行初始化。
-   * - 函数式：`value: (form, column, disabled, dataSource) => '初始值'`
+   * - 函数式：`value: (form, column, disabled, excontext) => '初始值'`
    * - 静态：`value: '初始值'`
    * - 表达式：`value: '{{ return form.status === 1 ? '初始值1' : '初始值2' }}'`
    * @notes 仅对`Inputer` 或 `Custom` 类型的组件生效
@@ -288,7 +323,7 @@ export interface FormSchemaBase {
    * 自定义组件渲染
    * @description 自定义通过参数渲染组件
    * @notes 仅在类型为`Custom(自定义渲染)`时生效
-   * @example render: (form, column, disabled, dataSource) => <el-input vModel={form.username} />
+   * @example render: (form, column, disabled, excontext) => <el-input vModel={form.username} />
    * @remarks 如果您希望通过插槽方式编写，则在Form组件内使用<template #{组件的key或field}={ form }>...</template>方式编写
    */
   render?: FormSchemaFn<VNode>
@@ -437,6 +472,30 @@ export interface FormItemProps {
    */
   autoRules?: AutoRules[] // 使用内置校验方法
   style?: CSSProperties | string // 该表单项的样式
+  /**
+   * 描述项宽度
+   * @default ''
+   * @notes 仅在表单为`desc`类型时生效
+   */
+  width?: string | number
+  /**
+   * 描述项最小宽度
+   * @default ''
+   * @notes 仅在表单为`desc`类型时生效
+   */
+  minWidth?: string | number
+  /**
+   * 描述项内容布局
+   * @default 'left'
+   * @notes 仅在表单为`desc`类型时生效
+   */
+  align?: 'left' | 'center' | 'right'
+  /**
+   * 描述项标题布局
+   * @default undefined
+   * @notes 仅在表单为`desc`类型时生效
+   */
+  labelAlign?: 'left' | 'center' | 'right'
 }
 
 /**
@@ -447,6 +506,10 @@ export interface FormItemProps {
  * - `alone`: 是否单独占一行，独占一行的组件会额外被el-row包裹，这样即便span为12，组件也会占满一行
  */
 export interface LayoutProps {
-  span?: number | string
+  span?: number
   alone?: boolean
+  /**
+   * 仅在Form的`type`为`desc`时生效
+   */
+  rowspan?: number
 }

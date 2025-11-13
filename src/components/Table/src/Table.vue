@@ -24,7 +24,7 @@ export default defineComponent({
       type: Object as PropType<Recordable>,
       default: () => ({})
     },
-    dataSource: {
+    excontext: {
       type: Object as PropType<Recordable>,
       default: () => ({})
     },
@@ -130,7 +130,7 @@ export default defineComponent({
         'modelValue',
         'columns',
         'form',
-        'dataSource',
+        'excontext',
         'editable',
         'page',
         'pageSize',

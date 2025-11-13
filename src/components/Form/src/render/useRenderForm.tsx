@@ -1,12 +1,12 @@
-import { ElForm, ElRow, ElFormItem } from 'element-plus'
-import type {
+import { ElForm, ElRow, ElFormItem, ElDescriptions, ElDescriptionsItem, ElCol } from 'element-plus'
+import {
   FormImportItemConfig,
   ComponentName,
   ComponentProps,
   FormEmits,
   FormProps,
   FormSchema,
-  FormSlots
+  FormSlots, DescriptionsSchema
 } from '../types'
 import { getSubLabel, isHidden } from '../utils/schema'
 import { useFormItem } from '../hook/useFormItem'
@@ -209,7 +209,7 @@ export function useRenderForm(
   function renderCustom(schema: FormSchema): VNode | undefined {
     if (schema?.type === 'Custom') {
       if (isFunction(schema.render)) {
-        return schema.render(formModel.value, schema, props.disabled, props.dataSource)
+        return schema.render(formModel.value, schema, props.disabled, props.excontext)
       }
       const { slotKey } = useComponent(props, slots, emits, schema, formModel, {}, components, componentConfigs)
       if (slots[slotKey]) {
@@ -217,7 +217,7 @@ export function useRenderForm(
       }
       console.error(`
       [AeForm]: 配置异常，若您期望使用自定义渲染组件，请使用 render属性 或 slot插槽 编写组件内容！
-      例如: render: (form, column, disabled, dataSource) => ...
+      例如: render: (form, column, disabled, excontext) => ...
       或在AeForm组件内使用 <template #${slotKey}>...</template>
     `)
     }
@@ -236,7 +236,7 @@ export function useRenderForm(
     if (labelPosition === 'top') {
       // 只要定义了subLabelRender，则优先使用
       if (isFunction(schema.formItemProps?.subLabelRender)) {
-        const renderSubLabel = schema.formItemProps.subLabelRender(formModel.value, schema, props.disabled, props.dataSource)
+        const renderSubLabel = schema.formItemProps.subLabelRender(formModel.value, schema, props.disabled, props.excontext)
         if (!!renderSubLabel) {
           return (
             <div class="ae-form-item-label">
@@ -295,6 +295,9 @@ export function useRenderForm(
       case 'Step':
         console.error(`[AeForm]: 不支持嵌套Step类型的子组件，无法渲染schema:`, schema)
         return undefined
+      case 'Descriptions':
+        console.error(`[AeForm]: 不支持嵌套Descriptions类型的子组件，无法渲染schema:`, schema)
+        return undefined
       case 'Custom': {
         const { getFormItemProps, slotKey, formItemLabel } = useFormItem(props, slots, schema, formModel)
         return (
@@ -322,7 +325,7 @@ export function useRenderForm(
             {
               renderContainer(schema, trueComponentProps, () => (
                 <ElRow
-                  class="ae-form-main__container_row"
+                  class="ae-form-main__container_row type-form"
                   data-id={`container-row-${key}`}
                   key={`container-row-${key}`}
                   gutter={10}
@@ -379,7 +382,116 @@ export function useRenderForm(
     }
   }
 
- // 渲染ElForm
+  // 渲染描述组件
+  function renderDescription(schema: DescriptionsSchema) {
+    // 判断当前是否隐藏
+    const hidden = isHidden(schema, formModel.value, props)
+    if (hidden) {
+      return undefined
+    }
+    // 获取组件key
+    const key = schema.key ?? schema.field
+    if (!key) {
+      console.error(`[AeForm]: 组件必须设置key属性或者field属性，无法渲染schema:`, schema)
+      return undefined
+    }
+    const { getDescriptionsProps, getDescriptionsSlots } = useFormItem(props, slots, schema, formModel)
+    return (
+      <ElCol span={schema.layoutProps?.span ?? 24}>
+        <ElDescriptions {...getDescriptionsProps()} key={`container-row-${key}`} data-id={`container-row-${key}`}>
+          {{
+            ...getDescriptionsSlots(),
+            default: () => {
+              return schema.children
+                ? schema.children.map(item => renderDescriptionItem(item))
+                : undefined
+            }
+          }}
+        </ElDescriptions>
+      </ElCol>
+    )
+
+  }
+  // 渲染描述项组件
+  function renderDescriptionItem(schema: FormSchema) {
+    // 判断当前是否隐藏
+    const hidden = isHidden(schema, formModel.value, props)
+    if (hidden) {
+      return undefined
+    }
+    // 获取组件key
+    const key = schema.key ?? schema.field
+    if (!key) {
+      console.error(`[AeForm]: 组件必须设置key属性或者field属性，无法渲染schema:`, schema)
+      return undefined
+    }
+    // 根据组件类型
+    const type = schema.type ?? 'Inputer'
+    switch (type) {
+      case 'Step':
+        console.error(`[AeForm]: 不支持嵌套Step类型的子组件，无法渲染schema:`, schema)
+        return undefined
+      case 'Container':
+        console.error(`[AeForm]: 不支持嵌套Container类型的子组件，无法渲染schema:`, schema)
+        return undefined
+      case 'Descriptions':
+        console.error(`[AeForm]: 不支持嵌套Descriptions类型的子组件，无法渲染schema:`, schema)
+        return undefined
+      case 'Custom': {
+        const { getFormItemProps, getDescriptionItemProps } = useFormItem(props, slots, schema, formModel)
+        return (
+          <ElDescriptionsItem
+            {...getDescriptionItemProps()}
+            key={key}
+          >
+            <ElFormItem {...getFormItemProps()}>
+              {{
+                default: () => renderCustom(schema)
+              }}
+            </ElFormItem>
+          </ElDescriptionsItem>
+        )
+      }
+      case 'Decorator': {
+        const { trueComponentProps, getDescriptionItemProps } = useFormItem(props, slots, schema, formModel)
+        return (
+          <ElDescriptionsItem
+            {...getDescriptionItemProps()}
+            key={key}
+          >
+            {renderDecorator(schema, trueComponentProps)}
+          </ElDescriptionsItem>
+        )
+      }
+      case 'Inputer':
+      default:
+        const {
+          trueComponentProps,
+          isDisabled,
+          getFormItemProps,
+          slotKey,
+          formItemLabel,
+          getDescriptionItemProps
+        } = useFormItem(
+          props,
+          slots,
+          schema,
+          formModel
+        )
+        return (
+          <ElDescriptionsItem
+            {...getDescriptionItemProps()}
+            key={key}
+          >
+            <ElFormItem {...getFormItemProps()}>
+              { renderInputer(schema, trueComponentProps, isDisabled) }
+            </ElFormItem>
+          </ElDescriptionsItem>
+        )
+    }
+  }
+
+  // 渲染ElForm
   function renderForm() {
     const filterStepSchemas = (schemas: FormSchema[]): FormSchema[] => {
       if (props.stepValue !== null) {
@@ -395,6 +507,7 @@ export function useRenderForm(
 
     /**
      * 渲染表单所有组件
+     * @description 当Form的type属性为form时，将以传统表单结构渲染
      */
     const renderSchemas = () => {
       // 过滤出符合当前步骤值的表单项
@@ -407,7 +520,7 @@ export function useRenderForm(
           ref={(el: any) => setBaseElFormRef(el)}
           data-id="base-row"
           key="base-row"
-          class="ae-form-main__base_row"
+          class="ae-form-main__base_row type-form"
           gutter={10}
         >
           {currentSchemas.map(item =>
@@ -416,6 +529,42 @@ export function useRenderForm(
         </ElRow>
       )
     }
+
+    /**
+     * 渲染描述列表
+     * @description 当Form的type属性为descriptions时，将渲染描述列表
+     * @remarks 当采用该模式时, 所有的容器都将自动替换为el-descriptions组件, 不在容器内的组件将被忽略
+     */
+    const renderDescriptions = () => {
+      // 过滤出符合当前步骤值的表单项
+      const currentSchemas: FormSchema[] = filterStepSchemas(props.schemas)
+      // 检查是否存在未被容器包裹的表单项
+      const descriptionsSchemas: DescriptionsSchema[] = currentSchemas
+        .filter(item => item.type == 'Container' || item.type === 'Descriptions')
+        .map(item => {
+          return {
+            ...item,
+            type: 'Descriptions'
+          } as DescriptionsSchema
+        })
+      const setBaseElFormRef = (el: ComponentRef<typeof ElRow>) => {
+        baseElRowRef.value = el
+      }
+      return (
+        <ElRow
+          ref={(el: any) => setBaseElFormRef(el)}
+          data-id="base-row"
+          key="base-row"
+          class="ae-form-main__base_row type-desc"
+          gutter={10}
+        >
+          {descriptionsSchemas.map(item =>
+            renderDescription(item)
+          )}
+        </ElRow>
+      )
+    }
+
 
     // 获取需要透传给el-form的属性
     const getElFormProps = () => {
@@ -427,11 +576,12 @@ export function useRenderForm(
         'disabled',
         'type',
         'designable',
-        'dataSource',
+        'excontext',
         'schemaProps',
         'showErrorNotice',
         'scrollRef',
-        'autoInitField'
+        'autoInitField',
+        'imports'
       ]
       // 将removeProps从elFormProps中删除
       removeProps.forEach(prop => delete elFormProps[prop])
@@ -445,7 +595,7 @@ export function useRenderForm(
     return (
       <ElForm class="ae-form-main" ref={(el: any) => setElFormRef(el)} {...getElFormProps()} model={formModel.value}>
         {{
-          default: () => renderSchemas()
+          default: () => props.type === 'form' ? renderSchemas() : renderDescriptions()
         }}
       </ElForm>
     )

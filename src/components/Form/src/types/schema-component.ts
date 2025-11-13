@@ -32,7 +32,7 @@ import type { CSSProperties } from 'vue'
  * {
  *   component: 'Input',
  *   componentProps: {
- *     v_type: (form, column, disabled, dateSource) => {
+ *     v_type: (form, column, disabled, excontext) => {
  *        return form.type === '1' ? 'text' : 'textarea'
  *     }
  *   }
@@ -112,4 +112,45 @@ export type OptionKeys = {
   value?: string // 自定义取值字段名
   children?: string // 自定义子级字段名
   disabled?: string // 自定义禁用字段名
+}
+
+export interface DescriptionsProps extends AnyComponentProps {
+  /**
+   * 是否显示边框
+   * @default true
+   */
+  border?: boolean
+  /**
+   * 列数
+   * @default 3
+   */
+  column?: number
+  /**
+   * 排列方向
+   * @default horizontal
+   */
+  direction?: 'vertical' | 'horizontal'
+  /**
+   * 组件尺寸
+   * @default 'default' 未设置时，继承Form组件的size属性
+   */
+  size?: '' | 'large' | 'default' | 'small'
+  /**
+   * 标题
+   * @default 为空时将使用label作为标题
+   */
+  title?: string
+  /**
+   * 标题宽度
+   * @default ''
+   */
+  labelWidth?: string | number
+  /**
+   * 额外信息
+   * @default ''
+   * @description 也可通过插槽自定义
+   */
+  extra?: string
+  // 其他组件自身属性
+  [key: string]: any
 }

@@ -158,9 +158,10 @@ import 'advanced-ele-ui/dist/style.css'
 
 ### 🎯 近期计划 (v1.0.0)
 - ⬜ 发布第一个正式版本
-- ⬜ `AeForm`: 将完善 `type`: `desc` 模式, 常用于详情页信息展示，满足您希望以类似Word表单的样式展示表单的想法。
+- ✅ `AeForm`: 将完善 `type`: `desc` 模式, 常用于详情页信息展示，满足您希望以类似Word表单的样式展示表单的想法。
 - ⬜ `AeForm`: 将完善 `designable`: `true` 模式, 该模式将用于在`AeFormDesginer`中实现表单工具栏、拖拽、选中等功能，计划采用非入侵式设计，只提供钩子函数，不直接编入`AeForm`组件内部。
 - ⬜ `AeTable`: 完善 `editable`: `true` 时, 渲染可编辑组件的策略，将引入更多组件类型，并支持与`AeForm`的按需注册组件的功能。
+- ✅ 编写 `element-plus-beauty.less` 样式类，用于优化`element-plus`组件原生样式，使其在禁用状态下提供更好的用户体验。
 - ⬜ 构建 `advanced-ele-ui-docs` 组件库文档项目，以便为您提供更好的使用指南！
 
 ### 🔮 中期计划 (v1.x)

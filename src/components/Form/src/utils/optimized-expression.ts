@@ -82,7 +82,7 @@ class ExpressionCache {
         'form',
         'column',
         'disabled',
-        'dataSource',
+        'excontext',
         'tools',
         `return ${code}`
       )
@@ -127,10 +127,10 @@ class ExpressionCache {
       dependencies.add(`form.${match[1]}`)
     }
 
-    // 匹配 dataSource.xxx 模式
-    const dataSourceRegex = /dataSource\.([a-zA-Z_$][a-zA-Z0-9_$]*(?:\.[a-zA-Z_$][a-zA-Z0-9_$]*)*)/g
-    while ((match = dataSourceRegex.exec(code)) !== null) {
-      dependencies.add(`dataSource.${match[1]}`)
+    // 匹配 excontext.xxx 模式
+    const excontextRegex = /excontext\.([a-zA-Z_$][a-zA-Z0-9_$]*(?:\.[a-zA-Z_$][a-zA-Z0-9_$]*)*)/g
+    while ((match = excontextRegex.exec(code)) !== null) {
+      dependencies.add(`excontext.${match[1]}`)
     }
 
     // 匹配 disabled 和 column 引用
@@ -152,12 +152,12 @@ class ExpressionCache {
     form: Recordable,
     column: FormSchema,
     disabled: boolean,
-    dataSource: Recordable
+    excontext: Recordable
   ): string {
     const cacheItem = this.functionCache.get(code)
     if (!cacheItem || !this.config.enableDependencyTracking) {
       // 如果没有依赖信息，使用全量哈希
-      return this.hashObject({ form, column: column.field || column.key, disabled, dataSource })
+      return this.hashObject({ form, column: column.field || column.key, disabled, excontext })
     }
 
     // 只包含相关依赖的值
@@ -167,9 +167,9 @@ class ExpressionCache {
       if (dep.startsWith('form.')) {
         const path = dep.substring(5)
         relevantData[dep] = R.get(form, path)
-      } else if (dep.startsWith('dataSource.')) {
+      } else if (dep.startsWith('excontext.')) {
         const path = dep.substring(11)
-        relevantData[dep] = R.get(dataSource, path)
+        relevantData[dep] = R.get(excontext, path)
       } else if (dep === 'disabled') {
         relevantData.disabled = disabled
       } else if (dep === 'column') {
@@ -195,7 +195,7 @@ class ExpressionCache {
     form: Recordable,
     column: FormSchema,
     disabled: boolean,
-    dataSource: Recordable,
+    excontext: Recordable,
     tools: ExpressionTools = expressionTools
   ): any {
     const startTime = performance.now()
@@ -204,7 +204,7 @@ class ExpressionCache {
     try {
       // 检查结果缓存
       if (this.config.enableResultCache) {
-        const dependencyHash = this.generateDependencyHash(code, form, column, disabled, dataSource)
+        const dependencyHash = this.generateDependencyHash(code, form, column, disabled, excontext)
         const resultCacheKey = `${code}|${dependencyHash}`
         const cachedResult = this.resultCache.get(resultCacheKey)
 
@@ -219,11 +219,11 @@ class ExpressionCache {
 
       // 获取函数并执行
       const func = this.getOrCreateFunction(code)
-      const result = func(form, column, disabled, dataSource, tools)
+      const result = func(form, column, disabled, excontext, tools)
 
       // 缓存结果
       if (this.config.enableResultCache) {
-        this.cacheResult(code, result, form, column, disabled, dataSource)
+        this.cacheResult(code, result, form, column, disabled, excontext)
       }
 
       this.updateExecutionTime(startTime)
@@ -244,9 +244,9 @@ class ExpressionCache {
     form: Recordable,
     column: FormSchema,
     disabled: boolean,
-    dataSource: Recordable
+    excontext: Recordable
   ): void {
-    const dependencyHash = this.generateDependencyHash(code, form, column, disabled, dataSource)
+    const dependencyHash = this.generateDependencyHash(code, form, column, disabled, excontext)
     const resultCacheKey = `${code}|${dependencyHash}`
 
     const cacheItem: ResultCacheItem = {
@@ -438,10 +438,10 @@ export function runFormSchemaExpFunction(
   form: Recordable,
   column: FormSchema,
   disabled: boolean,
-  dataSource: Recordable,
+  excontext: Recordable,
   tools: ExpressionTools
 ) {
-  return expressionCache.executeExpression(code, form, column, disabled, dataSource, tools)
+  return expressionCache.executeExpression(code, form, column, disabled, excontext, tools)
 }
 
 export function getFormSchemaExpFunction(
@@ -449,11 +449,11 @@ export function getFormSchemaExpFunction(
   form: Recordable,
   column: FormSchema,
   disabled: boolean,
-  dataSource: Recordable,
+  excontext: Recordable,
   tools: ExpressionTools
 ) {
   // 返回一个函数，该函数会使用缓存
-  return () => expressionCache.executeExpression(code, form, column, disabled, dataSource, tools)
+  return () => expressionCache.executeExpression(code, form, column, disabled, excontext, tools)
 }
 
 // 工具函数

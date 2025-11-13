@@ -1,4 +1,4 @@
-import type { AutoRules } from './types'
+import type { AutoRules, DescriptionsProps } from './types'
 import type { FormItemRule } from 'element-plus'
 
 function createValidator(check: (v: any) => boolean, defaultMessage?: string) {
@@ -16,6 +16,13 @@ function createValidator(check: (v: any) => boolean, defaultMessage?: string) {
     }
   }
 }
+
+export const DEFAULT_DESCS_ATTRS: DescriptionsProps = {
+  border: true,
+  column: 3,
+  direction: 'horizontal'
+}
+
 export const needClearable = [
   'Autocomplete',
   'Cascader',

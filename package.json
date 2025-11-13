@@ -1,6 +1,6 @@
 {
   "name": "advanced-ele-ui",
-  "version": "0.0.5",
+  "version": "0.0.7-beta",
   "description": "基于 Vue3 + Element Plus 的高级组件库",
   "type": "module",
   "main": "./dist/index.cjs",
@@ -13,7 +13,7 @@
       "require": "./dist/index.cjs"
     },
     "./global": {
-      "types": "./dist/types/global-components.d.ts"
+      "types": "./dist/global.d.ts"
     },
     "./dist/style.css": "./dist/style.css",
     "./style.css": "./dist/style.css"

@@ -47,7 +47,7 @@ export function getSchemaPropValue(
     }
     // 如果是方法,则通过方法赋值
     if (typeof propValue === 'function') {
-      return propValue(formModel, schema, props.disabled, props.dataSource)
+      return propValue(formModel, schema, props.disabled, props.excontext)
     }
     // 如果静态类型不确定,则返回原值
     if (staticType === 'any') {
@@ -81,8 +81,8 @@ export function getTrueComponentProps(
     // 遍历schemaProps找出所有_v_开头的属性
     const _v_keys = Object.keys(schemaProps).filter((key: string) => key.startsWith('_v_'))
     if (_v_keys.length > 0) {
-      for (const key in _v_keys) {
-        // 如果key是_v_开头
+      for (const i in _v_keys) {
+        const key = _v_keys[i]
         if (key.startsWith('_v_')) {
           const tureKey = key.replace('_v_', '')
           if (tureKey && isFunction(schemaProps[key])) {
@@ -91,7 +91,7 @@ export function getTrueComponentProps(
                 formModel,
                 schema,
                 props.disabled,
-                props.dataSource
+                props.excontext
               )
             } catch (e) {
               console.error('动态属性错误:', e)
@@ -132,7 +132,7 @@ export function getComponentPropValue(
     if (trueComponentProps[truePropName] !== undefined) {
       const propValue = trueComponentProps[truePropName]
       if (enableFn && typeof propValue === 'function') {
-        return propValue(formModel, schema, props.disabled, props.dataSource)
+        return propValue(formModel, schema, props.disabled, props.excontext)
       } else {
         return propValue
       }
@@ -149,11 +149,11 @@ export function getComponentEventFunction(
   form: Recordable,
   column: FormSchema,
   disabled: boolean,
-  dataSource: Recordable
+  excontext: Recordable
 ) {
   // 是否是方法
   if (typeof eventValue === 'function') {
-    return (event: any) => eventValue(event, form, column, disabled, dataSource)
+    return (event: any) => eventValue(event, form, column, disabled, excontext)
   }
   return () => undefined
 }

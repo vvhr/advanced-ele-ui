@@ -98,7 +98,7 @@ export function renderTableColumns(
     const renderSelectionColumn = (column: TableColumn) => {
       const setSelectable = (row: any, index: number) => {
         return column.typeProps?.selectable !== undefined
-          ? column.typeProps?.selectable(row, index, column, props.form, props.dataSource)
+          ? column.typeProps?.selectable(row, index, column, props.form, props.excontext)
           : true
       }
 
@@ -163,7 +163,7 @@ export function renderTableColumns(
             case 'Select': {
               let options = column.editProps?.componentProps?.options
               if (isFunction(options)) {
-                options = options(row, index, column, props.form, props.dataSource)
+                options = options(row, index, column, props.form, props.excontext)
               } else {
                 options = options || []
               }
@@ -204,11 +204,11 @@ export function renderTableColumns(
         if (column.type === 'default' || !column.type) {
           // column.render函数存在时
           if (column.render !== undefined) {
-            return column.render(row, index, column, props.form, props.dataSource)
+            return column.render(row, index, column, props.form, props.excontext)
           }
           // column.formatter函数存在时
           if (column.formatter !== undefined) {
-            value = column.formatter(row, index, column, props.form, props.dataSource)
+            value = column.formatter(row, index, column, props.form, props.excontext)
           }
         } else {
           switch (column.type) {
@@ -414,7 +414,7 @@ export function renderTableColumns(
                   emit('action', name, row)
                   // 执行用户自定义事件
                   try {
-                    event?.(row, index, column, props.form, props.dataSource)
+                    event?.(row, index, column, props.form, props.excontext)
                   } catch (e) {
                     console.error(e)
                   }
@@ -525,7 +525,7 @@ export function renderTableColumns(
             if (copyable) {
               const copyValue =
                 column.copyValueMethod !== undefined
-                  ? column.copyValueMethod(row, index, column, props.form, props.dataSource)
+                  ? column.copyValueMethod(row, index, column, props.form, props.excontext)
                   : originValue
               copyToClipboard(copyValue).then(res => {
                 if (res) {
@@ -541,7 +541,7 @@ export function renderTableColumns(
               const columnKey = column.key || column.field
               emit('value-click', columnKey, row)
               if (column.clickMethod !== undefined) {
-                column.clickMethod(row, index, column, props.form, props.dataSource)
+                column.clickMethod(row, index, column, props.form, props.excontext)
               }
             }
           }
@@ -647,7 +647,7 @@ export function renderTableColumns(
                 renderTableColumnDefault(column, data.row, data.$index),
               header: () =>
                 getSlot(slots, `${columnKey}-header`) ||
-                column.headerRender?.({}, null, column, props.form, props.dataSource) || (
+                column.headerRender?.({}, null, column, props.form, props.excontext) || (
                   <TooltipHeader title={column.label} subtitle={column.subLabel} />
                 )
             }}

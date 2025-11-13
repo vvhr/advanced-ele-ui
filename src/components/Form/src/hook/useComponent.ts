@@ -74,8 +74,8 @@ export function useComponent(
         // 自动添加clearable属性
         ...getClearable(schema, props.schemaProps),
         // 自动添加placeholder
-        ...getPlaceholder(schema, props.schemaProps),
-        // 如果是表格组件,自动将表单的formModel和dataSource传递给组件
+        ...getPlaceholder(schema, props.schemaProps, props),
+        // 如果是表格组件,自动将表单的formModel和excontext传递给组件
         ...setTableProps(schema, formModel.value, props),
         // 注入组件属性
         ...(componentProps || {}),
@@ -120,7 +120,7 @@ export function useComponent(
             formModel.value,
             schema,
             props.disabled,
-            props.dataSource
+            props.excontext
           )
         }
       })
@@ -140,7 +140,7 @@ export function useComponent(
             formModel.value,
             schema,
             props.disabled,
-            props.dataSource
+            props.excontext
           ) || undefined
         )
       }
@@ -173,7 +173,7 @@ export function useComponent(
             formModel.value,
             schema,
             props.disabled,
-            props.dataSource
+            props.excontext
           ) || undefined
         )
       }
@@ -203,7 +203,7 @@ export function useComponent(
       if (!insideSlots.hasOwnProperty(slotName)) {
         const fn = insideRenders[slotName]
         if (isFunction(fn)) {
-          slotObj[slotName] = () => fn(formModel.value, schema, props.disabled, props.dataSource)
+          slotObj[slotName] = () => fn(formModel.value, schema, props.disabled, props.excontext)
         } else if (typeof fn === 'string') {
           slotObj[slotName] = () => fn
         }
@@ -303,7 +303,7 @@ function setDateRangeDefaultTime(schema: FormSchema, componentProps: ComponentPr
 
 /**
  * 设置表格组件的必要属性
- * @description Table也是一个高级组件,其也支持form和dataSource属性,因此在表单中使用表格组件时,表单需自动将表单对象和上下文对象传递给表格组件
+ * @description Table也是一个高级组件,其也支持form和excontext属性,因此在表单中使用表格组件时,表单需自动将表单对象和上下文对象传递给表格组件
  */
 function setTableProps(schema: FormSchema, formModel: Recordable, props: FormProps) {
   // 检查组件类型及属性
@@ -311,7 +311,7 @@ function setTableProps(schema: FormSchema, formModel: Recordable, props: FormPro
     return {}
   }
   return {
-    dataSource: props.dataSource,
+    excontext: props.excontext,
     form: formModel,
     editable: !props.disabled, // 自动启用表格编辑功能
     adaptive: false // 禁止自适应高宽度
@@ -354,7 +354,7 @@ function setAttrsOptions(
       }
       if (typeof componentProps.options === 'function') {
         return {
-          options: componentProps.options(formModel, schema, props.disabled, props.dataSource),
+          options: componentProps.options(formModel, schema, props.disabled, props.excontext),
           props: optionKeys
         }
       }
@@ -384,19 +384,34 @@ function getClearable(schema: FormSchema, schemaProps: FormSchemaProps) {
   return {}
 }
 
-function getPlaceholder(schema: FormSchema, schemaProps: FormSchemaProps) {
+function getPlaceholder(schema: FormSchema, schemaProps: FormSchemaProps, props: FormProps) {
   const autoPlaceholder = schemaProps?.componentProps?.autoPlaceholder ?? true
-  if (autoPlaceholder) {
+  const setPlaceholderInDisabled = schemaProps?.componentProps?.setPlaceholderInDisabled
+
+  if (autoPlaceholder || (props.disabled && setPlaceholderInDisabled !== undefined)) {
     const type = schema.type ?? 'Inputer'
     if (type === 'Inputer') {
       const needInputPlaceholder = ['Autocomplete', 'Editor', 'Input', 'InputNumber', 'Mention']
       const needSelectPlaceholder = ['Cascader', 'DatePicker', 'Select', 'TimePicker', 'TimeSelect']
       if (needInputPlaceholder.includes(schema.component)) {
+        if (props.disabled && setPlaceholderInDisabled !== undefined) {
+          return {
+            placeholder: setPlaceholderInDisabled
+          }
+        }
         return {
           placeholder: '请填写' + schema?.label || ''
         }
       }
       if (needSelectPlaceholder.includes(schema.component)) {
+        if (props.disabled && setPlaceholderInDisabled !== undefined) {
+          return {
+            startPlaceholder: setPlaceholderInDisabled,
+            endPlaceholder: setPlaceholderInDisabled,
+            rangeSeparator: '-',
+            placeholder: setPlaceholderInDisabled
+          }
+        }
         return {
           startPlaceholder: '选择' + schema?.label,
           endPlaceholder: '选择' + schema?.label,

@@ -11,7 +11,7 @@ export const useRenderCheckbox = (
   const getOptions = (): any[] => {
     if (Reflect.has(componentProps, 'options')) {
       if (typeof componentProps.options === 'function') {
-        return componentProps.options(formModel, schema, props.disabled, props.dataSource)
+        return componentProps.options(formModel, schema, props.disabled, props.excontext)
       }
       // 是否是数组
       if (Array.isArray(componentProps.options)) {

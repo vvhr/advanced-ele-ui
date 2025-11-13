@@ -14,7 +14,7 @@ export function isHidden(props: TableProps, column: TableColumn) {
     return false
   }
   if (typeof column.hidden === 'function') {
-    return column.hidden({}, null, column, props.form, props.dataSource)
+    return column.hidden({}, null, column, props.form, props.excontext)
   } else {
     return column.hidden
   }
@@ -31,7 +31,7 @@ export function isHiddenAction(
     return false
   }
   if (typeof action.hidden === 'function') {
-    return action.hidden(row, index, column, props.form, props.dataSource)
+    return action.hidden(row, index, column, props.form, props.excontext)
   } else {
     return action.hidden
   }
@@ -47,7 +47,7 @@ export function isDisabledAction(
     return false
   }
   if (typeof action.disabled === 'function') {
-    return action.disabled(row, index, column, props.form, props.dataSource)
+    return action.disabled(row, index, column, props.form, props.excontext)
   } else {
     return action.disabled
   }
@@ -63,7 +63,7 @@ export function isLoadingAction(
     return false
   }
   if (typeof action.loading === 'function') {
-    return action.loading(row, index, column, props.form, props.dataSource)
+    return action.loading(row, index, column, props.form, props.excontext)
   } else {
     return action.loading
   }
@@ -74,7 +74,7 @@ export function isEditable(props: TableProps, column: TableColumn) {
       return true
     }
     if (typeof column.editable === 'function') {
-      return column.editable({}, null, column, props.form, props.dataSource)
+      return column.editable({}, null, column, props.form, props.excontext)
     } else {
       return column.editable
     }
@@ -92,7 +92,7 @@ export function isDisabled(props: TableProps, column: TableColumn, row: Recordab
       index,
       column,
       props.form,
-      props.dataSource
+      props.excontext
     )
   } else {
     return column.editProps?.componentProps?.disabled
@@ -104,7 +104,7 @@ export function isCopyable(props: TableProps, column: TableColumn, row: Recordab
     return false
   }
   if (typeof column.copyable === 'function') {
-    return column.copyable(row, index, column, props.form, props.dataSource)
+    return column.copyable(row, index, column, props.form, props.excontext)
   } else {
     return column.copyable
   }
@@ -119,7 +119,7 @@ export function isClickable(
     return false
   }
   if (typeof column.clickable === 'function') {
-    return column.clickable(row, index, column, props.form, props.dataSource)
+    return column.clickable(row, index, column, props.form, props.excontext)
   } else {
     return column.clickable
   }

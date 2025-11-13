@@ -1,0 +1,227 @@
+/**
+ * element-plus-beauty.less
+ * @description make element-plus component style more beautiful in disabled state
+ */
+
+.element-plus-beauty {
+  /** merge element disabled var */
+  --el-disabled-bg-color: var(--el-fill-color-light);
+  --el-disabled-text-color: var(--el-text-color-primary);
+  --el-disabled-border-color: var(--el-fill-color-light);
+
+  /** normal */
+  .ae-form-item {
+    // Make the el-radio-group use a flex layout to show better spacing between child and remove the original margins of the child.
+    .el-radio-group:has(> .el-radio:not(.el-radio-button)) {
+      display: flex;
+      flex-direction: row;
+      flex-wrap: wrap;
+      gap: 10px;
+      .el-radio {
+        margin-right: 0;
+      }
+    }
+    // Make the el-checkbox-group use a flex layout to show better spacing between child and remove the original margins of the child.
+    .el-checkbox-group:has(> .el-checkbox:not(.el-checkbox-button)) {
+      display: flex;
+      flex-direction: row;
+      flex-wrap: wrap;
+      gap: 10px;
+      .el-checkbox {
+        margin-right: 0;
+      }
+    }
+  }
+  /** base on disabled state */
+  .ae-form-item-is-disabled {
+    /** for el-input */
+    .el-input {
+      cursor: auto;
+      .el-input-group__prepend,
+      .el-input-group__append {
+        box-shadow: none;
+      }
+      .el-input__wrapper {
+        cursor: auto;
+        .el-input__inner {
+          cursor: auto;
+          &::placeholder {
+            color: var(--el-input-placeholder-color) !important;
+            -webkit-text-fill-color: var(--el-input-placeholder-color) !important;
+          }
+          &::-webkit-input-placeholder {
+            color: var(--el-input-placeholder-color) !important;
+            -webkit-text-fill-color: var(--el-input-placeholder-color) !important;
+          }
+        }
+      }
+    }
+    /** for el-input-number */
+    .el-input-number {
+      /** fix bugs: The InputNumber does not fully remove the border property when disabled. At least up to element-plus@2.11.7 */
+      &.is-controls-right {
+        .el-input-number__decrease {
+          border-left: none;
+        }
+        .el-input-number__increase {
+          border-bottom: none;
+        }
+      }
+    }
+
+    .el-select {
+      .el-select__wrapper {
+        cursor: auto;
+        .el-select__selected-item {
+          user-select: text;
+          .el-select__input {
+            cursor: auto;
+          }
+          &.el-select__placeholder {
+            &.is-transparent {
+              color: var(--el-text-color-placeholder);
+            }
+          }
+          .el-tag {
+            cursor: auto;
+          }
+        }
+      }
+    }
+
+    /** for el-radio-group */
+    .el-radio-group {
+      /** for el-radio-button */
+      .el-radio-button {
+        .el-radio-button__inner {
+          color: var(--el-text-color-placeholder);
+          cursor: auto;
+        }
+        &.is-active {
+          .el-radio-button__inner {
+            color: var(--el-text-color-primary);
+            background-color: var(--el-disabled-bg-color);
+          }
+        }
+      }
+      /** for el-radio */
+      .el-radio {
+        /** Add a background to the Radio to unify the overall style */
+        background: var(--el-disabled-bg-color);
+        padding: 1px 11px;
+        border-radius: var(--el-input-border-radius, var(--el-border-radius-base));
+        .el-radio__inner {
+          background-color: var(--el-color-white);
+          border-color: var(--el-border-color);
+          cursor: auto;
+        }
+        .el-radio__label {
+          cursor: auto;
+        }
+        &.is-checked {
+          /** Keep the primary color when the Radio is selected */
+          .el-radio__inner {
+            background-color: var(--el-color-primary);
+            border-color: var(--el-color-white);
+            &:after {
+              background-color: var(--el-color-white);
+            }
+          }
+          .el-radio__label {
+            color: var(--el-text-color-primary);
+          }
+        }
+      }
+    }
+
+    /** for el-checkbox-group */
+    .el-checkbox-group {
+      .el-checkbox {
+        cursor: auto;
+        background: var(--el-disabled-bg-color);
+        padding: 1px 11px;
+        border-radius: var(--el-input-border-radius, var(--el-border-radius-base));
+        margin-right: 10px;
+        &:last-child {
+          margin-right: 0;
+        }
+        .el-checkbox__label {
+          cursor: auto;
+          color: var(--el-text-color-placeholder);
+        }
+        &.is-checked {
+          .el-checkbox__input {
+            .el-checkbox__inner {
+              background-color: var(--el-checkbox-checked-bg-color);
+              border-color: var(--el-checkbox-checked-input-border-color);
+              &:after {
+                border-color: var(--el-checkbox-checked-icon-color);
+              }
+            }
+          }
+          .el-checkbox__label {
+            cursor: auto;
+            color: var(--el-text-color-primary);
+          }
+        }
+      }
+      .el-checkbox-button {
+        .el-checkbox-button__inner {
+          color: var(--el-text-color-placeholder);
+          cursor: auto;
+        }
+        &.is-checked {
+          .el-checkbox-button__inner {
+            color: var(--el-text-color-primary);
+            background-color: var(--el-disabled-bg-color);
+          }
+        }
+      }
+    }
+  }
+
+  .ae-description-item-content {
+    .ae-form-item-is-disabled {
+      .el-input__wrapper {
+        background: transparent;
+        box-shadow: none;
+        padding: 0;
+      }
+      .el-textarea__inner {
+        cursor: auto;
+        background: transparent;
+        box-shadow: none;
+        padding: 0;
+      }
+      .el-input-group__append {
+        background: transparent;
+      }
+      .el-cascader {
+        .el-input__wrapper {
+          .el-input__suffix {
+            display: none;
+          }
+        }
+      }
+      .el-select__wrapper {
+        background: transparent;
+        box-shadow: none;
+        padding: 0;
+        .el-select__suffix {
+          display: none;
+        }
+        .el-select__selection.is-near {
+          margin-left: 0;
+        }
+      }
+      .el-radio {
+        background: transparent;
+        padding: 0;
+      }
+      .el-checkbox {
+        background: transparent;
+        padding: 0;
+      }
+    }
+  }
+}
