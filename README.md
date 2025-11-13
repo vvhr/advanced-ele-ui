@@ -2,7 +2,7 @@
 
 English | [简体中文](./README.zh.md)
 
-  <h1> Advanced Element UI</h1>
+  <h1><a href="https://github.com/vvhr/advanced-ele-ui">Advanced Element UI</a></h1>
   <p>Advanced component library for low-code and AI based on Vue 3 + Element Plus</p>
   <img alt="logo" height="154px" src="https://image.howcat.cn/thumbnails/5d0a2d8352a09debab8f8d233a8fc67d.png" title="logo" width="400px"/>
 
