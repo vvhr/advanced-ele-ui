@@ -1,4 +1,4 @@
-import type {
+import {
   FormSchema,
   FormSlots,
   FormProps,
@@ -16,8 +16,8 @@ import { getSlot } from '@/utils/get'
 import { isFunction, isExistAttr } from '@/utils/is'
 import { setReactiveValue } from '@/utils/set'
 import { dateRangeTypes, needClearable, needOptions, noNeedOptions } from '../constants'
-import { useRenderCheckbox } from '../render/RenderCheckbox.tsx'
-import { useRenderRadio } from '../render/RenderRadio.tsx'
+import { useRenderCheckbox } from '../render/RenderCheckbox'
+import { useRenderRadio } from '../render/RenderRadio'
 
 export function useComponent(
   props: FormProps,
@@ -32,7 +32,7 @@ export function useComponent(
   const type = schema.type ?? 'Inputer'
   const getAnyComponent = () => {
     if (['Container', 'Inputer', 'Decorator'].includes(type)) {
-      if (isExistAttr(components, schema.component)) {
+      if (isExistAttr(components, schema?.component || 'Input')) {
         return components[schema.component] as ReturnType<typeof defineComponent>
       }
       return undefined
@@ -253,6 +253,7 @@ export function useComponent(
     }
     return slotObj
   }
+
   return {
     getAnyComponent,
     setModelValue,

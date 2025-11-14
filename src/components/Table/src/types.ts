@@ -1,32 +1,50 @@
-import { ElTable, TableColumnCtx } from 'element-plus'
-import Table from './Table.vue'
+import { ElTable, type FormItemRule, TableColumnCtx } from 'element-plus'
 import { DictItem, DictMap } from '@/types/dict'
-import type { VNode, Component } from 'vue'
+import type { VNode, Component, CSSProperties, Slots } from 'vue'
+import type { ElButtonProps, OptionKeys } from './internal-types'
 
-// AeTable Emits 事件类型声明
+/**
+ * 表格插槽
+ * @description 通过插槽您可以自定义列的渲染
+ * @remarks
+ * - `expand`: 当存在`type: expand`类型的列时，您可以通过插槽渲染列展开内容
+ * - `x--header`: 所有列的标题可通过`{field}--header`插槽来自定义渲染
+ * - `x`: 所有单元格数据列可通过`{field}`插槽来自定义渲染
+ */
+export interface TableSlots extends Slots {
+  [key: string]: (data: TableSlotDefault) => any
+  [key: `${string}--header`]: () => any
+  expand: (data: TableSlotDefault) => any
+}
+
+/**
+ * 表格事件
+ * @description 表格通过emit发送的事件
+ * @remarks
+ * - `update:modelValue`: 实现表格数据更新
+ * - `update:editable`: 双向绑定表格是否开启全局编辑模式
+ * - `update:pageSize`: 双向绑定分页器参数-页容量
+ * - `update:page`: 双向绑定分页器参数-当前页
+ * - `register`: 表格加载完毕时触发，可以用于获取内部el-table的实例
+ * - `selection-change`: el-table表格行选择时触发
+ * - `page-change`: 分页器触发change方法
+ * - `current-change`:  el-table表格当前行改变时触发
+ * - `row-click`:  el-table表格行点击时触发
+ * - `value-click`: 当列支持clickable时,表格值点击时触发
+ * - `action`: 当存在`type: action`的列时，点击某按钮时触发
+ */
 export interface TableEmits {
   (e: 'update:modelValue', value: Recordable[]): void
   (e: 'update:editable', value: boolean): void
   (e: 'update:pageSize', value: number): void
   (e: 'update:page', value: number): void
-  (
-    e: 'register',
-    tableRef: ComponentRef<typeof Table>,
-    elTableRef: ComponentRef<typeof ElTable>
-  ): void
+  (e: 'register', elTableRef: ComponentRef<typeof ElTable>): void
   (e: 'selection-change', value: Recordable[]): void
-  (e: 'page-change', value: number): void
+  (e: 'page-change', value: { page: number; pageSize: number }): void
   (e: 'current-change', currentRow: any): void
   (e: 'row-click', row: Recordable): void
-  (e: 'value-click', columnKey: string, row: Recordable): void
+  (e: 'value-click', key: string, row: Recordable): void
   (e: 'action', name: string, row: Recordable): void
-}
-
-// 透传原生el-table事件
-export interface ElTableEventHanders {
-  handleSelectionChange: (selection: Recordable[]) => void
-  handleCurrentChange: (currentRow: any) => void
-  handleRowClick: (row: Recordable) => void
 }
 
 /**
@@ -74,6 +92,22 @@ export interface TableProps {
   summaryMethod: (param: { columns: TableColumnCtx<any>[]; data: any[] }) => (string | VNode)[]
   // 强制组件重新渲染的key
   freshKey: number
+  // 加载扩展组件
+  imports: TableFormImportItem[]
+}
+
+/**
+ * 暴露组件接口
+ * @description 可通过ref调用的方法
+ * @remarks
+ * - `updateSelections`: 更新表格选中行
+ * - `validate`: 验证表格表单数据
+ * - `resetValidate`: 重置表格表单验证
+ */
+export interface TableExpose {
+  updateSelections: (rows: Recordable[]) => void
+  validate: () => Promise<boolean>
+  resetValidate: () => void
 }
 
 /**
@@ -427,54 +461,117 @@ export interface TableColumn {
   editable?: TableColumnFn<boolean> | boolean
   /**
    * 列编辑组件配置
-   * @description 简化版的高级表单组件配置
+   * @description 简化版的高级表单组件配置，表格中的表单不应该过于复杂，因此仅支持有限的组件类型和有限的功能
    */
-  editProps?: {
-    // 编辑组件(Input/DatePicker/InputNumber) 若未设置默认为Input
-    component?: string
-    // 编辑字段(若未设置则取当前列的field)
-    field?: string
-    // 编辑组件的属性
-    componentProps?: {
-      options: TableColumnFn<any[]> | any[]
-    } & Recordable
-    // 默认值(添加一行时或未取到field的值时默认显示的值)
-    defaultValue?: string | number | boolean | Recordable
-    // 校验规则
-    rules?: Recordable[]
-  }
+  editProps?: TableColumnEditProps
 
   // 列是否可合计(Table必须添加showSummary属性)
   summable?: boolean
   // 自定义列合计方法
   summaryMethod?: (values: any[]) => string | VNode
 
-  /**
-   * 自定义当前列在TablePlus中的功能
-   */
-  plusSetting?: {
-    // 表格表头管理功能
-    /**
-     * 表格表头管理功能
-     * @default 全部功能
-     * @description 在使用TablePlus组件时，会自动根据以下属性激活当前列的`表头管理`
-     * @note 设置为`false`时表示关闭当前列的`表头管理`功能
-     */
-    header?: TablePlusHeaderKey[] | false
-  }
+  // /**
+  //  * 自定义当前列在TablePlus中的功能
+  //  */
+  // plusSetting?: {
+  //   // 表格表头管理功能
+  //   /**
+  //    * 表格表头管理功能
+  //    * @default 全部功能
+  //    * @description 在使用TablePlus组件时，会自动根据以下属性激活当前列的`表头管理`
+  //    * @note 设置为`false`时表示关闭当前列的`表头管理`功能
+  //    */
+  //   header?: TablePlusHeaderKey[] | false
+  // }
   // 兼容其他属性
   [key: string]: any
 }
 
+export type TableFormComponentName =
+  | 'Autocomplete'
+  | 'Cascader'
+  | 'Checkbox'
+  | 'DatePicker'
+  | 'Input'
+  | 'InputNumber'
+  | 'InputTag'
+  | 'Mention'
+  | 'Radio'
+  | 'Select'
+  | 'Slider'
+  | 'Switch'
+  | 'TimePicker'
+  | 'TimeSelect'
+  | 'TreeSelect'
+  | 'Upload'
+
 /**
- * 表格表头管理功能键名
- * - drag: 列可拖拽排序
- * - width: 列可设置宽度
- * - fixed: 列可固定
- * - align: 列可设置对齐方式
- * - visible: 列可隐藏
+ * 表格列可编辑模式配置
+ * @description 在此属性中配置可编辑时的组件所需所有属性
+ * @properties
+ * - `field`: 标识组件的`v-model`绑定值，未设置时默认取TableColumn的`field`属性
+ * - `component`: 标识组件名称,未设置时默认为Input
+ * - `defaultValue`: 默认值
+ * - `componentProps`: 组件属性
+ * - `componentEvent`: 组件事件
+ * - `formItemProps`: 表单项属性
+ * - `insideProps`: 组件内部插槽
  */
-export type TablePlusHeaderKey = 'drag' | 'width' | 'fixed' | 'align' | 'visible'
+export interface TableColumnEditProps {
+  field?: string
+  component?: TableFormComponentName | string
+  defaultValue?: any
+  componentProps?: TableFormComponentProps
+  componentEvent?: TableFormComponentEvents
+  formItemProps?: {
+    rules?: FormItemRule[]
+    autoRules?: TableFormAutoRules[]
+  }
+  insideProps?: {
+    renders?: TableFormInsidePropsRenders
+  }
+}
+
+export interface TableFormComponentProps {
+  /**
+   * 组件强制刷新标志
+   * @default 0
+   * @description 需要重绘组件时将其值进行更新
+   */
+  freshKey?: string | number
+  /**
+   * 是否禁用组件
+   * @default false
+   * @description 组件是否禁用首先受控于`FormProps.disabled`属性,其次是组件内部定义的`disabled`属性
+   */
+  disabled?: TableColumnFn<boolean> | boolean
+  /**
+   * 显示清空按钮
+   * @default false
+   * @description 当为true时，会显示清空按钮点击后触发onClear事件
+   */
+  clearable?: boolean
+  /**
+   * 选项
+   * @description 适用于`Select`,`Radio`,`Checkbox`,`Cascader`等组件渲染选项
+   */
+  options?: TableColumnFn<any[]> | any[]
+  /**
+   * 自定义选项字段
+   * @description 自定义`label`,`value`,`children`等字段名
+   */
+  optionKeys?: OptionKeys
+  // 组件上的style属性
+  style?: CSSProperties | string
+  /**
+   * 占位符
+   * @default 默认根据组件类型及组件标题生成
+   * @description 适用于`Select` `Input` 等组件
+   */
+  placeholder?: string
+  // 其他组件自身属性
+  [key: string]: any
+}
 
 /**
  * 列按钮属性
@@ -563,31 +660,86 @@ export interface TableAction {
   buttonAttrs?: ElButtonProps & Recordable
 }
 
-/**
- * 以下都为el-button原生属性
- *
- * @property type?: 'default' | 'primary' | 'success' | 'warning' | 'danger' | 'info' | '' // 按钮类型
- * @property size?: 'large' | 'default' | 'small'
- * @property plain?: boolean // 按钮是否朴素
- * @property text?: boolean // 按钮是否文字按钮
- * @property bg?: boolean // 按钮是否背景按钮
- * @property link?: boolean // 按钮是否链接按钮
- * @property round?: boolean // 按钮是否圆角按钮
- * @property circle?: boolean // 按钮是否圆形按钮
- */
-export interface ElButtonProps {
-  type?: 'default' | 'primary' | 'success' | 'warning' | 'danger' | 'info' | '' // 按钮类型
-  size?: 'large' | 'default' | 'small'
-  plain?: boolean // 按钮是否朴素
-  text?: boolean // 按钮是否文字按钮
-  bg?: boolean // 按钮是否背景按钮
-  link?: boolean // 按钮是否链接按钮
-  round?: boolean // 按钮是否圆角按钮
-  circle?: boolean // 按钮是否圆形按钮
-}
-
 export type TableSlotDefault = {
   row: Recordable
   column: any
   $index: number
+}
+
+export type TableFormComponentEventFn<T> = (
+  event: T,
+  row: Recordable,
+  index: number,
+  column: TableColumn,
+  form: Recordable,
+  excontext: Recordable
+) => void
+
+export interface TableFormComponentEvents {
+  /**
+   * 值发生变化时触发
+   * @notes 适用于`Select` `Input` 等组件
+   */
+  onChange?: TableFormComponentEventFn<any>
+  /**
+   * 在点击由 `clearable` 属性生成的清空按钮时触发
+   * @notes 适用于`Select` `Input` 等组件
+   */
+  onClear?: TableFormComponentEventFn<void>
+  /**
+   * 输入框失去焦点时触发
+   * @notes 适用于`Select` `Input` 等组件
+   */
+  onBlur?: TableFormComponentEventFn<FocusEvent>
+  /**
+   * 输入框获得焦点时触发
+   * @notes 适用于`Select` `Input` 等组件
+   */
+  onFocus?: TableFormComponentEventFn<FocusEvent>
+  // 其他事件，以element plus的组件文档中的事件为准
+  [key: string]: TableFormComponentEventFn<any>
+}
+
+/**
+ * 渲染插槽类型对象
+ * @description 如果你希望直接在schema配置中直接编写组件自身的插槽代码, 你需要将插槽名称添加到renders中, 并返回对应的页面代码
+ * @example
+ * // 1.Input组件的自身插槽 添加一个查询按钮
+ * { insideProps.renders.prepend: (row, index, form, column, excontext) => (
+ *  <el-button>查询</el-button>
+ * )}
+ * // 2.条件判断(动态化) 仅在表单可编辑时添加一个查询按钮
+ * { insideProps.renders.append: (row, index, form, column, excontext) => (
+ *   if(disabled) return undefined
+ *   else return <el-button>查询</el-button>
+ * )}
+ * // 3.纯文本
+ * { insideProps.renders.suffix: '元' }
+ */
+export type TableFormInsidePropsRenders = Recordable<TableFormInsidePropsRender>
+export type TableFormInsidePropsRender = TableColumnFn<VNode | string | false> | false | string
+
+export type TableFormAutoRules =
+  | 'isRequired' // 不为空
+  | 'isRequiredArray' // 不为空数组
+  | 'noSpace' // 不得包含空格
+  | 'normalText' // 常规文本 无特殊符号
+  | 'isIdCard' // 身份证号码
+  | 'isMobilePhone' // 11位手机号码
+  | 'isTelephone' // 通用号码
+  | 'noChinese' // 无汉字
+  | 'isCreditCode' // 统一社会信用代码
+  | 'onlyNumber' // 只能输入数字
+  | 'onlyLetter' // 只能输入字母
+  | 'isEmail' // 邮箱号
+
+export interface TableFormImportItemConfig {
+  modelValueKey?: string
+}
+
+export interface TableFormImportItem {
+  name: string
+  component: Component
+  config?: TableFormImportItemConfig
+  isArrayFn?: (cps: Recordable) => boolean
 }

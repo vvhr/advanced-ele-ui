@@ -3,17 +3,27 @@ import Table from './src/Table.vue'
 export type TableDefineProps = InstanceType<typeof Table>['$props']
 export type TableInstance = InstanceType<typeof Table>
 export type {
+  TableSlots,
+  TableEmits,
+  TableProps,
+  TableExpose,
   Pagination as TablePagination,
   TableColumn,
   TableColumnFn,
   TableColumnType,
   TableColumnTypeProps,
+  TableColumnEditProps,
+  TableFormComponentName,
+  TableFormComponentProps,
   TableAction,
-  TableEmits,
-  TableProps,
   TableSlotDefault,
-  ElButtonProps,
-  TablePlusHeaderKey
+  TableFormComponentEvents,
+  TableFormComponentEventFn,
+  TableFormInsidePropsRenders,
+  TableFormInsidePropsRender,
+  TableFormAutoRules,
+  TableFormImportItemConfig,
+  TableFormImportItem
 } from './src/types'
 
 export { Table }

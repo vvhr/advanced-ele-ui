@@ -11,7 +11,7 @@ import {
 import { FormSchema, FormImportItem, FormSchemaProps } from './types'
 import { useRenderForm } from './render/useRenderForm'
 import { useForm } from './hook/useForm'
-import { useImport } from '@/components/Form/src/hook/useImport.ts'
+import { useImport } from './hook/useImport'
 
 export default defineComponent({
   name: 'AeForm',

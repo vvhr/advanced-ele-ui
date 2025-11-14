@@ -199,7 +199,9 @@ const editableTableColumns: TableColumn[] = [
     label: '产品名称',
     editProps: {
       component: 'Input',
-      rules: [{ required: true, message: '请输入产品名称' }]
+      formItemProps: {
+        rules: [{ required: true, message: '请输入产品名称' }]
+      }
     }
   },
   {
@@ -208,7 +210,9 @@ const editableTableColumns: TableColumn[] = [
     editProps: {
       component: 'InputNumber',
       componentProps: { min: 0, options: [] } as any,
-      rules: [{ required: true, message: '请输入单价' }]
+      formItemProps: {
+        rules: [{ required: true, message: '请输入单价' }]
+      }
     }
   },
   {
@@ -217,7 +221,9 @@ const editableTableColumns: TableColumn[] = [
     editProps: {
       component: 'InputNumber',
       componentProps: { min: 0, options: [] } as any,
-      rules: [{ required: true, message: '请输入数量' }]
+      formItemProps: {
+        rules: [{ required: true, message: '请输入数量' }]
+      }
     }
   },
   {

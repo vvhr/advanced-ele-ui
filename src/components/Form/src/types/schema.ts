@@ -1,7 +1,7 @@
 import type { ComponentName } from './components'
 import type { CSSProperties, VNode } from 'vue'
 import type { FormItemRule } from 'element-plus'
-import type { AutoRules } from './rules'
+import type { AutoRules } from '@/types/rules'
 import type {
   FormSchemaType,
   FormSchemaFn,

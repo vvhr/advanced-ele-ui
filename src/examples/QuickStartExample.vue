@@ -68,7 +68,7 @@ import 'advanced-ele-ui/dist/style.css'</code></pre>
       <pre class="code-block"><code>&lt;template&gt;
   &lt;!-- ✅ 全局注册后可直接使用，无需导入组件 --&gt;
   &lt;AeForm :model="formModel" :schemas="formSchemas" /&gt;
-  &lt;AeTable :columns="columns" :data="tableData" /&gt;
+  &lt;AeTable :columns="columns" v-model="tableData" /&gt;
 &lt;/template&gt;
 
 &lt;script setup lang="ts"&gt;

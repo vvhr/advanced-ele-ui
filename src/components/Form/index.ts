@@ -5,7 +5,6 @@ export type FormInstance = InstanceType<typeof Form>
 export type { ComponentName } from './src/types/components'
 export type { FormImportItem, FormImportItemConfig } from './src/types/import'
 export type { FormSlots, FormEmits, FormSchemaProps } from './src/types/props'
-export type { AutoRules } from './src/types/rules'
 export type {
   FormSchema,
   FormSchemaBase,
@@ -35,6 +34,5 @@ export type {
   InsidePropsRenders,
   InsidePropsRender
 } from './src/types/schema-ext'
-export { AUTO_RULES_MAP } from './src/constants'
 export { Form }
 export default Form

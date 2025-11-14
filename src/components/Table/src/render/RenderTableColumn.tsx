@@ -1,11 +1,12 @@
-import type {
-  ElButtonProps,
+import {
   TableEmits,
   TableProps,
   TableSlotDefault,
   TableAction,
   TableColumn,
-  TableColumnFn
+  TableColumnFn,
+  TableFormComponentName,
+  TableFormImportItemConfig, TableSlots
 } from '../types'
 import {
   ElTableColumn,
@@ -14,14 +15,9 @@ import {
   ElDropdownItem,
   ElFormItem,
   ElRadio,
-  ElInput,
   ElIcon,
   ElMessage,
   ElTag,
-  ElInputNumber,
-  ElSelect,
-  ElOption,
-  ElDatePicker,
   ElButton
 } from 'element-plus'
 import { Icon } from '@/components/Icon'
@@ -30,7 +26,7 @@ import SensitiveSwitch from '@/components/Table/src/components/SensitiveSwitch.v
 import TooltipHeader from '@/components/Table/src/components/TooltipHeader.vue'
 import { getSlot } from '@/utils/get'
 import { copyToClipboard } from '@/utils/copy'
-import { isArray, isFunction } from '@/utils/is'
+import { isArray } from '@/utils/is'
 import { formatAmount, formatDate, formatSensitive } from '@/utils/format'
 import {
   setIndex,
@@ -38,24 +34,26 @@ import {
   isClickable,
   isCopyable,
   isEditable,
-  isDisabled,
   isHiddenAction,
   isDisabledAction,
   isLoadingAction
-} from '@/components/Table/src/utils.ts'
-import type { Slots, Ref } from 'vue'
+} from '../utils'
+import type { Ref, Component } from 'vue'
 import { CopyDocument } from '@element-plus/icons-vue'
 import type { DictItem } from '@/types/dict'
-import type { UseDictTools } from '@/utils/dict.ts'
+import type { UseDictTools } from '@/utils/dict'
+import { useComponent } from '../hook/useComponent'
 
 export function renderTableColumns(
   props: TableProps,
-  slots: Slots,
+  slots: TableSlots,
   emit: TableEmits,
   currentRowRef: Ref<Recordable>,
   pageSizeRef: Ref<number>,
   pageRef: Ref<number>,
-  dictTools: UseDictTools
+  dictTools: UseDictTools,
+  components: Partial<Recordable<Component, TableFormComponentName>>,
+  componentConfigs: Partial<Recordable<TableFormImportItemConfig, TableFormComponentName>>
 ) {
   if (props.columns && props.columns.length) {
     // 获取有效的列
@@ -137,55 +135,52 @@ export function renderTableColumns(
     const renderTableColumnDefault = (column: TableColumn, row: Recordable, index: number) => {
       // 是否编辑模式且是否可编辑
       if (isEditable(props, column)) {
-        const component = column.editProps?.component || 'Input'
-        const field = column.editProps?.field || column.field
+        const {
+          field,
+          freshKey,
+          formItemProps,
+          getAnyComponent,
+          setModelValue,
+          setComponentProps,
+          setComponentEvent,
+          setInsideRenders,
+        } = useComponent(
+          props,
+          slots,
+          emit,
+          row,
+          index,
+          column,
+          props.form,
+          components,
+          componentConfigs
+        )
         if (!field) {
           console.warn(`[AeTable] 编辑组件未设置field属性.`)
         }
-        const formItemProps = {
-          prop: `${index}.${field}`,
-          rules: column.editProps?.rules || []
-        }
-        const componentProps = {
-          style: {
-            width: '100%'
-          },
-          placeholder: '请填写' + (column.label || ''),
-          ...(column.editProps?.componentProps || {}),
-          disabled: isDisabled(props, column, row, index)
-        }
-        const getComponent = () => {
-          switch (component) {
-            case 'Input':
-              return <ElInput vModel={row[field]} {...componentProps} />
-            case 'InputNumber':
-              return <ElInputNumber vModel={row[field]} {...componentProps} />
-            case 'Select': {
-              let options = column.editProps?.componentProps?.options
-              if (isFunction(options)) {
-                options = options(row, index, column, props.form, props.excontext)
-              } else {
-                options = options || []
-              }
-              // 如果有
-              return (
-                <ElSelect vModel={row[field]} {...componentProps}>
-                  {options.map((option: any) => (
-                    <ElOption label={option.label} value={option.value} {...option} />
-                  ))}
-                </ElSelect>
-              )
-            }
-            case 'DatePicker':
-              return <ElDatePicker vModel={row[field]} {...componentProps} />
-            default:
-              return <ElInput vModel={row[field]} {...componentProps} />
+        // 渲染组件
+        const renderAnyComponent = () => {
+          const AnyComponent = getAnyComponent()
+          if (AnyComponent !== undefined) {
+            return (
+              <AnyComponent
+                {...setModelValue()}
+                {...setComponentProps()}
+                {...setComponentEvent()}
+                key={freshKey}
+              >
+                {{ ...setInsideRenders() }}
+              </AnyComponent>
+            )
+          } else {
+            console.error(`[AeTable]: 配置异常，请检查组件 ${column?.editProps?.component} 是否正确！`)
+            return undefined
           }
         }
         return (
           <ElFormItem {...formItemProps}>
             {{
-              default: () => getComponent()
+              default: () => renderAnyComponent()
             }}
           </ElFormItem>
         )
@@ -621,7 +616,7 @@ export function renderTableColumns(
             {{
               default: () => renderColumns(validChildColumns),
               header: () =>
-                getSlot(slots, `${columnKey}-header`) || (
+                getSlot(slots, `${columnKey}--header`) || (
                   <TooltipHeader title={column.label} subtitle={column.subLabel} />
                 )
             }}

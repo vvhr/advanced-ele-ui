@@ -3,7 +3,7 @@
  * 解决原有实现中每次都创建新 Function 的性能问题
  */
 
-import type { FormSchema, FormProps, ComponentProps } from '../types'
+import type { FormSchema } from '../types'
 import type { ExpressionTools } from '../tools'
 import { expressionTools } from '../tools'
 import * as R from 'lodash-es'

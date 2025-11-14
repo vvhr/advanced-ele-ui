@@ -1,12 +1,14 @@
 import { getSlot } from '@/utils/get'
 import type {
-  ElTableEventHanders,
   TableEmits,
-  TableProps
+  TableProps,
+  TableFormImportItemConfig,
+  TableFormComponentName
 } from '../types'
+import type { ElTableEventHanders } from '../internal-types'
 import { ElTable, ElForm, vLoading } from 'element-plus'
 import { renderTableColumns } from '../render/RenderTableColumn'
-import { type Ref, withDirectives, unref } from 'vue'
+import {type Ref, withDirectives, unref, type Component} from 'vue'
 import type { UseDictTools } from "@/utils/dict";
 
 export function renderTable(
@@ -22,7 +24,9 @@ export function renderTable(
   elTableHanders: ElTableEventHanders,
   selections: Ref<Recordable[]>,
   summaryMethodLocal: TableProps['summaryMethod'],
-  dictTools: UseDictTools
+  dictTools: UseDictTools,
+  components: Partial<Recordable<Component, TableFormComponentName>>,
+  componentConfigs: Partial<Recordable<TableFormImportItemConfig, TableFormComponentName>>
 ) {
   const showAppend = () => {
     return Reflect.has(slots, 'append') || (selections.value && selections.value.length > 0)
@@ -56,7 +60,7 @@ export function renderTable(
         {...unref(elTableAttrs)}
       >
         {{
-          default: () => renderTableColumns(props, slots, emit, currentRowRef, pageSizeRef, pageRef, dictTools),
+          default: () => renderTableColumns(props, slots, emit, currentRowRef, pageSizeRef, pageRef, dictTools, components, componentConfigs),
           append: () => getSlot(slots, 'append') || renderElTableAppend()
         }}
       </ElTable>

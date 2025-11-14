@@ -1,11 +1,14 @@
-import type { ComponentName, FormImportItem, FormImportItemConfig } from '../types'
+import type {
+  TableFormComponentName as ComponentName,
+  TableFormImportItem as ImportItem,
+  TableFormImportItemConfig as ImportItemConfig
+} from '../types'
 import type { Component } from 'vue'
 import { shallowReactive } from 'vue'
 import { defaultComponents, defaultArrayStrategies } from '../component'
 
 type Components = Partial<Recordable<Component, ComponentName>>
-type ComponentConfigs = Partial<Recordable<FormImportItemConfig, ComponentName>>
-
+type ComponentConfigs = Partial<Recordable<ImportItemConfig, ComponentName>>
 /**
  * use Import
  * @description 自动导入组件库和组件配置
@@ -34,7 +37,7 @@ export function useImport() {
 
   function addComponent(name: string, component: Component) {
     if (components[name]) {
-      console.warn(`[AeForm]: The component ${name} already exists and will be overwritten`)
+      console.warn(`[AeTable]: The component ${name} already exists and will be overwritten`)
     }
     components[name] = component
   }
@@ -44,15 +47,15 @@ export function useImport() {
       arrayStrategies[name] = isArrayFn
     } else {
       console.error(
-        `[AeForm]: Failed to register component array strategy because the component ${name} does not exist`
+        `[AeTable]: Failed to register component array strategy because the component ${name} does not exist`
       )
     }
   }
 
-  function addConfig(name: string, config: FormImportItemConfig) {
+  function addConfig(name: string, config: ImportItemConfig) {
     if (componentConfigs[name]) {
       console.warn(
-        `[AeForm]: The component configuration ${name} already exists and will be overwritten`
+        `[AeTable]: The component configuration ${name} already exists and will be overwritten`
       )
     }
     componentConfigs[name] = config
@@ -61,7 +64,7 @@ export function useImport() {
   function registerComponent(
     name: string,
     component: Component,
-    config?: FormImportItemConfig,
+    config?: ImportItemConfig,
     isArrayFn?: (cps: Recordable) => boolean
   ) {
     addComponent(name, component)
@@ -72,12 +75,12 @@ export function useImport() {
       addArrayStrategy(name, isArrayFn)
     }
     console.log(
-      '%c✓ [AeForm]: The component ${name} imported via the imports property has been successfully registered！',
+      '%c✓ [AeTable]: The component ${name} imported via the imports property has been successfully registered！',
       'color: #4CAF50;'
     )
   }
 
-  function registerComponents(imports: FormImportItem[]) {
+  function registerComponents(imports: ImportItem[]) {
     imports.forEach(item => {
       registerComponent(item.name, item.component, item.config, item.isArrayFn)
     })

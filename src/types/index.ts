@@ -1,5 +1,6 @@
 // 导出所有类型定义
 export * from './dict'
+export * from './rules'
 
 export type Recordable<T = any, K extends PropertyKey = string> = Record<K, T>
 export type Nullable<T> = T | null

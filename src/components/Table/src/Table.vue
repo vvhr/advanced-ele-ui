@@ -1,7 +1,13 @@
 <script lang="tsx">
 import { defineComponent, ref, computed, onMounted, unref, type PropType, type VNode } from 'vue'
 import { ElTable, TableColumnCtx, ElForm } from 'element-plus'
-import type { TableProps, TableColumn, Pagination, ElTableEventHanders } from './types'
+import type {
+  TableProps,
+  TableColumn,
+  Pagination,
+  TableFormImportItem
+} from './types'
+import type { ElTableEventHanders } from './internal-types'
 import type { DictMap } from '@/types/dict'
 import { renderPagination } from './render/RenderPagination'
 import { renderTable } from './render/RenderTable'
@@ -9,6 +15,7 @@ import { usePagination } from './hook/usePagination'
 import { findColumnByField, findColumnByKey } from './utils'
 import { formatAmount } from '@/utils/format'
 import { useDict, UseDictTools } from '@/utils/dict'
+import { useImport } from './hook/useImport'
 export default defineComponent({
   name: 'AeTable',
   props: {
@@ -95,6 +102,14 @@ export default defineComponent({
     freshKey: {
       type: Number,
       default: 0
+    },
+    /**
+     * 加载扩展组件
+     * @description 您可以通过此属性来按需加载一些组件
+     */
+    imports: {
+      type: Array as PropType<TableFormImportItem[]>,
+      default: () => []
     }
   },
   emits: [
@@ -111,9 +126,11 @@ export default defineComponent({
     'action'
   ],
   setup(props, { attrs, slots, emit, expose }) {
+    const { components, arrayStrategies, componentConfigs, registerComponents } = useImport()
+    registerComponents(props.imports)
+
     // 声明 elTableRef 实例
     const elTableRef = ref<ComponentRef<typeof ElTable>>()
-    const aeTableRef = ref()
     const elFormRef = ref<ComponentRef<typeof ElForm>>()
     const selections = ref<Recordable[]>([])
     const currentRowRef = ref<Recordable>()
@@ -142,7 +159,8 @@ export default defineComponent({
         'adaptive',
         'summaryMethod',
         'freshKey',
-        'dict'
+        'dict',
+        'imports'
       ]
       cleanProps.forEach(prop => {
         delete allAttrs[prop]
@@ -221,7 +239,7 @@ export default defineComponent({
     }
 
     onMounted(() => {
-      emit('register', unref(aeTableRef)?.$parent, elTableRef.value)
+      emit('register', elTableRef.value)
     })
 
     const elTableHanders: ElTableEventHanders = {
@@ -292,7 +310,9 @@ export default defineComponent({
           elTableHanders,
           selections,
           summaryMethodLocal,
-          dictTools
+          dictTools,
+          components,
+          componentConfigs
         )}
         {renderPagination(props, pageSizeRef, currentPageRef, pagination, handlePageChange)}
       </div>

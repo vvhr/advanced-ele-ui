@@ -1,4 +1,5 @@
 import type { TableProps, TableAction, TableColumn } from './types'
+import { isFunction } from '@/utils/is'
 
 export const setIndex = (reserveIndex: boolean, index: number, size: number, current: number) => {
   const newIndex = index + 1
@@ -13,7 +14,7 @@ export function isHidden(props: TableProps, column: TableColumn) {
   if (column.hidden === undefined) {
     return false
   }
-  if (typeof column.hidden === 'function') {
+  if (isFunction(column.hidden)) {
     return column.hidden({}, null, column, props.form, props.excontext)
   } else {
     return column.hidden
@@ -30,7 +31,7 @@ export function isHiddenAction(
   if (action.hidden === undefined) {
     return false
   }
-  if (typeof action.hidden === 'function') {
+  if (isFunction(action.hidden)) {
     return action.hidden(row, index, column, props.form, props.excontext)
   } else {
     return action.hidden
@@ -46,7 +47,7 @@ export function isDisabledAction(
   if (action.disabled === undefined) {
     return false
   }
-  if (typeof action.disabled === 'function') {
+  if (isFunction(action.disabled)) {
     return action.disabled(row, index, column, props.form, props.excontext)
   } else {
     return action.disabled
@@ -62,7 +63,7 @@ export function isLoadingAction(
   if (action.loading === undefined) {
     return false
   }
-  if (typeof action.loading === 'function') {
+  if (isFunction(action.loading)) {
     return action.loading(row, index, column, props.form, props.excontext)
   } else {
     return action.loading
@@ -73,7 +74,7 @@ export function isEditable(props: TableProps, column: TableColumn) {
     if (column.editable === undefined) {
       return true
     }
-    if (typeof column.editable === 'function') {
+    if (isFunction(column.editable)) {
       return column.editable({}, null, column, props.form, props.excontext)
     } else {
       return column.editable
@@ -86,7 +87,7 @@ export function isDisabled(props: TableProps, column: TableColumn, row: Recordab
   if (column.editProps?.componentProps?.disabled === undefined) {
     return false
   }
-  if (typeof column.editProps?.componentProps?.disabled === 'function') {
+  if (isFunction(column.editProps?.componentProps?.disabled)) {
     return column.editProps?.componentProps?.disabled(
       row,
       index,
@@ -103,7 +104,7 @@ export function isCopyable(props: TableProps, column: TableColumn, row: Recordab
   if (column.copyable === undefined) {
     return false
   }
-  if (typeof column.copyable === 'function') {
+  if (isFunction(column.copyable)) {
     return column.copyable(row, index, column, props.form, props.excontext)
   } else {
     return column.copyable
@@ -118,7 +119,7 @@ export function isClickable(
   if (column.clickable === undefined) {
     return false
   }
-  if (typeof column.clickable === 'function') {
+  if (isFunction(column.clickable)) {
     return column.clickable(row, index, column, props.form, props.excontext)
   } else {
     return column.clickable

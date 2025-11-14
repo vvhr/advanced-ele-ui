@@ -1,5 +1,5 @@
 import { computed, type ComputedRef, type Ref } from 'vue'
-import {ComponentProps, type DescriptionsProps, FormProps, FormSchema, FormSlots, type InsideProps} from '../types'
+import { ComponentProps, type DescriptionsProps, FormProps, FormSchema, FormSlots, type InsideProps} from '../types'
 import {
   getComponentPropValue,
   getLabel,
@@ -7,9 +7,10 @@ import {
   getTrueComponentProps
 } from '../utils/schema'
 import type { FormItemRule } from 'element-plus'
-import {AUTO_RULES_MAP, DEFAULT_DESCS_ATTRS} from '../constants'
-import {isFunction} from "@/utils/is.ts";
-import {getSlot} from "@/utils/get.ts";
+import { DEFAULT_DESCS_ATTRS} from '../constants'
+import {isFunction} from "@/utils/is";
+import {getSlot} from "@/utils/get";
+import { AUTO_RULES_MAP } from '@/utils/rules'
 
 interface UserFormItemData {
   trueComponentProps: ComponentProps

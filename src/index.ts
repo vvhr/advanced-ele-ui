@@ -26,7 +26,6 @@ export type {
   FormSlots,
   FormEmits,
   FormSchemaProps,
-  AutoRules,
   FormSchemaBase,
   StepSchema,
   ContainerSchema,
@@ -48,23 +47,32 @@ export type {
   InsidePropsRenders,
   InsidePropsRender
 } from './components/Form'
-export { AUTO_RULES_MAP } from './components/Form'
 
 // Table
 export type {
   TableDefineProps,
   TableInstance,
+  TableSlots,
+  TableEmits,
+  TableProps,
+  TableExpose,
   TablePagination,
   TableColumn,
   TableColumnFn,
   TableColumnType,
   TableColumnTypeProps,
+  TableColumnEditProps,
+  TableFormComponentName,
+  TableFormComponentProps,
   TableAction,
-  TableEmits,
-  TableProps,
   TableSlotDefault,
-  TablePlusHeaderKey,
-  ElButtonProps
+  TableFormComponentEvents,
+  TableFormComponentEventFn,
+  TableFormInsidePropsRenders,
+  TableFormInsidePropsRender,
+  TableFormAutoRules,
+  TableFormImportItemConfig,
+  TableFormImportItem
 } from './components/Table'
 
 // Icon
@@ -94,6 +102,20 @@ export type {
   FileKeys,
   FileTemplate
 } from './components/Upload'
+
+// Rules
+export type { AutoRules } from './types/rules'
+export { AUTO_RULES_MAP } from './utils/rules'
+
+// Dict
+export type { DictMap, DictItem } from './types/dict'
+export { useDict } from './utils/dict'
+
+// Format
+export { formatAmount, formatDate, formatSensitive } from './utils/format'
+
+// Tree
+export { findNode, findNodes } from './utils/tree'
 
 // Install
 const install = (app: App) => {
