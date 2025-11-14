@@ -130,7 +130,7 @@ After configuration, restart your IDE, and you can use components directly in Vu
 ```vue
 <template>
   <!-- ✅ IDE can recognize components and provide intelligent hints -->
-  <AeTable :columns="columns" :data="data" />
+  <AeTable :columns="columns" v-model="data" />
   <AeForm :model="formModel" :schemas="schemas" />
 </template>
 ```

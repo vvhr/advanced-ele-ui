@@ -4,9 +4,26 @@ English | [简体中文](./CHANGELOG.zh.md)
 
 ---
 
+## [0.0.8-beta] - 2025-11-14
+
+### Features
+* Component [AeTable] has added the `imports` property to customize the import of editable components.
+* Component [AeTable] has added the `TableFormComponentName` type, now supporting most input components from `element-plus`.
+* Component [AeTable] has added the `editProps.formItemProps` property, which allows configuration of `rules` or `autoRules` to achieve component validation.
+
+### Refactors
+* The `rules.ts` related type definitions for component [AeForm] have been moved to `types/rules.ts`, to facilitate reuse in the [AeTable] component.
+* The `editProps.rules` property for component [AeTable] has been moved to `editProps.formItemProps.rules`, aligning with `FormSchema.formItemProps` in [AeForm].
+
+### Docs
+* Fixed the usage error in the document [ReadMe] regarding `<AeTable>`, replacing `data` with `v-model`.
+* Fixed the usage error on the page [QuickStartExample] regarding `<AeTable>`, replacing `data` with `v-model`.
+
+---
+
 ## [0.0.7-beta] - 2025-11-13
 
-### 新增
+### Features
 * Added the `element-plus-beauty.css` class to optimize the display of original components in form disabled scenarios. You can enable this class by adding `class: "element-plus-beauty"` to `AeForm`.
 * Component [AeForm] has added the `size` property to set the size of the form and description blocks.
 * Component [AeForm] now supports the `type: desc` mode, which will implement a description form with borders based on `el-descriptions`. In this mode, all form components should be wrapped by the description block component with `type: Descriptions`, and any un-wrapped components will be ignored.

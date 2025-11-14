@@ -4,6 +4,23 @@
 
 ---
 
+## [0.0.8-beta] - 2025-11-14
+
+### 新增
+* 组件 [AeTable] 增加了 `imports` 属性，用于自定义引入可编辑组件。
+* 组件 [AeTable] 增加了 `TableFormComponentName` 类型，现在已支持大部分 `element-plus` 中的输入性组件。
+* 组件 [AeTable] 添加了 `editProps.formItemProps` 属性，可配置 `rules` 或 `autoRules` 实现组件校验。
+
+### 重构
+* 组件 [AeForm] 的 `rules.ts` 相关类型定义已迁移至 `types/rules.ts`, 以便于复用在 `AeTable` 组件中。
+* 组件 [AeTable] 的 `editProps.rules` 属性已迁移至 `editProps.formItemProps.rules`，与 `AeForm` 的 `FormSchema.formItemProps` 保持一致。
+
+### 文档
+* 修正文档 [ReadMe] 中关于 `<AeTable>` 的用法错误，将 `data` 替换为 `v-model`。
+* 修正页面 [QuickStartExample] 关于 `<AeTable>` 的用法错误，将 `data` 替换为 `v-model`。
+
+---
+
 ## [0.0.7-beta] - 2025-11-13
 
 ### 新增

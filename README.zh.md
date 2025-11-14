@@ -129,7 +129,7 @@ app.mount('#app')
 ```vue
 <template>
   <!-- ✅ IDE 能够识别组件并提供智能提示 -->
-  <AeTable :columns="columns" :data="data" />
+  <AeTable :columns="columns" v-model="data" />
   <AeForm :model="formModel" :schemas="schemas" />
 </template>
 ```
