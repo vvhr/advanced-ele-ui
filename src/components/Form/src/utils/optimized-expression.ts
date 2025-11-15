@@ -7,6 +7,7 @@ import type { FormSchema } from '../types'
 import type { ExpressionTools } from '../tools'
 import { expressionTools } from '../tools'
 import * as R from 'lodash-es'
+import { logger } from '@/locale'
 
 // 表达式缓存项接口
 interface CacheItem {
@@ -107,7 +108,7 @@ class ExpressionCache {
 
       return func
     } catch (error) {
-      console.error(`表达式编译失败: ${code}`, error)
+      logger.error('console.form.expressionCompileError', { code }, error)
       // 返回安全的默认函数
       return () => undefined
     }
@@ -229,7 +230,7 @@ class ExpressionCache {
       this.updateExecutionTime(startTime)
       return result
     } catch (error) {
-      console.error(`表达式执行失败: ${code}`, error)
+      logger.error('console.form.expressionExecuteError', { code }, error)
       this.updateExecutionTime(startTime)
       return undefined
     }

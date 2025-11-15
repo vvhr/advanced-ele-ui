@@ -2,6 +2,7 @@ import type { ComponentName, FormImportItem, FormImportItemConfig } from '../typ
 import type { Component } from 'vue'
 import { shallowReactive } from 'vue'
 import { defaultComponents, defaultArrayStrategies } from '../component'
+import { logger } from '@/locale'
 
 type Components = Partial<Recordable<Component, ComponentName>>
 type ComponentConfigs = Partial<Recordable<FormImportItemConfig, ComponentName>>
@@ -34,7 +35,7 @@ export function useImport() {
 
   function addComponent(name: string, component: Component) {
     if (components[name]) {
-      console.warn(`[AeForm]: The component ${name} already exists and will be overwritten`)
+      logger.warn('console.form.componentExists', { name })
     }
     components[name] = component
   }
@@ -43,17 +44,13 @@ export function useImport() {
     if (components[name]) {
       arrayStrategies[name] = isArrayFn
     } else {
-      console.error(
-        `[AeForm]: Failed to register component array strategy because the component ${name} does not exist`
-      )
+      logger.error('console.table.componentNotExist', { name })
     }
   }
 
   function addConfig(name: string, config: FormImportItemConfig) {
     if (componentConfigs[name]) {
-      console.warn(
-        `[AeForm]: The component configuration ${name} already exists and will be overwritten`
-      )
+      logger.warn('console.form.configExists', { name })
     }
     componentConfigs[name] = config
   }
@@ -71,10 +68,7 @@ export function useImport() {
     if (isArrayFn) {
       addArrayStrategy(name, isArrayFn)
     }
-    console.log(
-      '%c✓ [AeForm]: The component ${name} imported via the imports property has been successfully registered！',
-      'color: #4CAF50;'
-    )
+    logger.success('console.form.componentRegistered', { name })
   }
 
   function registerComponents(imports: FormImportItem[]) {

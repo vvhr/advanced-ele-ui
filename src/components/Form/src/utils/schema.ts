@@ -1,6 +1,6 @@
 import type { FormProps, FormSchema, ComponentProps } from '../types'
 import { isFunction } from '@/utils/is'
-
+import { logger } from '@/locale'
 export function isHidden(schema: FormSchema, formModel: Recordable, props: FormProps) {
   return getSchemaPropValue(schema.hidden, schema, formModel, props, 'boolean', false)
 }
@@ -94,7 +94,7 @@ export function getTrueComponentProps(
                 props.excontext
               )
             } catch (e) {
-              console.error('动态属性错误:', e)
+              logger.error('console.form.dynamicPropertyError', { key }, schema, e)
             } finally {
               delete schemaProps[key]
             }

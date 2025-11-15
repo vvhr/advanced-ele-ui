@@ -21,7 +21,7 @@
         v-model="tableData"
         :columns="tableColumns"
         :form="{}"
-        :data-source="{}"
+        :excontext="{}"
         :dict="{}"
         :pagination="tablePagination"
         :loading="tableLoading"
@@ -39,7 +39,7 @@
         v-model="editableTableData"
         :columns="editableTableColumns"
         :form="{}"
-        :data-source="{}"
+        :excontext="{}"
         :dict="{}"
         :editable="true"
         border

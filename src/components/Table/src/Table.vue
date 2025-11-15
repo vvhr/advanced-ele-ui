@@ -1,12 +1,16 @@
 <script lang="tsx">
-import { defineComponent, ref, computed, onMounted, unref, type PropType, type VNode } from 'vue'
+import {
+  defineComponent,
+  ref,
+  computed,
+  onMounted,
+  onUnmounted,
+  unref,
+  type PropType,
+  type VNode
+} from 'vue'
 import { ElTable, TableColumnCtx, ElForm } from 'element-plus'
-import type {
-  TableProps,
-  TableColumn,
-  Pagination,
-  TableFormImportItem
-} from './types'
+import type { TableProps, TableColumn, Pagination, TableFormImportItem } from './types'
 import type { ElTableEventHanders } from './internal-types'
 import type { DictMap } from '@/types/dict'
 import { renderPagination } from './render/RenderPagination'
@@ -16,6 +20,13 @@ import { findColumnByField, findColumnByKey } from './utils'
 import { formatAmount } from '@/utils/format'
 import { useDict, UseDictTools } from '@/utils/dict'
 import { useImport } from './hook/useImport'
+import { logger } from '@/locale'
+import {
+  DEFAULT_PAGE_INDEX,
+  DEFAULT_PAGE_SIZE,
+  DEFAULT_EMPTY_VALUE,
+  DEFAULT_ROW_KEY
+} from './constants'
 export default defineComponent({
   name: 'AeTable',
   props: {
@@ -45,11 +56,11 @@ export default defineComponent({
     },
     page: {
       type: Number,
-      default: 1
+      default: DEFAULT_PAGE_INDEX
     },
     pageSize: {
       type: Number,
-      default: 10
+      default: DEFAULT_PAGE_SIZE
     },
     ellipsis: {
       type: Boolean,
@@ -77,11 +88,11 @@ export default defineComponent({
     },
     rowKey: {
       type: String,
-      default: 'id'
+      default: DEFAULT_ROW_KEY
     },
     emptyValue: {
       type: String,
-      default: '-'
+      default: DEFAULT_EMPTY_VALUE
     },
     // 自适应高度和宽度
     adaptive: {
@@ -126,7 +137,7 @@ export default defineComponent({
     'action'
   ],
   setup(props, { attrs, slots, emit, expose }) {
-    const { components, arrayStrategies, componentConfigs, registerComponents } = useImport()
+    const { components, componentConfigs, registerComponents } = useImport()
     registerComponents(props.imports)
 
     // 声明 elTableRef 实例
@@ -138,7 +149,7 @@ export default defineComponent({
     // 声明分页器的属性
     const { pageSizeRef, currentPageRef, pagination, watchPage } = usePagination(props, emit)
     // 监听分页器属性
-    watchPage()
+    const stopWatchPage = watchPage()
 
     // 清洗需要透传给el-table的属性
     const elTableAttrs = computed(() => {
@@ -241,6 +252,9 @@ export default defineComponent({
     onMounted(() => {
       emit('register', elTableRef.value)
     })
+    onUnmounted(() => {
+      stopWatchPage()
+    })
 
     const elTableHanders: ElTableEventHanders = {
       handleSelectionChange: (selection: Recordable[]) => {
@@ -260,7 +274,7 @@ export default defineComponent({
     function updateSelections(rows: Recordable[]) {
       selections.value = rows
       if (!props.rowKey) {
-        console.warn('[AeTable] rowKey is required when selection is enabled')
+        logger.warn('console.table.rowKeyRequired')
         return
       }
       if (rows.length) {
@@ -278,11 +292,7 @@ export default defineComponent({
     }
 
     async function validate() {
-      return props.editable
-        ? await elFormRef.value?.validate((valid, fields) => {
-            console.log(valid, fields)
-          })
-        : true
+      return props.editable ? await elFormRef.value?.validate() : true
     }
 
     function resetValidate() {
@@ -324,20 +334,24 @@ export default defineComponent({
 <style lang="less">
 .ae-table {
   width: 100%;
+
   &.is-adaptive {
     height: 100%;
     display: flex;
     flex-direction: column;
     width: 100%;
+
     // 仅修改顶层的子级表单样式, 避免影响嵌套的子级表单样式
     > .ae-table-form {
       flex: 1;
       width: 100%;
       height: 0;
+
       > .ae-table-main {
         height: 100%;
       }
     }
+
     // 仅修改顶层的表格样式, 避免影响嵌套的子级表格样式
     > .ae-table-main {
       flex: 1;
@@ -345,27 +359,33 @@ export default defineComponent({
       height: 0;
     }
   }
+
   .copyable-icon {
     cursor: pointer;
     color: #959595;
     transition: color 0.1s ease-in;
+
     &:hover {
       color: var(--el-color-primary);
     }
   }
+
   .clickable-text {
     color: var(--el-color-primary);
     cursor: pointer;
     max-width: fit-content;
+
     &:hover {
       text-decoration: underline;
     }
   }
+
   .el-table__body {
     .ae-table-column-editable {
       padding: 4px 0;
     }
   }
+
   .el-table__cell {
     .cell {
       // 优化el-form-item样式, 使其上下空白相等
@@ -373,6 +393,7 @@ export default defineComponent({
         margin-bottom: 15px;
         margin-top: 15px;
       }
+
       > .ae-table-cell-value {
         // 移除el-button默认的相邻间距
         .el-button + .el-button {
@@ -381,6 +402,7 @@ export default defineComponent({
       }
     }
   }
+
   .has-append {
     .el-table__append-wrapper {
       overflow: hidden;
@@ -388,21 +410,25 @@ export default defineComponent({
       height: 42px;
     }
   }
+
   .ae-table-append {
     position: absolute;
     bottom: 0;
     width: 100%;
     z-index: 2;
+
     .ae-table-append-selection {
       padding: 10px 15px;
       width: 100%;
       border-top: 1px solid #f2f3f6;
       background: white;
+
       > .total {
         color: var(--el-color-primary);
       }
     }
   }
+
   .ae-table-pagination {
     padding: 15px 0;
   }

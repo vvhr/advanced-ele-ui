@@ -5,6 +5,7 @@ import type { ComponentName, FormProps, FormSchema } from '../types'
 import { findNode, findNodes } from '@/utils/tree'
 import { getFirstAttr } from '@/utils/get'
 import { getTrueComponentProps, getValue, isHidden } from '../utils/schema'
+import { t } from '@/locale'
 
 export function useForm(
   props: FormProps,
@@ -162,13 +163,12 @@ export function useForm(
           const tableRef = getComponentRef(item.key || item.field)
           if (tableRef) {
             const valid = await tableRef?.validate()
-            console.log('valid', valid)
             if (valid === false) {
               const fieldLabel = item?.label || item?.field
               if (fieldLabel && props.showErrorNotice) {
                 ElNotification({
-                  title: fieldLabel + ' 填写有误',
-                  message: '请检查表格是否按要求填写',
+                  title: t('form.validation.tableError', { field: fieldLabel }),
+                  message: t('form.validation.checkTable'),
                   type: 'warning'
                 })
               }
@@ -192,7 +192,7 @@ export function useForm(
           const fieldLabel = findSchema?.label || findSchema?.field
           if (fieldLabel) {
             ElNotification({
-              title: fieldLabel + ' 填写有误',
+              title: t('form.validation.fieldError', { field: fieldLabel }),
               message: firstRule[0].message,
               type: 'warning'
             })

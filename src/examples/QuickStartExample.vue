@@ -33,6 +33,28 @@ app.mount('#app')</code></pre>
 
     <el-card class="demo-card">
       <template #header>
+        <span>🌍 国际化配置</span>
+      </template>
+      <div class="type-support-content">
+        <p class="description">组件库支持中英文，默认为中文。可以全局设置语言：</p>
+        <div class="method-title">设置为英文</div>
+        <pre class="code-block"><code>app.use(AdvancedEleUI, {
+  locale: 'en-US'
+})</code></pre>
+        <div class="method-title">运行时切换</div>
+        <pre class="code-block"><code>import { setLocale } from 'advanced-ele-ui'
+
+// 切换到英文
+setLocale('en-US')
+
+// 切换到中文
+setLocale('zh-CN')</code></pre>
+        <p class="tip">💡 全局配置后，所有组件都会自动使用设置的语言，无需在每个组件中单独配置</p>
+      </div>
+    </el-card>
+
+    <el-card class="demo-card">
+      <template #header>
         <span>📝 按需引入</span>
       </template>
       <pre
@@ -126,8 +148,7 @@ const formSchemas: AeFormSchema[] = [
   </div>
 </template>
 
-<script setup lang="ts">
-</script>
+<script setup lang="ts"></script>
 
 <style scoped>
 .demo-section {

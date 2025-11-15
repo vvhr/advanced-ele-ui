@@ -15,6 +15,7 @@ import { getSlot, getStyleWidth } from '@/utils/get'
 import { isExistAttr, isFunction } from '@/utils/is'
 import type { Component, ComputedRef, Ref, VNode } from 'vue'
 import { useComponent } from '../hook/useComponent'
+import { logger } from '@/locale'
 export function useRenderForm(
   props: FormProps,
   emits: FormEmits,
@@ -37,7 +38,7 @@ export function useRenderForm(
   ): VNode | undefined {
     // 检查组件是否在组件映射中
     if (!schema.component || !isExistAttr(components, schema.component)) {
-      console.error(`[AeForm]: The configuration of the Container type component is abnormal, The component ${schema.component} does not exist`)
+      logger.error('console.form.componentNotExist', { type: 'Container', component:  schema.component }, schema)
       return undefined
     }
     const { getAnyComponent, freshKey, setComponentProps, setInsideSlots } = useComponent(
@@ -64,7 +65,7 @@ export function useRenderForm(
           </AnyComponent>
         )
       } else {
-        console.error(`[AeForm]: The configuration of the Container type component is abnormal, please check if the component ${schema.component} is correct!`)
+        logger.error('console.form.componentError', { type: 'Container', component:  schema.component }, schema)
         return undefined
       }
     }
@@ -76,7 +77,7 @@ export function useRenderForm(
   function renderDecorator(schema: FormSchema, componentProps: ComponentProps): VNode | undefined {
     // 检查组件是否在组件映射中
     if (!schema.component || !isExistAttr(components, schema.component)) {
-      console.error(`[AeForm]: The configuration of the Decorator type component is abnormal, The component ${schema.component} does not exist`)
+      logger.error('console.form.componentNotExist', { type: 'Decorator', component:  schema.component }, schema)
       return undefined
     }
     const {
@@ -100,7 +101,7 @@ export function useRenderForm(
           </AnyComponent>
         )
       } else {
-        console.error(`[AeForm]: The configuration of the Decorator type component is abnormal, please check if the component ${schema.component} is correct!`)
+        logger.error('console.form.componentError', { type: 'Decorator', component:  schema.component }, schema)
         return undefined
       }
     }
@@ -137,7 +138,7 @@ export function useRenderForm(
   ): VNode | undefined {
     // 检查组件是否在组件映射中
     if (!schema.component || !isExistAttr(components, schema.component)) {
-      console.error(`[AeForm]: The configuration of the Inputer type component is abnormal, The component ${schema.component} does not exist`)
+      logger.error('console.form.componentNotExist', { type: 'Inputer', component:  schema.component }, schema)
       return undefined
     }
     const {
@@ -176,7 +177,7 @@ export function useRenderForm(
           </AnyComponent>
         )
       } else {
-        console.error(`[AeForm]: The configuration of the Inputer type component is abnormal, please check if the component ${schema.component} is correct!`)
+        logger.error('console.form.componentError', { type: 'Inputer', component:  schema.component }, schema)
         return undefined
       }
     }
@@ -215,22 +216,8 @@ export function useRenderForm(
       if (slots[slotKey]) {
         return getSlot(slots, slotKey, formModel.value) as any
       }
-      console.error(
-        `%c[AeForm] Custom component configuration exception%c
-Please use one of the following methods:
-%c1. use render:%c render: (form, column, disabled, excontext) => ...
-%c2. use slot:%c <template #\${slotKey}>...</template>`,
-        'color: #fff; background: #f44336; padding: 4px 8px; border-radius: 3px; font-weight: bold;',
-        'color: #f44336; font-weight: bold; margin: 8px 0;',
-        'color: #4CAF50; font-weight: bold;',
-        'color: #333;',
-        'color: #4CAF50; font-weight: bold;',
-        'color: #333;'
-      );
     }
-    console.error(
-      `[AeForm]: Custom component configuration exception, if you expect to use a custom render component, please write the component content using the render property or slot!`
-    )
+    logger.error('console.form.customComponentError', undefined, schema)
     return undefined
   }
 
@@ -293,17 +280,17 @@ Please use one of the following methods:
     // 获取组件key
     const key = schema.key ?? schema.field
     if (!key) {
-      console.error(`[AeForm]: The component must set the key property or the field property, unable to render schema:`, schema)
+      logger.error('console.form.keyRequired', undefined, schema)
       return undefined
     }
     // 根据组件类型
     const type = schema.type ?? 'Inputer'
     switch (type) {
       case 'Step':
-        console.error(`[AeForm]: Unsupported nested Step type child components, unable to render schema:`, schema)
+        logger.error('console.form.nestedStepNotSupported', undefined, schema)
         return undefined
       case 'Descriptions':
-        console.error(`[AeForm]: Nested Descriptions type child components are not supported, unable to render schema:`, schema)
+        logger.error('console.form.nestedDescriptionsNotSupported', undefined, schema)
         return undefined
       case 'Custom': {
         const { getFormItemProps, slotKey, formItemLabel } = useFormItem(props, slots, schema, formModel)
@@ -399,7 +386,7 @@ Please use one of the following methods:
     // 获取组件key
     const key = schema.key ?? schema.field
     if (!key) {
-      console.error(`[AeForm]: The component must set the key property or the field property, unable to render schema:`, schema)
+      logger.error('console.form.keyRequired', undefined, schema)
       return undefined
     }
     const { getDescriptionsProps, getDescriptionsSlots } = useFormItem(props, slots, schema, formModel)
@@ -429,20 +416,20 @@ Please use one of the following methods:
     // 获取组件key
     const key = schema.key ?? schema.field
     if (!key) {
-      console.error(`[AeForm]: The component must set the key property or the field property, unable to render schema:`, schema)
+      logger.error('console.form.keyRequired', undefined, schema)
       return undefined
     }
     // 根据组件类型
     const type = schema.type ?? 'Inputer'
     switch (type) {
       case 'Step':
-        console.error(`[AeForm]: Unsupported nested Step type child components, unable to render schema:`, schema)
+        logger.error('console.form.nestedStepNotSupported', undefined, schema)
         return undefined
       case 'Container':
-        console.error(`[AeForm]: Nested Container type child components are not supported, cannot render schema:`, schema)
+        logger.error('console.form.nestedContainerNotSupported', undefined, schema)
         return undefined
       case 'Descriptions':
-        console.error(`[AeForm]: Nested Descriptions type child components are not supported, unable to render schema:`, schema)
+        logger.error('console.form.nestedDescriptionsNotSupported', undefined, schema)
         return undefined
       case 'Custom': {
         const { getFormItemProps, getDescriptionItemProps } = useFormItem(props, slots, schema, formModel)
@@ -551,7 +538,7 @@ Please use one of the following methods:
           if (item.type == 'Container' || item.type === 'Descriptions') {
             return true
           } else {
-            console.error(`[AeForm]: In desc mode, please wrap all components within the Descriptions component, the current component is not wrapped within Descriptions, please check schema:`, item)
+            logger.error('console.form.wrapInDescriptions', undefined, item)
             return false
           }
         })

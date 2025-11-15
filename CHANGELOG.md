@@ -4,6 +4,26 @@ English | [简体中文](./CHANGELOG.zh.md)
 
 ---
 
+## [0.0.9-beta] - 2025-11-15
+
+### New Features
+* The entry function `install` of the component library has added a `locale` configuration item to achieve the full internationalization functionality of the component library. The default will load the `zh-CN` language, and you can set it to `en-US` if you want to use another language. You can also customize the configuration through `customLocale`. All static texts and console messages in this project now support internationalization.
+* The dependency plugin `dayjs` will also switch language according to the current component library language type.
+
+### Refactoring
+* Component [AeTable] has undergone a small-scale refactoring, decoupling the column rendering process to facilitate future expansion and improve code readability, with no impact on the original functionality.
+* The global constant `AUTO_RULES_MAP` has been removed and replaced with the `getAutoRulesMap` method to support internationalization.
+
+### Bug Fixes
+* When component [AeEditor] is `disabled`: `true` and the content is empty, the width was abnormal. This has been fixed by adding `width: 100%`.
+* The `watchPage()` function in component [AeTable] was not destroyed when the component was destroyed, which may have caused potential memory leak risks. This has now been fixed.
+
+### Documentation
+* The document [README.md] has added specific usage and explanations about the internationalization feature.
+
+
+---
+
 ## [0.0.8-beta] - 2025-11-14
 
 ### Features

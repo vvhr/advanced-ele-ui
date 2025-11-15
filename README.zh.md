@@ -32,15 +32,63 @@
 > 2025.11.10
 
 ## Introduction
-Advanced Element UI 是一个基于 Element Plus 深度封装的高级组件库，专注于提升中后台系统的开发效率。
-Element Plus 作为 Vue 3 生态中最受欢迎的 UI 组件库之一，其最大优势在于**保持原生、不过度封装**，这为二次开发提供了极大的灵活性。基于这一特点，我们打造了 Advanced Element UI，通过**配置化驱动**的方式，让复杂的表单和表格开发变得简单高效。
-本项目的 `AeForm` 和 `AeTable` 组件完全基于配置数据驱动渲染，实现了**页面、组件、业务逻辑的完全解耦**。开发者只需关注配置项，即可快速构建复杂的业务场景，大幅减少重复代码，提升开发效率。
+
+Advanced Element UI 是一个基于 Vue 3 和 Element Plus 构建的**配置驱动**高级组件库，旨在解决企业级应用中重复编码的痛点。
+
+### 🎯 解决什么问题？
+
+**传统开发痛点：**
+- ❌ 复杂表单需要编写数百行模板代码
+- ❌ 重复的表格列定义和数据格式化逻辑
+- ❌ 验证规则和业务逻辑分散难以维护
+- ❌ 动态表单和可编辑表格实现困难
+- ❌ 缺少统一的国际化解决方案
+
+**我们的解决方案：**
+- ✅ **配置驱动**：用简单的 JSON 配置定义复杂的表单和表格
+- ✅ **完全解耦**：UI、数据、业务逻辑分离，易于维护
+- ✅ **功能丰富**：内置数据联动、动态属性、行内编辑等高级功能
+- ✅ **类型安全**：完整的 TypeScript 支持，智能代码补全
+- ✅ **可扩展性**：注册自定义组件，保持 Element Plus 风格
+
+### 💡 核心理念
+
+我们相信**中后台 80% 的页面都遵循相似的模式**。与其编写重复代码，开发者应该专注于**业务逻辑和数据流**。Advanced Element UI 将复杂的 UI 开发转化为简单的配置管理，减少 70%+ 的代码量，同时提升可维护性。
+
+### 🚀 快速示例
+
+**传统方式**（100+ 行）：
+```vue
+<template>
+  <el-form :model="form" :rules="rules">
+    <el-form-item label="姓名" prop="name">
+      <el-input v-model="form.name" placeholder="请输入姓名" />
+    </el-form-item>
+    <!-- ... 20+ 个类似的表单项 -->
+  </el-form>
+</template>
+```
+
+**Advanced Element UI 方式**（10 行）：
+```vue
+<template>
+  <AeForm :model="form" :schemas="schemas" />
+</template>
+
+<script setup>
+const schemas = [
+  { field: 'name', label: '姓名', component: 'Input' },
+  // ... 简单配置
+]
+</script>
+```
 
 ## Features
 - **开箱即用**：基于 Element Plus，无缝集成到 Vue 3 项目
 - **风格统一**：二次封装的组件在组件属性和样式上遵循 Element Plus 的风格
 - **数据驱动**：所有组件都遵循**由配置驱动渲染**的核心思想，拒绝硬编码
 - **丰富图标**：集成 Iconify，支持 10 万+ 图标库
+- **国际化支持**：内置中英文国际化，一行代码即可切换语言
 - **类型定义**：完整的类型定义和注释，提供良好的开发体验
 - **自由扩展**：`AeForm` 和 `AeTable` 提供了注册函数，可自行注册任何遵循 Element Plus 属性风格的组件。
 
@@ -100,6 +148,21 @@ const app = createApp(App)
 app.use(ElementPlus)
 app.use(AdvancedEleUI)
 app.mount('#app')
+```
+
+#### 国际化配置
+
+组件库支持中英文，默认为中文。可以全局设置语言：
+
+```typescript
+// 设置为英文
+app.use(AdvancedEleUI, {
+  locale: 'en-US'
+})
+
+// 或运行时切换
+import { setLocale } from 'advanced-ele-ui'
+setLocale('en-US')
 ```
 
 #### TypeScript 全局组件类型支持

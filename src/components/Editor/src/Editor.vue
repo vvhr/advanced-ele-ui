@@ -320,5 +320,6 @@ export default defineComponent({
   border: 1px solid var(--el-border-color);
   border-radius: var(--el-border-radius-base);
   overflow-y: auto;
+  width: 100%;
 }
 </style>

@@ -9,7 +9,9 @@ import type { ElTableEventHanders } from '../internal-types'
 import { ElTable, ElForm, vLoading } from 'element-plus'
 import { renderTableColumns } from '../render/RenderTableColumn'
 import {type Ref, withDirectives, unref, type Component} from 'vue'
-import type { UseDictTools } from "@/utils/dict";
+import type { UseDictTools } from "@/utils/dict"
+import { t } from '@/locale'
+import { replacePlaceholder } from '@/locale/utils'
 
 export function renderTable(
   props: TableProps,
@@ -33,10 +35,12 @@ export function renderTable(
   }
   const renderElTableAppend = () => {
     if (selections.value && selections.value.length > 0) {
+      const selectedText = t('table.selection.selected')
+      const itemsText = t('table.selection.items')
       return (
         <div class="ae-table-append">
           <div class="ae-table-append-selection">
-            当前已选择 <span class="total">{selections.value.length}</span> 条数据
+            {selectedText} <span class="total">{selections.value.length}</span> {itemsText}
           </div>
         </div>
       )

@@ -10,7 +10,7 @@ import type { FormItemRule } from 'element-plus'
 import { DEFAULT_DESCS_ATTRS} from '../constants'
 import {isFunction} from "@/utils/is";
 import {getSlot} from "@/utils/get";
-import { AUTO_RULES_MAP } from '@/utils/rules'
+import { getAutoRulesMap } from '@/utils/rules'
 
 interface UserFormItemData {
   trueComponentProps: ComponentProps
@@ -93,9 +93,10 @@ export function useFormItem(
     // 如果已定义autoRules
     if (schema.formItemProps?.autoRules?.length) {
       const rules: FormItemRule[] = []
+      const autoRulesMap = getAutoRulesMap()
       schema.formItemProps.autoRules.forEach((ruleName: string) => {
-        if (AUTO_RULES_MAP[ruleName] !== undefined) {
-          const rule = Object.assign({}, AUTO_RULES_MAP[ruleName])
+        if (autoRulesMap[ruleName] !== undefined) {
+          const rule = Object.assign({}, autoRulesMap[ruleName])
           rule.message = rule.message.replace('{label}', formItemLabel.value)
           rules.push(rule)
         }

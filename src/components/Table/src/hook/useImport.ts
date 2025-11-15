@@ -6,6 +6,7 @@ import type {
 import type { Component } from 'vue'
 import { shallowReactive } from 'vue'
 import { defaultComponents, defaultArrayStrategies } from '../component'
+import { logger } from '@/locale'
 
 type Components = Partial<Recordable<Component, ComponentName>>
 type ComponentConfigs = Partial<Recordable<ImportItemConfig, ComponentName>>
@@ -37,7 +38,7 @@ export function useImport() {
 
   function addComponent(name: string, component: Component) {
     if (components[name]) {
-      console.warn(`[AeTable]: The component ${name} already exists and will be overwritten`)
+      logger.warn('console.table.componentExists', { name })
     }
     components[name] = component
   }
@@ -46,17 +47,13 @@ export function useImport() {
     if (components[name]) {
       arrayStrategies[name] = isArrayFn
     } else {
-      console.error(
-        `[AeTable]: Failed to register component array strategy because the component ${name} does not exist`
-      )
+      logger.error('console.table.componentNotExist', { name })
     }
   }
 
   function addConfig(name: string, config: ImportItemConfig) {
     if (componentConfigs[name]) {
-      console.warn(
-        `[AeTable]: The component configuration ${name} already exists and will be overwritten`
-      )
+      logger.warn('console.table.configExists', { name })
     }
     componentConfigs[name] = config
   }
@@ -74,10 +71,7 @@ export function useImport() {
     if (isArrayFn) {
       addArrayStrategy(name, isArrayFn)
     }
-    console.log(
-      '%c✓ [AeTable]: The component ${name} imported via the imports property has been successfully registered！',
-      'color: #4CAF50;'
-    )
+    logger.success('console.table.componentRegistered', { name })
   }
 
   function registerComponents(imports: ImportItem[]) {

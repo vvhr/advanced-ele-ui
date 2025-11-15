@@ -33,17 +33,63 @@ English | [简体中文](./README.zh.md)
 > 2025.11.10
 
 ## Introduction
-Advanced Element UI is an advanced component library deeply encapsulated based on Element Plus, focusing on improving the development efficiency of middle and back-end systems.
 
-Element Plus, as one of the most popular UI component libraries in the Vue 3 ecosystem, has its greatest advantage in **staying native and not over-encapsulating**, which provides great flexibility for secondary development. Based on this feature, we created Advanced Element UI, making complex form and table development simple and efficient through **configuration-driven** approach.
+Advanced Element UI is a **configuration-driven** advanced component library built on Vue 3 and Element Plus, designed to solve the pain points of repetitive coding in enterprise applications.
 
-The `AeForm` and `AeTable` components of this project are completely driven by configuration data, achieving **complete decoupling of pages, components, and business logic**. Developers only need to focus on configuration items to quickly build complex business scenarios, greatly reducing repetitive code and improving development efficiency.
+### 🎯 What Problems Does It Solve?
+
+**Traditional Development Pain Points:**
+- ❌ Writing hundreds of lines of template code for complex forms
+- ❌ Repetitive table column definitions and data formatting logic
+- ❌ Scattered validation rules and business logic
+- ❌ Difficult to maintain dynamic forms and editable tables
+- ❌ Lack of unified internationalization solution
+
+**Our Solution:**
+- ✅ **Configuration-Driven**: Define complex forms and tables with simple JSON configurations
+- ✅ **Complete Decoupling**: Separate UI, data, and business logic for better maintainability
+- ✅ **Rich Features**: Built-in data linkage, dynamic properties, inline editing, and more
+- ✅ **Type Safety**: Full TypeScript support with intelligent code completion
+- ✅ **Extensibility**: Register custom components while maintaining Element Plus style
+
+### 💡 Core Philosophy
+
+We believe that **80% of middle and back-end pages follow similar patterns**. Instead of writing repetitive code, developers should focus on **business logic and data flow**. Advanced Element UI transforms complex UI development into simple configuration management, reducing code by 70%+ while improving maintainability.
+
+### 🚀 Quick Example
+
+**Traditional Way** (100+ lines):
+```vue
+<template>
+  <el-form :model="form" :rules="rules">
+    <el-form-item label="Name" prop="name">
+      <el-input v-model="form.name" placeholder="Please enter name" />
+    </el-form-item>
+    <!-- ... 20+ similar form items -->
+  </el-form>
+</template>
+```
+
+**Advanced Element UI Way** (10 lines):
+```vue
+<template>
+  <AeForm :model="form" :schemas="schemas" />
+</template>
+
+<script setup>
+const schemas = [
+  { field: 'name', label: 'Name', component: 'Input' },
+  // ... simple configuration
+]
+</script>
+```
 
 ## Features
 - **Out of the Box**: Based on Element Plus, seamlessly integrated into Vue 3 projects
 - **Unified Style**: Secondary encapsulated components follow Element Plus style in component properties and styles
 - **Data Driven**: All components follow the core idea of **rendering driven by configuration**, rejecting hard coding
 - **Rich Icons**: Integrated with Iconify, supporting 100,000+ icon libraries
+- **Internationalization**: Built-in i18n support for Chinese and English, easily switchable with one line of code
 - **Type Definitions**: Complete type definitions and comments, providing a good development experience
 - **Free Extension**: `AeForm` and `AeTable` provide registration functions, allowing you to register any component that follows Element Plus property style
 
@@ -101,6 +147,21 @@ const app = createApp(App)
 app.use(ElementPlus)
 app.use(AdvancedEleUI)
 app.mount('#app')
+```
+
+#### Internationalization (i18n)
+
+The component library supports Chinese and English. Default is Chinese. You can set the language globally:
+
+```typescript
+// Set to English
+app.use(AdvancedEleUI, {
+  locale: 'en-US'
+})
+
+// Or switch at runtime
+import { setLocale } from 'advanced-ele-ui'
+setLocale('en-US')
 ```
 
 #### TypeScript Global Component Type Support

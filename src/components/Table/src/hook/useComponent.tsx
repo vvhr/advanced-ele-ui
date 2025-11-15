@@ -15,8 +15,10 @@ import {
 } from '../types'
 import { setReactiveValue } from '@/utils/set'
 import type {FormItemRule} from "element-plus";
-import { AUTO_RULES_MAP } from "@/utils/rules";
+import { getAutoRulesMap } from "@/utils/rules";
 import {isDisabled} from "@/components/Table/src/utils.ts";
+import { t } from '@/locale'
+import { getPlaceholder } from '@/locale/utils'
 
 export function useComponent(
   props: TableProps,
@@ -52,10 +54,10 @@ export function useComponent(
         ? componentConfigs[componentName]?.modelValueKey || 'modelValue'
         : 'modelValue'
       return {
-        [modelValueKey]: get(formModel.value, field),
+        [modelValueKey]: get(formModel, field),
         [`onUpdate:${modelValueKey}`]: (value: any) => {
           // 使用响应式安全的方式更新值
-          setReactiveValue(formModel.value, field, value)
+          setReactiveValue(formModel, field, value)
         }
       }
     }
@@ -66,9 +68,10 @@ export function useComponent(
     // 如果已定义autoRules
     if (column.editProps?.formItemProps?.autoRules?.length) {
       const rules: FormItemRule[] = []
+      const autoRulesMap = getAutoRulesMap()
       column.editProps.formItemProps.autoRules.forEach((ruleName: string) => {
-        if (AUTO_RULES_MAP[ruleName] !== undefined) {
-          const rule = Object.assign({}, AUTO_RULES_MAP[ruleName])
+        if (autoRulesMap[ruleName] !== undefined) {
+          const rule = Object.assign({}, autoRulesMap[ruleName])
           rule.message = rule.message.replace('{label}', column.label || column.field)
           rules.push(rule)
         }
@@ -90,7 +93,7 @@ export function useComponent(
         width: '100%'
       },
       // 自动添加placeholder
-      ...getPlaceholder(column, props),
+      ...getPlaceholderText(column, props),
       // 注入组件属性
       ...(column.editProps?.componentProps || {}),
       // 自动处理选项
@@ -156,23 +159,27 @@ export function useComponent(
   }
 }
 
-function getPlaceholder(column: TableColumn, props: TableProps) {
+function getPlaceholderText(column: TableColumn, props: TableProps) {
   const needInputPlaceholder = ['Autocomplete', 'Editor', 'Input', 'InputNumber', 'Mention']
   const needSelectPlaceholder = ['Cascader', 'DatePicker', 'Select', 'TimePicker', 'TimeSelect']
   const componentName = column.editProps?.component || 'Input'
+  
   if (needInputPlaceholder.includes(componentName)) {
     return {
-      placeholder: '请填写' + column?.label || ''
+      placeholder: getPlaceholder(t('form.placeholder.input'), column?.label || '')
     }
   }
+  
   if (needSelectPlaceholder.includes(componentName)) {
+    const selectPlaceholder = getPlaceholder(t('form.placeholder.select'), column?.label || '')
     return {
-      startPlaceholder: '选择' + column?.label,
-      endPlaceholder: '选择' + column?.label,
+      startPlaceholder: t('form.placeholder.startDate'),
+      endPlaceholder: t('form.placeholder.endDate'),
       rangeSeparator: '-',
-      placeholder: '请选择' + column?.label || ''
+      placeholder: selectPlaceholder
     }
   }
+  
   return {}
 }
 

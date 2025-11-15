@@ -19,30 +19,37 @@ export function usePagination(props: TableProps, emit: TableEmits) {
   })
   function watchPage() {
     // 监听分页器变化
-    watch(
+    const stop1 = watch(
       () => pageSizeRef.value,
       (val: number) => {
         emit('update:pageSize', val)
       }
     )
-    watch(
+    const stop2 = watch(
       () => currentPageRef.value,
       (val: number) => {
         emit('update:page', val)
       }
     )
-    watch(
+    const stop3 = watch(
       () => unref(props).pageSize,
       (val: number) => {
         pageSizeRef.value = val
       }
     )
-    watch(
+    const stop4 = watch(
       () => unref(props).page,
       (val: number) => {
         currentPageRef.value = val
       }
     )
+
+    return () => {
+      stop1()
+      stop2()
+      stop3()
+      stop4()
+    }
   }
 
   return {

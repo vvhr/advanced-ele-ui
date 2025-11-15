@@ -1,6 +1,26 @@
 import dayjs from 'dayjs'
 import 'dayjs/locale/zh-cn'
-dayjs.locale('zh-cn')
+import 'dayjs/locale/en'
+import { logger, onLocaleChange } from '@/locale'
+import type { Language } from '@/locale/types'
+
+/**
+ * dayjs 语言映射
+ */
+const dayjsLocaleMap: Record<Language, string> = {
+  'zh-CN': 'zh-cn',
+  'en-US': 'en'
+}
+
+/**
+ * 同步 dayjs 语言设置
+ */
+function syncDayjsLocale(locale: Language) {
+  dayjs.locale(dayjsLocaleMap[locale] || 'zh-cn')
+}
+
+// 注册语言切换监听，自动同步 dayjs 语言
+onLocaleChange(syncDayjsLocale)
 
 /**
  * 对字符串进行脱敏处理。
@@ -43,15 +63,12 @@ export function formatDate(value: string | number | Date, formatString?: string)
   try {
     const date = dayjs(value)
     if (!date.isValid()) {
-      console.warn(`formatDate: 无法将输入值 "${value}" 解析为有效日期.`)
+      logger.warn('console.format.invalidDate', { value })
       return '' // 返回空字符串表示无效日期
     }
     return date.format(finalFormatString)
   } catch (error) {
-    console.error(
-      `formatDate: 格式化日期时发生错误。输入值: "${value}", 格式: "${finalFormatString}"`,
-      error
-    )
+    logger.error('console.format.dateFormatError', { value, format: finalFormatString }, error)
     return '' // 发生错误时返回空字符串
   }
 }

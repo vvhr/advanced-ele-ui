@@ -185,6 +185,7 @@ import {
   ElDropdownItem,
   ElIcon
 } from 'element-plus'
+import { logger, t } from '@/locale'
 import {
   Plus,
   Delete,
@@ -300,7 +301,7 @@ async function handleFileChange(e: Event) {
     const availableCount = props.limit - currentCount
 
     if (files.length > availableCount) {
-      ElMessage.warning(`最多只能上传 ${props.limit} 个文件`)
+      ElMessage.warning(t('upload.fileCountLimit', { limit: props.limit }))
       files.splice(availableCount)
     }
   }
@@ -337,7 +338,7 @@ async function processFile(file: File) {
       rawFile = compressedFile as any
       rawFile.uid = uid
     } catch (error) {
-      console.error('图片压缩失败:', error)
+      logger.error('console.upload.compressError', undefined, error)
       // 压缩失败，继续使用原文件
     }
   }
@@ -345,7 +346,7 @@ async function processFile(file: File) {
   // 检查文件大小（压缩后）
   if (props.sizeLimit && !checkFileSize(rawFile, props.sizeLimit)) {
     const limit = parseSizeLimit(props.sizeLimit)
-    ElMessage.error(`文件大小不能超过 ${formatFileSize(limit)}`)
+    ElMessage.error(t('upload.fileSizeLimit', { size: formatFileSize(limit) }))
     return
   }
 
@@ -360,7 +361,7 @@ async function processFile(file: File) {
 
   // 调用上传函数
   if (!props.upload) {
-    ElMessage.error('未配置上传函数')
+    ElMessage.error(t('upload.uploadFunctionRequired'))
     internalFileList.value = internalFileList.value.filter(item => item.uid !== internalFile.uid)
     return
   }
@@ -434,7 +435,7 @@ function handlePreview(file: UploadFile) {
     previewIndex.value = imageFiles.indexOf(url)
     showImageViewer.value = true
   } else {
-    ElMessage.info('该文件不支持预览')
+    ElMessage.info(t('upload.previewNotSupported'))
     // 非图片文件，触发 preview 事件
     emit('preview', file)
   }
@@ -465,7 +466,7 @@ function handleDownload(file: UploadFile) {
   // 默认下载逻辑
   const url = getFileUrl(file)
   if (!url) {
-    ElMessage.warning('暂不支持下载')
+    ElMessage.warning(t('upload.downloadNotSupported'))
     return
   }
 
