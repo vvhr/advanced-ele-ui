@@ -6,7 +6,8 @@ import {
   onBeforeUnmount,
   computed,
   watch,
-  unref
+  unref,
+  toRaw
 } from 'vue'
 import { FormSchema, FormImportItem, FormSchemaProps } from './types'
 import { useRenderForm } from './render/useRenderForm'
@@ -119,6 +120,7 @@ export default defineComponent({
     registerComponents(props.imports)
 
     const {
+      isValidating,
       formModel,
       elFormRef,
       baseElRowRef,
@@ -151,22 +153,28 @@ export default defineComponent({
     })
     // 监听表单结构化 - 优化版本
     const schemasFieldsHash = computed(() => {
+      // 使用 toRaw 避免访问响应式代理
+      const rawSchemas = toRaw(unref(props).schemas)
       // 只提取影响字段初始化的关键属性
       const extractFieldInfo = (schema: FormSchema): string => {
         const { key, field, type, component, value, children } = schema
         let info = `${field || key}:${type || 'Inputer'}:${component || ''}:${value !== undefined ? 'hasValue' : 'noValue'}`
         // 递归处理子组件
         if (children && Array.isArray(children)) {
-          info += ':children[' + children.map(extractFieldInfo).join(',') + ']'
+          // 只记录 children 的数量和 key，不深度遍历
+          info += `:children[${children.length}:${children.map(c => c.key || c.field).join(',')}]`
         }
         return info
       }
-      return unref(props).schemas.map(extractFieldInfo).join('|')
+      return rawSchemas.map(extractFieldInfo).join('|')
     })
 
     watch(
       schemasFieldsHash,
       () => {
+        // 在校验期间不执行初始化，避免不必要的重新渲染
+        if (isValidating.value) return
+
         // 为对象中不存在的组件字段进行创建
         unref(props).autoInitField && initValues(unref(formModel))
         resetValidate()

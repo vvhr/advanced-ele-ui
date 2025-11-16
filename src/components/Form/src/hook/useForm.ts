@@ -1,4 +1,4 @@
-import { ref, unref, type Component } from 'vue'
+import { ref, unref, type Component, toRaw } from 'vue'
 import { ElForm, ElRow, ElNotification } from 'element-plus'
 import { get, set, unset } from 'lodash-es'
 import type { ComponentName, FormProps, FormSchema } from '../types'
@@ -13,6 +13,7 @@ export function useForm(
   components: Recordable<Component, ComponentName>,
   arrayStrategies: Partial<Record<ComponentName, (cps: Recordable) => boolean>>
 ): {
+  isValidating: any
   formModel: any
   elFormRef: any
   baseElRowRef: any
@@ -29,6 +30,7 @@ export function useForm(
   resetValidate: () => void
   validate: () => Promise<any>
 } {
+  const isValidating = ref(false)
   const formModel = ref<Recordable>({})
   const elFormRef = ref<ComponentRef<typeof ElForm>>()
   const baseElRowRef = ref<ComponentRef<typeof ElRow>>()
@@ -155,7 +157,8 @@ export function useForm(
   async function validate() {
     const validateTables = async () => {
       // 找到所有可见的表格组件
-      const tableSchemas = findNodes(schemas, (node: FormSchema) => {
+      const rawSchemas = toRaw(schemas)
+      const tableSchemas = findNodes(rawSchemas, (node: FormSchema) => {
         return node.component === 'Table' && !isHidden(node, formModel.value, props)
       })
       if (tableSchemas?.length) {
@@ -180,8 +183,9 @@ export function useForm(
       return true
     }
 
-    return (
-      (await unref(elFormRef)?.validate((valid, fields) => {
+    isValidating.value = true
+    try {
+      const result = await unref(elFormRef)?.validate((valid, fields) => {
         // 如果配置了props.validateNotice = true 则自动提醒哪个字段校验未通过
         if (!valid && props.showErrorNotice) {
           const firstRule = getFirstAttr(fields)
@@ -198,11 +202,16 @@ export function useForm(
             })
           }
         }
-      })) && (await validateTables())
-    )
+      })
+      const tableResult = await validateTables()
+      return result && tableResult
+    } finally {
+      isValidating.value = false
+    }
   }
 
   return {
+    isValidating,
     formModel,
     elFormRef,
     baseElRowRef,

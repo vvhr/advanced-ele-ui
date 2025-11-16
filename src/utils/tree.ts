@@ -1,9 +1,21 @@
 export const findNode = <T = any>(tree: any, func: (node: any) => boolean): T | null => {
-  const list = Array.isArray(tree) ? tree : [...tree]
-  for (const node of list) {
-    if (func(node)) return node
-    node.children && list.push(...node.children)
+  const nodes = Array.isArray(tree) ? tree : [tree]
+  
+  for (const node of nodes) {
+    // 检查当前节点是否匹配
+    if (func(node)) {
+      return node
+    }
+    
+    // 递归查找子节点
+    if (node.children && Array.isArray(node.children) && node.children.length > 0) {
+      const found = findNode(node.children, func)
+      if (found) {
+        return found
+      }
+    }
   }
+  
   return null
 }
 
