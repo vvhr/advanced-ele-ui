@@ -214,6 +214,7 @@ import 'advanced-ele-ui/dist/style.css'
 - ✅ `AeIcon`: 动态图标组件: 基于 [Iconify](https://icon-sets.iconify.design/)，支持 10 万+ 图标库动态渲染。
 - ✅ `AeEditor`: 富文本组件: 基于 [AiEditor](https://aieditor.dev/docs) 二次封装的富文本组件，支持 AI 助手功能。
 - ✅ `AeUpload`: 上传组件: 原生实现的功能丰富的上传组件，组件本身不控制上传，完全交由您实现上传请求，组件专注于数据和样式。
+- ✅ `AeDialog`: 对话框组件: 基于 `el-dialog` 二次封装的高级对话框组件，支持拖拽、最大化、全屏等功能，关闭时自动销毁内容避免数据污染。
 
 ---
 
@@ -228,7 +229,7 @@ import 'advanced-ele-ui/dist/style.css'
 - ⬜ 构建 `advanced-ele-ui-docs` 组件库文档项目，以便为您提供更好的使用指南！
 
 ### 🔮 中期计划 (v1.x)
-- ⬜ `AeDialog`: 增强对话框组件，`el-dialog`目前在样式和功能上较为粗糙，我们将封装一个更美观且可控的对话框组件。
+- ✅ `AeDialog`: 增强对话框组件，`el-dialog`目前在样式和功能上较为粗糙，我们将封装一个更美观且可控的对话框组件。
 - ⬜ `AeDrawer`: 抽屉组件，同上。
 > 以下组件将独立发布为 **advanced-ai-ui** 组件包，以便按需引入。
 - ⬜ `AeInputAI`: 专用于 AI 聊天场景的对话框组件，支持自定义工具栏，文本输入、文件上传、图片上传、语音输入，支持主题切换。

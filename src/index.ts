@@ -7,12 +7,20 @@ import { Icon } from './components/Icon'
 import { Table } from './components/Table'
 import { Editor } from './components/Editor'
 import { Upload } from './components/Upload'
+import { Dialog } from './components/Dialog'
 
 // Export global types
 export * from './types'
 
 // Export components
-export { Form as AeForm, Icon as AeIcon, Table as AeTable, Editor as AeEditor, Upload as AeUpload }
+export {
+  Form as AeForm,
+  Icon as AeIcon,
+  Table as AeTable,
+  Editor as AeEditor,
+  Upload as AeUpload,
+  Dialog as AeDialog
+}
 
 // Export component's types
 // Form
@@ -103,6 +111,9 @@ export type {
   FileTemplate
 } from './components/Upload'
 
+// Dialog
+export type { AeDialogProps, AeDialogEmits } from './components/Dialog'
+
 // Rules
 export type { AutoRules } from './types/rules'
 export { getAutoRulesMap } from './utils/rules'
@@ -147,6 +158,7 @@ const install = (app: App, options?: InstallOptions) => {
   app.component('AeIcon', Icon)
   app.component('AeEditor', Editor)
   app.component('AeUpload', Upload)
+  app.component('AeDialog', Dialog)
 
   // 设置语言
   if (options?.locale) {

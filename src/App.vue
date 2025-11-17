@@ -40,6 +40,9 @@
       <el-tab-pane label="📄 AeUpload 文件上传" name="upload">
         <UploadExample v-if="activeTab === 'upload'" />
       </el-tab-pane>
+      <el-tab-pane label="💬 AeDialog 对话框" name="dialog">
+        <DialogExample v-if="activeTab === 'dialog'" />
+      </el-tab-pane>
     </el-tabs>
   </div>
 </template>
@@ -51,6 +54,7 @@ import TableExample from './examples/TableExample.vue'
 import IconExample from './examples/IconExample.vue'
 import EditorExample from './examples/EditorExample.vue'
 import UploadExample from './examples/UploadExample.vue'
+import DialogExample from './examples/DialogExample.vue'
 import QuickStartExample from './examples/QuickStartExample.vue'
 
 const activeTab = ref('start')
