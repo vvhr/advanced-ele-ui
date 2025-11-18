@@ -4,22 +4,30 @@ English | [简体中文](./CHANGELOG.zh.md)
 
 ---
 
-## [0.0.9-beta] - 2025-11-15
+## [0.0.9-beta] - 2025-11-18
 
 ### New Features
-* The entry function `install` of the component library has added a `locale` configuration item to achieve the full internationalization functionality of the component library. The default will load the `zh-CN` language, and you can set it to `en-US` if you want to use another language. You can also customize the configuration through `customLocale`. All static texts and console messages in this project now support internationalization.
-* The dependency plugin `dayjs` will also switch language according to the current component library language type.
+* The entry function `install` of the component library has added a `locale` configuration item to achieve full internationalization functionality for the component library. The default will load the `zh-CN` language, and you can set it to `en-US` if you want to use another language. You can also customize the configuration via `customLocale`. All static text and console messages in this project now support internationalization.
+* The dependent plugin `dayjs` will also switch languages according to the current locale of the component library.
+* New component [AeDialog], based on `el-dialog`, is re-encapsulated with optimized styles, content area scrolling, support for drag and full screen toggle, and custom title bar buttons.
+* New component [AeDrawer], based on `el-drawer`, is re-encapsulated with optimized styles, content area scrolling, and support for custom title bar buttons.
+* New components [AeTabs] and [AeTabPanel], based on `el-tabs`, have content areas initialized with `flex` layout and optimized rendering.
 
 ### Refactoring
-* Component [AeTable] has undergone a small-scale refactoring, decoupling the column rendering process to facilitate future expansion and improve code readability, with no impact on the original functionality.
+* Component [AeTable] has undergone a small-scale refactoring, decoupling the rendering process of columns to facilitate future expansion and improve code readability, without affecting the original functionality.
 * The global constant `AUTO_RULES_MAP` has been removed and replaced with the `getAutoRulesMap` method to support internationalization.
 
 ### Bug Fixes
-* When component [AeEditor] is `disabled`: `true` and the content is empty, the width was abnormal. This has been fixed by adding `width: 100%`.
-* The `watchPage()` function in component [AeTable] was not destroyed when the component was destroyed, which may have caused potential memory leak risks. This has now been fixed.
+* Component [AeEditor] had an abnormal width when `disabled`: `true` and content was empty. Now `width: 100%` has been added to resolve this issue.
+* Component [AeTable] had the `watchPage()` function not being destroyed when the component was destroyed, which may cause potential memory leakage risks. This issue has been fixed.
+* Component [AeForm] had an issue where the `tree/findNode` function flattened the input parameter `tree`, breaking its immutability and causing the original `schemas` to be abnormally modified during validation. This problem has been fixed by refactoring the `findNode` function.
+* Component [AeTable] simplified the strategy for initializing fields with incremental updates when listening for changes in the form structure (`watch(schemasFieldsHash)`), avoiding the monitoring of overly complex data structures.
 
 ### Documentation
 * The document [README.md] has added specific usage and explanations about the internationalization feature.
+* The page [DialogExample] has added usage examples for the `AeDialog` component.
+* The page [DrawerExample] has added usage examples for the `AeDrawer` component.
+* The page [TabsExample] has added usage examples for the `AeTabs` component.
 
 
 ---

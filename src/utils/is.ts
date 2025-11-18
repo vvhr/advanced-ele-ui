@@ -11,6 +11,13 @@ export function isFunction(val: unknown): val is Function {
 }
 
 /**
+ * 检查值是否是数值
+ */
+export function isNumber(val: unknown): val is number {
+  return typeof val === 'number'
+}
+
+/**
  * 检查值是否为对象类型（不包括 null）
  * @param value 要检查的值
  */

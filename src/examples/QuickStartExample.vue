@@ -125,17 +125,17 @@ const tableData = ref([
       </template>
       <pre class="code-block"><code>&lt;template&gt;
   &lt;!-- ❌ 按需引入需要显式导入组件 --&gt;
-  &lt;AeForm v-model="formModel" :schemas="formSchemas" /&gt;
+  &lt;AeForm :model="formModel" :schemas="formSchemas" /&gt;
 &lt;/template&gt;
 
 &lt;script setup lang="ts"&gt;
 import { ref } from 'vue'
 // ✅ 按需引入时需要导入组件和类型
-import { AeForm, type AeFormSchema } from 'advanced-ele-ui'
+import { AeForm, type FormSchema } from 'advanced-ele-ui'
 
 const formModel = ref&lt;Recordable&gt;({})
 
-const formSchemas: AeFormSchema[] = [
+const formSchemas: FormSchema[] = [
   {
     type: 'Inputer',
     component: 'Input',
@@ -147,8 +147,6 @@ const formSchemas: AeFormSchema[] = [
     </el-card>
   </div>
 </template>
-
-<script setup lang="ts"></script>
 
 <style scoped>
 .demo-section {

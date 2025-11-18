@@ -1,279 +1,168 @@
-<script lang="ts" setup>
-import { ref, computed, watch, nextTick, unref } from 'vue'
-import { ElDialog, ElButton } from 'element-plus'
-import { Close, FullScreen, CopyDocument } from '@element-plus/icons-vue'
-import type { AeDialogProps, AeDialogEmits } from './types'
-import { useDraggable } from './hooks/useDraggable'
+<script setup lang="ts">
+import { ElDialog, ElScrollbar } from 'element-plus'
+import { computed, useAttrs, ref, unref, useSlots, watch } from 'vue'
+import { isNumber } from '@/utils/is'
+import { Icon } from '@/components/Icon'
+const slots = useSlots()
 
-defineOptions({
-  name: 'AeDialog'
+const props = defineProps({
+  modelValue: {
+    type: Boolean,
+    default: false
+  },
+  title: {
+    type: String,
+    default: ''
+  },
+  fullscreen: {
+    type: Boolean,
+    default: false
+  },
+  maxHeight: {
+    type: [String, Number],
+    default: '400px'
+  },
+  draggable: {
+    type: Boolean,
+    default: false
+  },
+  scrollable: {
+    type: Boolean,
+    default: true
+  },
+  beforeClose: {
+    type: Function
+  }
 })
 
-const props = withDefaults(defineProps<AeDialogProps>(), {
-  modelValue: false,
-  title: '',
-  width: '50%',
-  draggable: true,
-  showMaximize: true,
-  showFullscreen: false,
-  destroyOnClose: true,
-  showHeaderBorder: true,
-  showFooterBorder: true,
-  autoFocus: true,
-  footer: 'default',
-  confirmText: '确定',
-  cancelText: '取消',
-  confirmType: 'primary',
-  showCancelButton: true,
-  showConfirmButton: true,
-  confirmLoading: false,
-  closeOnClickModal: false,
-  closeOnPressEscape: true
+const getBindValue = computed(() => {
+  const delArr: string[] = [
+    'fullscreen',
+    'title',
+    'maxHeight',
+    'draggable',
+    'scrollable',
+    'beforeClose'
+  ]
+  const attrs = useAttrs()
+  const obj = { ...attrs, ...props }
+  for (const key in obj) {
+    if (delArr.indexOf(key) !== -1) {
+      delete obj[key]
+    }
+  }
+  return obj
 })
 
-const emit = defineEmits<AeDialogEmits>()
-
-// 对话框引用
-const dialogRef = ref<InstanceType<typeof ElDialog>>()
-const headerRef = ref<HTMLElement>()
-
-// 内部可见状态
-const visible = computed({
-  get: () => props.modelValue,
-  set: (val) => emit('update:modelValue', val)
-})
-
-// 是否已挂载（用于控制内容销毁）
-const isMounted = ref(false)
-
-// 最大化状态
-const isMaximized = ref(false)
 const isFullscreen = ref(false)
 
-// 原始尺寸和位置（用于还原）
-const originalStyle = ref({
-  width: '',
-  top: ''
-})
+const toggleFull = () => {
+  isFullscreen.value = !unref(isFullscreen)
+}
 
-// 拖拽功能
-const { startDrag } = useDraggable(dialogRef, headerRef, isMaximized, isFullscreen)
+const dialogHeight = ref(isNumber(props.maxHeight) ? `${props.maxHeight}px` : props.maxHeight)
 
-// 监听可见状态
 watch(
-  visible,
-  (val) => {
-    if (val) {
-      isMounted.value = true
-      nextTick(() => {
-        if (props.autoFocus && dialogRef.value) {
-          // 自动聚焦到对话框
-          const dialogElement = dialogRef.value.$el as HTMLElement
-          const focusable = dialogElement.querySelector(
-            'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
-          ) as HTMLElement
-          focusable?.focus()
-        }
-      })
-    } else if (props.destroyOnClose) {
-      // 延迟销毁，等待关闭动画完成
-      setTimeout(() => {
-        isMounted.value = false
-        // 重置状态
-        isMaximized.value = false
-        isFullscreen.value = false
-      }, 300)
-    }
-  },
-  { immediate: true }
+  () => props.maxHeight,
+  val => {
+    dialogHeight.value = isNumber(val) ? `${val}px` : val
+  }
 )
 
-// 切换最大化
-const toggleMaximize = () => {
-  if (isFullscreen.value) return
-
-  const dialogElement = dialogRef.value?.$el?.querySelector('.el-dialog') as HTMLElement
-  if (!dialogElement) return
-
-  if (!isMaximized.value) {
-    // 保存原始样式
-    originalStyle.value = {
-      width: dialogElement.style.width || props.width as string,
-      top: dialogElement.style.top || '15vh'
-    }
-    // 最大化
-    dialogElement.style.width = 'calc(100% - 40px)'
-    dialogElement.style.top = '20px'
-    dialogElement.style.marginTop = '0'
-  } else {
-    // 还原
-    dialogElement.style.width = originalStyle.value.width
-    dialogElement.style.top = originalStyle.value.top
-    dialogElement.style.marginTop = ''
+const dialogStyle = computed(() => {
+  return {
+    height: unref(dialogHeight),
+    padding: '15px'
   }
-
-  isMaximized.value = !isMaximized.value
-}
-
-// 切换全屏
-const toggleFullscreen = () => {
-  isFullscreen.value = !isFullscreen.value
-  if (isFullscreen.value) {
-    isMaximized.value = false
-  }
-}
-
-// 处理关闭
-const handleClose = () => {
-  if (props.beforeClose) {
-    props.beforeClose(() => {
-      visible.value = false
-    })
-  } else {
-    visible.value = false
-  }
-}
-
-// 处理确认
-const handleConfirm = () => {
-  emit('confirm')
-}
-
-// 处理取消
-const handleCancel = () => {
-  emit('cancel')
-  handleClose()
-}
-
-// 对话框事件
-const handleOpen = () => {
-  emit('open')
-}
-
-const handleOpened = () => {
-  emit('opened')
-}
-
-const handleCloseEvent = () => {
-  emit('close')
-}
-
-const handleClosed = () => {
-  emit('closed')
-}
-
-// 暴露方法
-defineExpose({
-  toggleMaximize,
-  toggleFullscreen
 })
+
+function handleBeforeClose(done: any) {
+  props.beforeClose?.(done)
+}
 </script>
 
 <template>
   <ElDialog
-    ref="dialogRef"
-    v-model="visible"
-    :class="[
-      'ae-dialog',
-      {
-        'ae-dialog--maximized': isMaximized,
-        'ae-dialog--draggable': draggable,
-        'ae-dialog--header-border': showHeaderBorder,
-        'ae-dialog--footer-border': showFooterBorder
-      }
-    ]"
-    :width="width"
+    v-bind="getBindValue"
     :fullscreen="isFullscreen"
-    :close-on-click-modal="closeOnClickModal"
-    :close-on-press-escape="closeOnPressEscape"
-    v-bind="$attrs"
-    @open="handleOpen"
-    @opened="handleOpened"
-    @close="handleCloseEvent"
-    @closed="handleClosed"
+    destroy-on-close
+    lock-scroll
+    :draggable="draggable"
+    top="0"
+    :close-on-click-modal="false"
+    :show-close="false"
+    :before-close="handleBeforeClose"
+    class="ae-dialog"
   >
-    <!-- 自定义标题栏 -->
-    <template #header="{ close, titleId, titleClass }">
-      <div
-        ref="headerRef"
-        class="ae-dialog__header"
-        :class="{ 'ae-dialog__header--draggable': draggable && !isMaximized && !isFullscreen }"
-        @mousedown="draggable && !isMaximized && !isFullscreen ? startDrag($event) : undefined"
-      >
-        <span :id="titleId" :class="titleClass" class="ae-dialog__title">
-          <slot name="title">{{ title }}</slot>
-        </span>
-        <div class="ae-dialog__header-actions">
-          <!-- 全屏按钮 -->
-          <button
-            v-if="showFullscreen"
-            class="ae-dialog__header-btn"
-            type="button"
-            aria-label="fullscreen"
-            @click="toggleFullscreen"
-          >
-            <el-icon>
-              <FullScreen />
-            </el-icon>
-          </button>
-          <!-- 最大化按钮 -->
-          <button
-            v-if="showMaximize && !isFullscreen"
-            class="ae-dialog__header-btn"
-            type="button"
-            :aria-label="isMaximized ? 'restore' : 'maximize'"
-            @click="toggleMaximize"
-          >
-            <el-icon>
-              <CopyDocument />
-            </el-icon>
-          </button>
-          <!-- 关闭按钮 -->
-          <button
-            class="ae-dialog__header-btn ae-dialog__header-btn--close"
-            type="button"
-            aria-label="close"
-            @click="close"
-          >
-            <el-icon>
-              <Close />
-            </el-icon>
-          </button>
+    <template #header="{ close }">
+      <div class="flex justify-between items-center h-54px pl-15px pr-15px relative">
+        <div class="flex items-center">
+          <Icon v-if="draggable" icon="mdi:drag" class="draggable-indicator" :size="30" />
+          <slot name="title">
+            {{ title }}
+          </slot>
+        </div>
+        <div class="dialog-actions">
+          <slot name="header-actions"></slot>
+          <div v-if="fullscreen" class="dialog-action-btn" @click="toggleFull">
+            <Icon
+              :icon="
+                isFullscreen ? 'radix-icons:exit-full-screen' : 'radix-icons:enter-full-screen'
+              "
+            />
+          </div>
+          <div class="dialog-action-btn" @click="close">
+            <Icon icon="ep:close" />
+          </div>
         </div>
       </div>
     </template>
 
-    <!-- 内容区域 -->
-    <div v-if="isMounted || !destroyOnClose" class="ae-dialog__content">
-      <slot />
+    <ElScrollbar v-if="scrollable" :style="dialogStyle">
+      <slot></slot>
+    </ElScrollbar>
+    <div v-else class="dialog-body-no-scroll">
+      <slot></slot>
     </div>
 
-    <!-- 底部区域 -->
-    <template v-if="footer !== false" #footer>
-      <div class="ae-dialog__footer">
-        <slot name="footer">
-          <ElButton v-if="showCancelButton" @click="handleCancel">
-            {{ cancelText }}
-          </ElButton>
-          <ElButton
-            v-if="showConfirmButton"
-            :type="confirmType"
-            :loading="confirmLoading"
-            @click="handleConfirm"
-          >
-            {{ confirmText }}
-          </ElButton>
-        </slot>
-      </div>
+    <template v-if="slots.footer" #footer>
+      <slot name="footer"></slot>
     </template>
   </ElDialog>
 </template>
 
 <style lang="less">
+.el-overlay-dialog {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  .ae-dialog {
+    &.is-fullscreen {
+      width: 100%;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      .el-dialog__body {
+        flex: 1;
+        height: 0;
+        .el-scrollbar {
+          height: 100% !important;
+        }
+      }
+    }
+  }
+}
+
 .ae-dialog {
+  margin: 0 !important;
+  padding: 0;
   .el-dialog__header {
+    height: 54px;
     padding: 0;
-    margin: 0;
+    margin-right: 0 !important;
+    border-bottom: 1px solid var(--el-border-color);
+    background-color: var(--el-color-white);
+    z-index: 2;
   }
 
   .el-dialog__body {
@@ -281,121 +170,62 @@ defineExpose({
   }
 
   .el-dialog__footer {
-    padding: 0;
+    padding: 15px;
+    z-index: 2;
+    background-color: var(--el-color-white);
+    border-top: 1px solid var(--el-border-color);
   }
 
-  &.ae-dialog--header-border {
-    .ae-dialog__header {
-      border-bottom: 1px solid var(--el-border-color-lighter);
-    }
+  .el-dialog__headerbtn {
+    top: 0;
   }
 
-  &.ae-dialog--footer-border {
-    .ae-dialog__footer {
-      border-top: 1px solid var(--el-border-color-lighter);
-    }
-  }
-
-  .ae-dialog__header {
+  .dialog-actions {
     display: flex;
     align-items: center;
-    justify-content: space-between;
-    padding: var(--el-dialog-padding-primary);
-    user-select: none;
-
-    &--draggable {
-      cursor: move;
-    }
+    gap: 4px;
+    position: absolute;
+    top: 50%;
+    right: 15px;
+    transform: translateY(-50%);
   }
 
-  .ae-dialog__title {
-    flex: 1;
-    font-size: var(--el-dialog-title-font-size);
-    font-weight: 600;
-    color: var(--el-text-color-primary);
-    line-height: var(--el-dialog-font-line-height);
-  }
-
-  .ae-dialog__header-actions {
+  .dialog-action-btn {
     display: flex;
-    align-items: center;
-    gap: 8px;
-    margin-left: 16px;
-  }
-
-  .ae-dialog__header-btn {
-    display: inline-flex;
     align-items: center;
     justify-content: center;
-    width: 24px;
-    height: 24px;
-    padding: 0;
-    border: none;
-    background: transparent;
-    border-radius: var(--el-border-radius-base);
+    width: 32px;
+    height: 32px;
     cursor: pointer;
-    color: var(--el-text-color-regular);
-    transition: all 0.2s;
-    outline: none;
+    border-radius: 4px;
+    color: var(--el-color-info);
+    transition: all 0.2s ease;
 
     &:hover {
+      color: var(--el-color-primary);
       background-color: var(--el-fill-color-light);
-      color: var(--el-text-color-primary);
     }
 
     &:active {
       background-color: var(--el-fill-color);
     }
-
-    &--close:hover {
-      background-color: var(--el-color-danger);
-      color: #fff;
-    }
-
-    .el-icon {
-      font-size: 16px;
-    }
   }
 
-  .ae-dialog__content {
-    padding: var(--el-dialog-padding-primary);
-    color: var(--el-text-color-regular);
-    font-size: var(--el-dialog-content-font-size);
-    line-height: 1.6;
-  }
-
-  .ae-dialog__footer {
-    display: flex;
-    align-items: center;
-    justify-content: flex-end;
-    gap: 12px;
-    padding: var(--el-dialog-padding-primary);
-  }
-
-  // 最大化状态
-  &.ae-dialog--maximized {
-    .el-dialog {
-      margin-bottom: 20px;
-      height: calc(100vh - 40px);
-      display: flex;
-      flex-direction: column;
-
-      .el-dialog__body {
-        flex: 1;
-        overflow: auto;
-      }
+  .draggable-indicator {
+    color: var(--el-color-info);
+    cursor: move;
+    opacity: 0.8;
+    transition: opacity 0.2s ease;
+    margin-right: 5px;
+    &:hover {
+      opacity: 1;
     }
   }
 
-  // 全屏状态
-  .el-dialog.is-fullscreen {
+  .dialog-body-no-scroll {
+    height: 100%;
     display: flex;
     flex-direction: column;
-
-    .el-dialog__body {
-      flex: 1;
-      overflow: auto;
-    }
   }
 }
 </style>

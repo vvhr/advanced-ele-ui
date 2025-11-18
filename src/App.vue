@@ -1,5 +1,5 @@
 <template>
-  <div id="app" class="demo-container">
+  <div class="demo-container">
     <header class="demo-header">
       <a
         href="https://github.com/vvhr/advanced-ele-ui"
@@ -43,6 +43,12 @@
       <el-tab-pane label="💬 AeDialog 对话框" name="dialog">
         <DialogExample v-if="activeTab === 'dialog'" />
       </el-tab-pane>
+      <el-tab-pane label="💬 AeDrawer 抽屉" name="drawer">
+        <DrawerExample v-if="activeTab === 'drawer'" />
+      </el-tab-pane>
+      <el-tab-pane label="💬 AeTabs标签页" name="tabs">
+        <TabsExample v-if="activeTab === 'tabs'" />
+      </el-tab-pane>
     </el-tabs>
   </div>
 </template>
@@ -55,6 +61,8 @@ import IconExample from './examples/IconExample.vue'
 import EditorExample from './examples/EditorExample.vue'
 import UploadExample from './examples/UploadExample.vue'
 import DialogExample from './examples/DialogExample.vue'
+import DrawerExample from './examples/DrawerExample.vue'
+import TabsExample from './examples/TabsExample.vue'
 import QuickStartExample from './examples/QuickStartExample.vue'
 
 const activeTab = ref('start')
@@ -62,9 +70,11 @@ const activeTab = ref('start')
 
 <style scoped>
 .demo-container {
-  min-height: 100vh;
+  height: 100vh;
+  overflow: auto;
   background: linear-gradient(180deg, #0069fc 0%, #6faffe 100%);
   padding: 20px;
+  box-sizing: border-box;
 }
 
 .demo-header {

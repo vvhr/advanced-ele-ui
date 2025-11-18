@@ -25,6 +25,8 @@
         :disabled="editorProps.disabled"
         :mode="editorProps.mode"
         :add-toolbar-keys="editorProps.addToolbarKeys"
+        :editor-height="700"
+        :view-height="700"
       />
     </el-card>
   </div>

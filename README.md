@@ -145,7 +145,11 @@ import App from './App.vue'
 
 const app = createApp(App)
 app.use(ElementPlus)
-app.use(AdvancedEleUI)
+
+/** Use English Language */
+app.use(AdvancedEleUI, {
+  locale: 'en-US'
+})
 app.mount('#app')
 ```
 
@@ -201,7 +205,7 @@ After configuration, restart your IDE, and you can use components directly in Vu
 Import only the components you need:
 
 ```typescript
-import { AeForm, AeTable, AeIcon, AeEditor } from 'advanced-ele-ui'
+import { AeForm, AeTable, AeIcon, AeEditor, AeUpload, AeDialog, AeDrawer, AeTabs, AeTabPanel } from 'advanced-ele-ui'
 import 'advanced-ele-ui/dist/style.css'
 ```
 
@@ -227,8 +231,9 @@ import 'advanced-ele-ui/dist/style.css'
 - ⬜ Build the `advanced-ele-ui-docs` component library documentation project to provide better usage guidance!
 
 ### 🔮 Mid-term Plan (v1.x)
-- ⬜ `AeDialog`: Enhance the dialog component. `el-dialog` is currently rough in style and functionality; we will encapsulate a more attractive and controllable dialog component.
-- ⬜ `AeDrawer`: Drawer component, same as above.
+- ✅ `AeDialog`: Enhance the dialog component. `el-dialog` is currently rough in style and functionality; we will encapsulate a more attractive and controllable dialog component.
+- ✅ `AeDrawer`: Drawer component, same as above.
+- ✅ `AeTabs`: Tabs component, same as above.
 > The following components will be released separately as the **advanced-ai-ui** component package for on-demand importing.
 - ⬜ `AeInputAI`: A dialog component specialized for AI chat scenarios, supporting a custom toolbar, text input, file upload, image upload, voice input, and theme switching.
 - ⬜ `AeMessageAI`: A chat bubble component for AI chat scenarios, supporting avatar, name, time, content area, deep-thought area, attached images and file display, buttons for copy, resend, like, feedback, voice playback, etc. Supports custom footer controls.

@@ -8,7 +8,8 @@ import { Table } from './components/Table'
 import { Editor } from './components/Editor'
 import { Upload } from './components/Upload'
 import { Dialog } from './components/Dialog'
-
+import { Drawer } from './components/Drawer'
+import { Tabs, TabPane } from './components/Tabs'
 // Export global types
 export * from './types'
 
@@ -19,7 +20,10 @@ export {
   Table as AeTable,
   Editor as AeEditor,
   Upload as AeUpload,
-  Dialog as AeDialog
+  Dialog as AeDialog,
+  Drawer as AeDrawer,
+  Tabs as AeTabs,
+  TabPane as AeTabPane
 }
 
 // Export component's types
@@ -112,7 +116,17 @@ export type {
 } from './components/Upload'
 
 // Dialog
-export type { AeDialogProps, AeDialogEmits } from './components/Dialog'
+export type { DialogProps, DialogEmits, DialogInstance, DialogSlots } from './components/Dialog'
+// Drawer
+export type { DrawerProps, DrawerEmits, DrawerInstance, DrawerSlots } from './components/Drawer'
+// Tabs
+export type {
+  TabsProps,
+  TabPaneProps,
+  TabsInstance,
+  TabPaneInstance,
+  TabsEmits
+} from './components/Tabs'
 
 // Rules
 export type { AutoRules } from './types/rules'
@@ -159,7 +173,9 @@ const install = (app: App, options?: InstallOptions) => {
   app.component('AeEditor', Editor)
   app.component('AeUpload', Upload)
   app.component('AeDialog', Dialog)
-
+  app.component('AeDrawer', Drawer)
+  app.component('AeTabs', Tabs)
+  app.component('AeTabPane', TabPane)
   // 设置语言
   if (options?.locale) {
     setLocale(options.locale)
