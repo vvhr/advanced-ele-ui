@@ -191,5 +191,5 @@ const install = (app: App, options?: InstallOptions) => {
 
 export default {
   install,
-  version: '0.0.9-beta'
+  version: '0.1.0-alpha'
 }
