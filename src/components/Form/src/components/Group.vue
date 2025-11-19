@@ -117,7 +117,8 @@ function onTransitionEnd() {
 <style scoped lang="less">
 .ae-form-group {
   width: 100%;
-  border: 1px solid #ebeef5;
+  border: 1px solid var(--el-border-color);
+  border-radius: var(--el-border-radius-base);
   margin-bottom: 10px;
   position: relative;
 
@@ -128,9 +129,10 @@ function onTransitionEnd() {
     justify-content: space-between;
     width: 100%;
     padding: 10px 15px 10px 10px;
-    background: #f5f7fa;
+    background: var(--el-color-info-light-9);
     font-size: 14px;
     box-sizing: border-box;
+    border-radius: var(--el-border-radius-base) var(--el-border-radius-base) 0 0;
 
     .ae-form-group-header__label {
       display: flex;
@@ -153,12 +155,12 @@ function onTransitionEnd() {
     }
 
     &.isExpanded {
-      border-bottom: 1px solid #ebeef5;
+      border-bottom: 1px solid var(--el-border-color);
     }
   }
 
   .ae-form-group-body {
-    background: white;
+    //background: white;
     position: relative;
     overflow: hidden;
     transition:

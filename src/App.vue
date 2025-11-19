@@ -1,5 +1,5 @@
 <template>
-  <div class="demo-container">
+  <div class="demo-container" :class="{ dark: isDark }">
     <header class="demo-header">
       <a
         href="https://github.com/vvhr/advanced-ele-ui"
@@ -13,6 +13,14 @@
           />
         </svg>
       </a>
+      <el-switch
+        v-model="isDark"
+        class="theme-switch"
+        inline-prompt
+        :active-icon="Moon"
+        :inactive-icon="Sunny"
+        @change="toggleTheme"
+      />
       <img
         src="https://image.howcat.cn/thumbnails/5d0a2d8352a09debab8f8d233a8fc67d.png"
         title="logo"
@@ -54,7 +62,8 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
+import { Moon, Sunny } from '@element-plus/icons-vue'
 import FormExample from './examples/FormExample.vue'
 import TableExample from './examples/TableExample.vue'
 import IconExample from './examples/IconExample.vue'
@@ -66,6 +75,27 @@ import TabsExample from './examples/TabsExample.vue'
 import QuickStartExample from './examples/QuickStartExample.vue'
 
 const activeTab = ref('start')
+const isDark = ref(false)
+
+// 初始化主题
+onMounted(() => {
+  const savedTheme = localStorage.getItem('theme')
+  isDark.value = savedTheme === 'dark'
+  if (isDark.value) {
+    document.documentElement.classList.add('dark')
+  }
+})
+
+// 切换主题
+const toggleTheme = (value: boolean) => {
+  if (value) {
+    document.documentElement.classList.add('dark')
+    localStorage.setItem('theme', 'dark')
+  } else {
+    document.documentElement.classList.remove('dark')
+    localStorage.setItem('theme', 'light')
+  }
+}
 </script>
 
 <style scoped>
@@ -88,7 +118,7 @@ const activeTab = ref('start')
 .github-link {
   position: absolute;
   top: 20px;
-  right: 20px;
+  right: 80px;
   color: white;
   transition: all 0.3s ease;
   display: flex;
@@ -105,6 +135,14 @@ const activeTab = ref('start')
   transform: scale(1.1) rotate(360deg);
   background: rgba(255, 255, 255, 0.2);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.theme-switch {
+  position: absolute;
+  top: 32px;
+  right: 20px;
+  --el-switch-on-color: #409eff;
+  --el-switch-off-color: #ff9800;
 }
 
 .demo-header {
@@ -129,6 +167,15 @@ const activeTab = ref('start')
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
   max-width: 1400px;
   margin: 0 auto;
+}
+
+/* 暗黑模式样式 */
+.dark .demo-container {
+  background: linear-gradient(180deg, #1a1a1a 0%, #2d2d2d 100%);
+}
+
+.dark .demo-tabs {
+  background: var(--el-bg-color);
 }
 </style>
 
