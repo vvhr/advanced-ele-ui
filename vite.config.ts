@@ -8,7 +8,11 @@ import UnoCSS from 'unocss/vite'
 import dts from 'vite-plugin-dts'
 
 import { resolve } from 'path'
-import { readFileSync, writeFileSync } from 'fs'
+import { readFileSync, writeFileSync, copyFileSync, existsSync, mkdirSync } from 'fs'
+import { exec } from 'child_process'
+import { promisify } from 'util'
+
+const execAsync = promisify(exec)
 
 /**
  * 自动生成全局组件类型声明文件
@@ -65,6 +69,22 @@ export {}
   console.log(`✓ Created dist/global.d.ts with ${components.length} components`)
 }
 
+/**
+ * 编译独立的 element-plus-beauty.less 文件
+ */
+async function compileBeautyStyles() {
+  const lessFile = resolve(__dirname, 'src/styles/element-plus-beauty.less')
+  const outputFile = resolve(__dirname, 'dist/element-plus-beauty.css')
+
+  try {
+    // 使用 lessc 命令编译 less 文件
+    await execAsync(`npx lessc ${lessFile} ${outputFile}`)
+    console.log('✓ Compiled element-plus-beauty.less to dist/element-plus-beauty.css')
+  } catch (error) {
+    console.error('✗ Failed to compile element-plus-beauty.less:', error)
+  }
+}
+
 export default defineConfig({
   plugins: [
     UnoCSS(),
@@ -113,7 +133,10 @@ export default defineConfig({
       compilerOptions: {
         declarationMap: false
       },
-      afterBuild: generateGlobalDts
+      afterBuild: async () => {
+        await generateGlobalDts()
+        await compileBeautyStyles()
+      }
     })
   ],
   resolve: {

@@ -16,7 +16,9 @@
       "types": "./dist/global.d.ts"
     },
     "./dist/style.css": "./dist/style.css",
-    "./style.css": "./dist/style.css"
+    "./style.css": "./dist/style.css",
+    "./dist/element-plus-beauty.css": "./dist/element-plus-beauty.css",
+    "./element-plus-beauty.css": "./dist/element-plus-beauty.css"
   },
   "files": [
     "dist",
