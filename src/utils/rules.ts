@@ -108,9 +108,3 @@ export function getAutoRulesMap(): Record<AutoRules, FormItemRule> {
     }
   }
 }
-
-/**
- * 自动验证规则映射（向后兼容）
- * @deprecated 请使用 getAutoRulesMap() 函数以获得国际化支持
- */
-export const AUTO_RULES_MAP: Record<AutoRules, FormItemRule> = getAutoRulesMap()
