@@ -101,7 +101,7 @@ function handleClose() {
 <template>
   <ElDialog
     v-bind="getBindValue"
-    :fullscreen="isFullscreen"
+    :fullscreen="isFullscreenLocal"
     destroy-on-close
     lock-scroll
     :draggable="draggable"
