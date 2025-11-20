@@ -77,7 +77,7 @@ const handleSettings = () => {
     </el-card>
 
     <!-- 基础抽屉 -->
-    <Drawer v-model="basicDrawerVisible" title="基础抽屉" @close="handleBasicConfirm">
+    <Drawer v-model="basicDrawerVisible" title="基础抽屉">
       <p>这是一个基础的抽屉示例。</p>
       <p>抽屉默认支持以下特性：</p>
       <ul>

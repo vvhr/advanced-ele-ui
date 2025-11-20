@@ -4,7 +4,7 @@
 
 ---
 
-## [0.1.0-beta] - 2025-11-20
+## [0.1.0] - 2025-11-20
 
 ### 新增
 * 添加 `element-plus-beauty.css` 样式文件支持，现在您可以为 `AeForm` 添加 `class: "element-plus-beauty"` 来启用该样式类。

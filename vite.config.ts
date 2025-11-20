@@ -121,8 +121,7 @@ export default defineConfig({
         'types/env.d.ts',
         'types/auto-imports.d.ts',
         'types/uno.d.ts',
-        'types/components.d.ts',
-        'types/global-components.d.ts' // 排除，手动处理
+        'types/components.d.ts'
       ],
       outDir: 'dist',
       staticImport: true,

@@ -4,7 +4,7 @@ English | [简体中文](./CHANGELOG.zh.md)
 
 ---
 
-## [0.1.0-beta] - 2025-11-20
+## [0.1.0] - 2025-11-20
 
 ### Features
 * Add support for the `element-plus-beauty.css` stylesheet, now you can enable this style class by adding `class: "element-plus-beauty"` to `AeForm`.

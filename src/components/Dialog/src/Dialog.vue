@@ -1,8 +1,13 @@
 <script setup lang="ts">
 import { ElDialog, ElScrollbar } from 'element-plus'
-import { computed, useAttrs, ref, unref, useSlots, watch } from 'vue'
+import { computed, useAttrs, ref, unref, useSlots, watch, type PropType } from 'vue'
 import { isNumber } from '@/utils/is'
 import { Icon } from '@/components/Icon'
+import { FullScreen } from '@element-plus/icons-vue'
+
+type DoneFn = () => void
+type DialogBeforeCloseFn = (done: DoneFn) => void
+
 const slots = useSlots()
 
 const props = defineProps({
@@ -14,7 +19,13 @@ const props = defineProps({
     type: String,
     default: ''
   },
+  // 允许全屏切换
   fullscreen: {
+    type: Boolean,
+    default: false
+  },
+  // 默认全屏
+  isFullscreen: {
     type: Boolean,
     default: false
   },
@@ -31,10 +42,10 @@ const props = defineProps({
     default: true
   },
   beforeClose: {
-    type: Function
+    type: Function as PropType<DialogBeforeCloseFn>
   }
 })
-
+const emit = defineEmits(['update:modelValue'])
 const getBindValue = computed(() => {
   const delArr: string[] = [
     'fullscreen',
@@ -54,10 +65,10 @@ const getBindValue = computed(() => {
   return obj
 })
 
-const isFullscreen = ref(false)
+const isFullscreenLocal = ref(props.isFullscreen)
 
 const toggleFull = () => {
-  isFullscreen.value = !unref(isFullscreen)
+  isFullscreenLocal.value = !unref(isFullscreenLocal)
 }
 
 const dialogHeight = ref(isNumber(props.maxHeight) ? `${props.maxHeight}px` : props.maxHeight)
@@ -76,8 +87,14 @@ const dialogStyle = computed(() => {
   }
 })
 
-function handleBeforeClose(done: any) {
-  props.beforeClose?.(done)
+function handleClose() {
+  if (props.beforeClose !== undefined) {
+    props.beforeClose(() => {
+      emit('update:modelValue', false)
+    })
+  } else {
+    emit('update:modelValue', false)
+  }
 }
 </script>
 
@@ -91,10 +108,9 @@ function handleBeforeClose(done: any) {
     top="0"
     :close-on-click-modal="false"
     :show-close="false"
-    :before-close="handleBeforeClose"
     class="ae-dialog"
   >
-    <template #header="{ close }">
+    <template #header>
       <div class="flex justify-between items-center h-54px pl-15px pr-15px relative">
         <div class="flex items-center">
           <Icon v-if="draggable" icon="mdi:drag" class="draggable-indicator" :size="30" />
@@ -107,11 +123,11 @@ function handleBeforeClose(done: any) {
           <div v-if="fullscreen" class="dialog-action-btn" @click="toggleFull">
             <Icon
               :icon="
-                isFullscreen ? 'radix-icons:exit-full-screen' : 'radix-icons:enter-full-screen'
+                isFullscreenLocal ? 'radix-icons:exit-full-screen' : 'radix-icons:enter-full-screen'
               "
             />
           </div>
-          <div class="dialog-action-btn" @click="close">
+          <div class="dialog-action-btn" @click="handleClose()">
             <Icon icon="ep:close" />
           </div>
         </div>
