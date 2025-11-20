@@ -4,6 +4,26 @@
 
 ---
 
+## [0.1.0-beta] - 2025-11-20
+
+### 新增
+* 添加 `element-plus-beauty.css` 样式文件支持，现在您可以为 `AeForm` 添加 `class: "element-plus-beauty"` 来启用该样式类。
+* 组件库已支持全局一次性引入表单扩展组件和表格扩展组件，您可以在 `app.use(AdvancedEleUI, { formImports: [], tableImports: [] })` 参数中传入扩展组件配置，来启用全局一次性引入。
+* 组件 [AeTable] 中关于 `TableSchemaFn` 中已增加参数 `editable`，便于您基于表格可编辑状态实现动态属性。
+
+### 重构
+* 未避免与组件事件命名方式混淆，组件 [AeUpload] 原属性 `onDownload` 已更名为 `downloadFile`。
+
+### 修复Bug
+* 组件 [AeForm/Group] 未支持暗黑主题，现已修复背景色和边框色，遵循 `element-plus` 的样式变量。
+* 在组件 [AeForm] 中使用 `AeTable` 时，`editable` 属性未根据组件的 `disabled` 实现响应式，目前已修正。
+* 组件 [AeTable] 对可编辑组件进行 `v-model` 双向绑定时代码错误，已修复。
+
+### 文档
+* 示例页 `App.vue` 已支持**主题切换**。
+
+---
+
 ## [0.0.9-beta] - 2025-11-18
 
 ### 新增

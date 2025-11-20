@@ -4,16 +4,36 @@ English | [简体中文](./CHANGELOG.zh.md)
 
 ---
 
+## [0.1.0-beta] - 2025-11-20
+
+### Features
+* Add support for the `element-plus-beauty.css` stylesheet, now you can enable this style class by adding `class: "element-plus-beauty"` to `AeForm`.
+* The component library now supports global one-time import of form and table extension components. You can enable this by passing the extension component configuration in the `app.use(AdvancedEleUI, { formImports: [], tableImports: [] })` parameter.
+* The `TableSchemaFn` in component [AeTable] has added a parameter `editable`, which helps you implement dynamic properties based on the table's editable state.
+
+### Refactors
+* To avoid confusion with component event naming, the original property `onDownload` in component [AeUpload] has been renamed to `downloadFile`.
+
+### Bug fixes
+* The component [AeForm/Group] was not supporting dark theme, now the background color and border color have been fixed to follow the `element-plus` style variables.
+* In component [AeForm] when using `AeTable`, the `editable` property was not responsive to the component's `disabled` state, which has now been corrected.
+* There was a code error in component [AeTable] when performing `v-model` two-way binding on editable components, which has been fixed.
+
+### Docs
+* The example page `App.vue` now supports **theme switching**.
+
+---
+
 ## [0.0.9-beta] - 2025-11-18
 
-### New Features
+### Features
 * The entry function `install` of the component library has added a `locale` configuration item to achieve full internationalization functionality for the component library. The default will load the `zh-CN` language, and you can set it to `en-US` if you want to use another language. You can also customize the configuration via `customLocale`. All static text and console messages in this project now support internationalization.
 * The dependent plugin `dayjs` will also switch languages according to the current locale of the component library.
 * New component [AeDialog], based on `el-dialog`, is re-encapsulated with optimized styles, content area scrolling, support for drag and full screen toggle, and custom title bar buttons.
 * New component [AeDrawer], based on `el-drawer`, is re-encapsulated with optimized styles, content area scrolling, and support for custom title bar buttons.
 * New components [AeTabs] and [AeTabPanel], based on `el-tabs`, have content areas initialized with `flex` layout and optimized rendering.
 
-### Refactoring
+### Refactors
 * Component [AeTable] has undergone a small-scale refactoring, decoupling the rendering process of columns to facilitate future expansion and improve code readability, without affecting the original functionality.
 * The global constant `AUTO_RULES_MAP` has been removed and replaced with the `getAutoRulesMap` method to support internationalization.
 
@@ -23,7 +43,7 @@ English | [简体中文](./CHANGELOG.zh.md)
 * Component [AeForm] had an issue where the `tree/findNode` function flattened the input parameter `tree`, breaking its immutability and causing the original `schemas` to be abnormally modified during validation. This problem has been fixed by refactoring the `findNode` function.
 * Component [AeTable] simplified the strategy for initializing fields with incremental updates when listening for changes in the form structure (`watch(schemasFieldsHash)`), avoiding the monitoring of overly complex data structures.
 
-### Documentation
+### Docs
 * The document [README.md] has added specific usage and explanations about the internationalization feature.
 * The page [DialogExample] has added usage examples for the `AeDialog` component.
 * The page [DrawerExample] has added usage examples for the `AeDrawer` component.
