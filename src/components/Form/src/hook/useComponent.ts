@@ -1,4 +1,4 @@
-import {
+import type {
   FormSchema,
   FormSlots,
   FormProps,
@@ -6,10 +6,10 @@ import {
   InsideProps,
   ComponentProps,
   FormSchemaProps,
-  ComponentName,
-  FormImportItemConfig
+  ComponentName
 } from '../types'
-import { defineComponent, type Component, type Ref, type VNode } from 'vue'
+import type { FormImportItemConfig } from '@/types/imports'
+import { defineComponent, type Component, type Ref, type VNode, type ComputedRef } from 'vue'
 import { get } from 'lodash-es'
 import { getComponentEventFunction, getSchemaPropValue } from '../utils/schema'
 import { getSlot } from '@/utils/get'
@@ -27,7 +27,8 @@ export function useComponent(
   formModel: Ref<Recordable>,
   componentProps: ComponentProps, // 由useFormItem生成的ComponentProps
   components: Recordable<Component, ComponentName>,
-  componentConfigs: Recordable<FormImportItemConfig, ComponentName>
+  componentConfigs: Recordable<FormImportItemConfig, ComponentName>,
+  disabled?: ComputedRef<boolean>
 ) {
   const type = schema.type ?? 'Inputer'
   const getAnyComponent = () => {
@@ -76,7 +77,7 @@ export function useComponent(
         // 自动添加placeholder
         ...getPlaceholder(schema, props.schemaProps, props),
         // 如果是表格组件,自动将表单的formModel和excontext传递给组件
-        ...setTableProps(schema, formModel.value, props),
+        ...setTableProps(schema, formModel.value, props, disabled.value),
         // 注入组件属性
         ...(componentProps || {}),
         // 自动处理选项
@@ -306,7 +307,12 @@ function setDateRangeDefaultTime(schema: FormSchema, componentProps: ComponentPr
  * 设置表格组件的必要属性
  * @description Table也是一个高级组件,其也支持form和excontext属性,因此在表单中使用表格组件时,表单需自动将表单对象和上下文对象传递给表格组件
  */
-function setTableProps(schema: FormSchema, formModel: Recordable, props: FormProps) {
+function setTableProps(
+  schema: FormSchema,
+  formModel: Recordable,
+  props: FormProps,
+  disabled?: boolean
+) {
   // 检查组件类型及属性
   if (!schema.component || schema.component !== 'Table') {
     return {}
@@ -314,7 +320,7 @@ function setTableProps(schema: FormSchema, formModel: Recordable, props: FormPro
   return {
     excontext: props.excontext,
     form: formModel,
-    editable: !props.disabled, // 自动启用表格编辑功能
+    editable: !disabled, // 自动启用表格编辑功能
     adaptive: false // 禁止自适应高宽度
   }
 }

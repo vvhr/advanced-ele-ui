@@ -10,7 +10,8 @@ import {
   type VNode
 } from 'vue'
 import { ElTable, TableColumnCtx, ElForm } from 'element-plus'
-import type { TableProps, TableColumn, Pagination, TableFormImportItem } from './types'
+import type { TableProps, TableColumn, Pagination } from './types'
+import type { TableFormImportItem } from '@/types/imports'
 import type { ElTableEventHanders } from './internal-types'
 import type { DictMap } from '@/types/dict'
 import { renderPagination } from './render/RenderPagination'
@@ -115,8 +116,8 @@ export default defineComponent({
       default: 0
     },
     /**
-     * 加载扩展组件
-     * @description 您可以通过此属性来按需加载一些组件
+     * 加载扩展组件（局部注册，优先级高于全局注册）
+     * @description 您可以通过此属性来按需加载一些组件，局部注册的组件会覆盖全局注册的同名组件
      */
     imports: {
       type: Array as PropType<TableFormImportItem[]>,
@@ -137,8 +138,7 @@ export default defineComponent({
     'action'
   ],
   setup(props, { attrs, slots, emit, expose }) {
-    const { components, componentConfigs, registerComponents } = useImport()
-    registerComponents(props.imports)
+    const { components, componentConfigs } = useImport(props.imports)
 
     // 声明 elTableRef 实例
     const elTableRef = ref<ComponentRef<typeof ElTable>>()

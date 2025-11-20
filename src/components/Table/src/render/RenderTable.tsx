@@ -2,16 +2,15 @@ import { getSlot } from '@/utils/get'
 import type {
   TableEmits,
   TableProps,
-  TableFormImportItemConfig,
   TableFormComponentName
 } from '../types'
+import type { TableFormImportItemConfig } from '@/types/imports'
 import type { ElTableEventHanders } from '../internal-types'
 import { ElTable, ElForm, vLoading } from 'element-plus'
 import { renderTableColumns } from '../render/RenderTableColumn'
 import {type Ref, withDirectives, unref, type Component} from 'vue'
 import type { UseDictTools } from "@/utils/dict"
 import { t } from '@/locale'
-import { replacePlaceholder } from '@/locale/utils'
 
 export function renderTable(
   props: TableProps,

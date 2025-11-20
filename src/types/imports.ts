@@ -10,3 +10,14 @@ export interface FormImportItem {
   config?: FormImportItemConfig
   isArrayFn?: (cps: Recordable) => boolean
 }
+
+export interface TableFormImportItemConfig {
+  modelValueKey?: string
+}
+
+export interface TableFormImportItem {
+  name: string
+  component: Component
+  config?: TableFormImportItemConfig
+  isArrayFn?: (cps: Recordable) => boolean
+}

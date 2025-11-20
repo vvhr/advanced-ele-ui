@@ -15,7 +15,7 @@ export function isHidden(props: TableProps, column: TableColumn) {
     return false
   }
   if (isFunction(column.hidden)) {
-    return column.hidden({}, null, column, props.form, props.excontext)
+    return column.hidden({}, null, column, props.form, props.excontext, props.editable)
   } else {
     return column.hidden
   }
@@ -32,7 +32,7 @@ export function isHiddenAction(
     return false
   }
   if (isFunction(action.hidden)) {
-    return action.hidden(row, index, column, props.form, props.excontext)
+    return action.hidden(row, index, column, props.form, props.excontext, props.editable)
   } else {
     return action.hidden
   }
@@ -48,7 +48,7 @@ export function isDisabledAction(
     return false
   }
   if (isFunction(action.disabled)) {
-    return action.disabled(row, index, column, props.form, props.excontext)
+    return action.disabled(row, index, column, props.form, props.excontext, props.editable)
   } else {
     return action.disabled
   }
@@ -64,7 +64,7 @@ export function isLoadingAction(
     return false
   }
   if (isFunction(action.loading)) {
-    return action.loading(row, index, column, props.form, props.excontext)
+    return action.loading(row, index, column, props.form, props.excontext, props.editable)
   } else {
     return action.loading
   }
@@ -75,7 +75,7 @@ export function isEditable(props: TableProps, column: TableColumn) {
       return true
     }
     if (isFunction(column.editable)) {
-      return column.editable({}, null, column, props.form, props.excontext)
+      return column.editable({}, null, column, props.form, props.excontext, props.editable)
     } else {
       return column.editable
     }
@@ -93,7 +93,8 @@ export function isDisabled(props: TableProps, column: TableColumn, row: Recordab
       index,
       column,
       props.form,
-      props.excontext
+      props.excontext,
+      props.editable
     )
   } else {
     return column.editProps?.componentProps?.disabled
@@ -105,7 +106,7 @@ export function isCopyable(props: TableProps, column: TableColumn, row: Recordab
     return false
   }
   if (isFunction(column.copyable)) {
-    return column.copyable(row, index, column, props.form, props.excontext)
+    return column.copyable(row, index, column, props.form, props.excontext, props.editable)
   } else {
     return column.copyable
   }
@@ -120,7 +121,7 @@ export function isClickable(
     return false
   }
   if (isFunction(column.clickable)) {
-    return column.clickable(row, index, column, props.form, props.excontext)
+    return column.clickable(row, index, column, props.form, props.excontext, props.editable)
   } else {
     return column.clickable
   }

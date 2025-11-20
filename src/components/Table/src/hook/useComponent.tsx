@@ -1,6 +1,6 @@
-import { isExistAttr, isFunction } from "@/utils/is"
-import { defineComponent } from "vue"
-import { get } from "lodash-es"
+import { isExistAttr, isFunction } from '@/utils/is'
+import { defineComponent } from 'vue'
+import { get } from 'lodash-es'
 import type { Component } from 'vue'
 import {
   TableProps,
@@ -8,15 +8,15 @@ import {
   TableEmits,
   TableColumn,
   TableFormComponentName,
-  TableFormImportItemConfig,
   TableFormComponentProps,
   TableFormComponentEventFn,
   TableFormInsidePropsRenders
 } from '../types'
+import type { TableFormImportItemConfig } from '@/types/imports'
 import { setReactiveValue } from '@/utils/set'
-import type {FormItemRule} from "element-plus";
-import { getAutoRulesMap } from "@/utils/rules";
-import {isDisabled} from "@/components/Table/src/utils.ts";
+import type { FormItemRule } from 'element-plus'
+import { getAutoRulesMap } from '@/utils/rules'
+import { isDisabled } from '@/components/Table/src/utils.ts'
 import { t } from '@/locale'
 import { getPlaceholder } from '@/locale/utils'
 
@@ -33,7 +33,7 @@ export function useComponent(
 ) {
   const componentName = column?.editProps?.component || 'Input'
   const field = column.editProps?.field || column.field
-  const freshKey = `${column}-${index}-${column.editProps?.componentProps?.freshKey || 0}`
+  const freshKey = `${column.key || field}-${index}-${column.editProps?.componentProps?.freshKey || 0}`
   const formItemProps = {
     prop: `${index}.${field}`,
     rules: getFormItemRules()
@@ -54,10 +54,10 @@ export function useComponent(
         ? componentConfigs[componentName]?.modelValueKey || 'modelValue'
         : 'modelValue'
       return {
-        [modelValueKey]: get(formModel, field),
+        [modelValueKey]: get(row, field),
         [`onUpdate:${modelValueKey}`]: (value: any) => {
           // 使用响应式安全的方式更新值
-          setReactiveValue(formModel, field, value)
+          setReactiveValue(row, field, value)
         }
       }
     }
@@ -97,7 +97,14 @@ export function useComponent(
       // 注入组件属性
       ...(column.editProps?.componentProps || {}),
       // 自动处理选项
-      ...setAttrsOptions(row, index, column, column.editProps?.componentProps || {}, formModel, props),
+      ...setAttrsOptions(
+        row,
+        index,
+        column,
+        column.editProps?.componentProps || {},
+        formModel,
+        props
+      ),
       // 自动处理时间范围组件的默认时间
       ...setDateRangeDefaultTime(column, column.editProps?.componentProps || {}),
       // 是否禁用
@@ -138,7 +145,7 @@ export function useComponent(
     for (const slotName in insideRenders) {
       const fn = insideRenders[slotName]
       if (isFunction(fn)) {
-        slotObj[slotName] = () => fn(row, index, column, formModel, props.excontext)
+        slotObj[slotName] = () => fn(row, index, column, formModel, props.excontext, props.editable)
       } else if (typeof fn === 'string') {
         slotObj[slotName] = () => fn
       }
@@ -163,13 +170,13 @@ function getPlaceholderText(column: TableColumn, props: TableProps) {
   const needInputPlaceholder = ['Autocomplete', 'Editor', 'Input', 'InputNumber', 'Mention']
   const needSelectPlaceholder = ['Cascader', 'DatePicker', 'Select', 'TimePicker', 'TimeSelect']
   const componentName = column.editProps?.component || 'Input'
-  
+
   if (needInputPlaceholder.includes(componentName)) {
     return {
       placeholder: getPlaceholder(t('form.placeholder.input'), column?.label || '')
     }
   }
-  
+
   if (needSelectPlaceholder.includes(componentName)) {
     const selectPlaceholder = getPlaceholder(t('form.placeholder.select'), column?.label || '')
     return {
@@ -179,21 +186,22 @@ function getPlaceholderText(column: TableColumn, props: TableProps) {
       placeholder: selectPlaceholder
     }
   }
-  
+
   return {}
 }
 
 /**
-* 解析componentProps中关于options属性并用于透传到组件的属性上
-* @description 组件本身支持options属性时才需要处理
-*/
+ * 解析componentProps中关于options属性并用于透传到组件的属性上
+ * @description 组件本身支持options属性时才需要处理
+ */
 function setAttrsOptions(
   row: Recordable,
   index: number,
   column: TableColumn,
   componentProps: TableFormComponentProps,
   formModel: Recordable,
-  props: TableProps) {
+  props: TableProps
+) {
   // 必须拥有options属性
   if (Reflect.has(componentProps, 'options')) {
     // 选项键名
@@ -207,7 +215,7 @@ function setAttrsOptions(
     }
     if (typeof componentProps.options === 'function') {
       return {
-        options: componentProps.options(row, index, column, formModel, props.excontext),
+        options: componentProps.options(row, index, column, formModel, props.excontext, props.editable),
         props: optionKeys
       }
     }
@@ -264,7 +272,8 @@ function getComponentEventFunction(
 ) {
   // 是否是方法
   if (typeof eventValue === 'function') {
-    return (event: any) => eventValue(event, row, index, column, form, excontext) as TableFormComponentEventFn<any>
+    return (event: any) =>
+      eventValue(event, row, index, column, form, excontext) as TableFormComponentEventFn<any>
   }
   return () => undefined
 }

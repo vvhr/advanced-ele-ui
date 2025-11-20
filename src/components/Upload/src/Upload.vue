@@ -458,8 +458,8 @@ function handleDownloadTemplate(template: FileTemplate) {
 
 function handleDownload(file: UploadFile) {
   // 如果用户自定义了下载方法，使用自定义方法
-  if (props.onDownload) {
-    props.onDownload(file)
+  if (props.downloadFile) {
+    props.downloadFile(file)
     return
   }
 

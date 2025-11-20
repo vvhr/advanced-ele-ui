@@ -56,7 +56,7 @@ export interface UploadProps {
   previewable?: boolean
   downloadable?: boolean
   preview?: (file: UploadFile) => void
-  onDownload?: (file: UploadFile) => void
+  downloadFile?: (file: UploadFile) => void
   beforeUpload?: (file: UploadRawFile) => boolean | Promise<boolean>
   beforeRemove?: (file: UploadFile) => boolean | Promise<boolean>
   downloadTemplate?: (template: FileTemplate) => void

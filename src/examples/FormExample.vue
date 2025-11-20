@@ -93,9 +93,11 @@
 <script setup lang="tsx">
 import '@/styles/element-plus-beauty.less'
 import { ref, reactive } from 'vue'
-import { Form as AeForm, FormSchema, FormSchemaProps, FormImportItem } from '@/components/Form'
+import { Form as AeForm, FormSchema, FormSchemaProps } from '@/components/Form'
+import type { TableColumn } from '@/components/Table'
 import { ElMessage, ElUpload, ElCard } from 'element-plus'
 import type { UploadRawFile } from '@/components/Upload'
+import type { FormImportItem } from '@/types/imports'
 
 const imports: FormImportItem[] = [
   {
@@ -818,12 +820,10 @@ const formSchemas = reactive<FormSchema[]>([
     },
     insideProps: {
       renders: {
-        default: () =>
-          mode.value === 'edit' && <el-button type="primary">Click to upload</el-button>,
-        tip: () =>
-          mode.value === 'edit' && (
-            <div class="el-upload__tip">jpg/png files with a size less than 500kb</div>
-          )
+        default: (form, column, disabled) =>
+          !disabled && <el-button type="primary">Click to upload</el-button>,
+        tip: (form, column, disabled) =>
+          !disabled && <div class="el-upload__tip">jpg/png files with a size less than 500kb</div>
       }
     },
     layoutProps: { span: 12, alone: true },
@@ -902,8 +902,9 @@ const formSchemas = reactive<FormSchema[]>([
     componentProps: {
       border: true,
       columns: [
-        { key: 'index', type: 'index', label: '序号' },
+        { key: 'listIndex', type: 'index', label: '序号' },
         {
+          key: 'listName',
           field: 'name',
           label: '名称',
           editProps: {
@@ -912,6 +913,7 @@ const formSchemas = reactive<FormSchema[]>([
           }
         },
         {
+          key: 'listAge',
           field: 'age',
           label: '年龄',
           editProps: {
@@ -920,6 +922,7 @@ const formSchemas = reactive<FormSchema[]>([
           }
         },
         {
+          key: 'listSex',
           field: 'sex',
           label: '性别',
           editProps: {
@@ -934,10 +937,10 @@ const formSchemas = reactive<FormSchema[]>([
           }
         },
         {
-          key: 'action',
+          key: 'listAction',
           label: '操作',
           type: 'action',
-          hidden: () => mode.value !== 'edit',
+          hidden: (row, index, column, form, excontext, editable) => !editable,
           fixed: 'right',
           width: 100,
           editable: false,
@@ -955,25 +958,22 @@ const formSchemas = reactive<FormSchema[]>([
             ]
           }
         }
-      ]
+      ] as TableColumn[]
     },
     outsideProps: {
       enable: true,
       direction: 'column',
       style: { alignItems: 'flex-start', gap: '10px' },
-      prependRender: form => {
+      prependRender: (form, column, disabled, excontext) => {
         const onAdd = () => {
+          console.log('add', form)
           form.list.push({ name: '', age: '', sex: '' })
         }
-        if (mode.value === 'edit') {
-          return (
-            <el-button type="primary" onclick={() => onAdd()}>
-              添加
-            </el-button>
-          )
-        } else {
-          return false
-        }
+        return !disabled ? (
+          <el-button type="primary" onclick={() => onAdd()}>
+            添加
+          </el-button>
+        ) : undefined
       }
     },
     formItemProps: {
@@ -1209,6 +1209,7 @@ const formSchemas2 = reactive<FormSchema[]>([
         field: 'status',
         label: '状态',
         value: '',
+        type: 'Inputer',
         component: 'Select',
         componentProps: {
           options: [

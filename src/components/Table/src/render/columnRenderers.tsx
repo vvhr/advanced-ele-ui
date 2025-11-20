@@ -46,7 +46,7 @@ export interface RenderResult {
  */
 export function renderDictColumn(ctx: RenderContext): RenderResult | string {
   const { column, value, emptyValue, dictTools } = ctx
-  
+
   if (!column.typeProps) {
     logger.warn('console.table.dictTypePropsRequired', undefined, column)
     return { value: value || emptyValue }
@@ -254,7 +254,7 @@ export function wrapValueWithFeatures(
   if (typeof result === 'string') {
     return result
   }
-  
+
   // 如果是 VNode，直接返回
   if (typeof result === 'object' && 'type' in result) {
     return result
@@ -287,7 +287,7 @@ export function wrapValueWithFeatures(
 
     const copyValue =
       column.copyValueMethod !== undefined
-        ? column.copyValueMethod(row, index, column, props.form, props.excontext)
+        ? column.copyValueMethod(row, index, column, props.form, props.excontext, props.editable)
         : ctx.originValue
 
     copyToClipboard(copyValue).then(res => {
@@ -307,7 +307,7 @@ export function wrapValueWithFeatures(
     emit('value-click', columnKey, row)
 
     if (column.clickMethod !== undefined) {
-      column.clickMethod(row, index, column, props.form, props.excontext)
+      column.clickMethod(row, index, column, props.form, props.excontext, props.editable)
     }
   }
 

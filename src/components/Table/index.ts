@@ -21,9 +21,7 @@ export type {
   TableFormComponentEventFn,
   TableFormInsidePropsRenders,
   TableFormInsidePropsRender,
-  TableFormAutoRules,
-  TableFormImportItemConfig,
-  TableFormImportItem
+  TableFormAutoRules
 } from './src/types'
 
 export { Table }

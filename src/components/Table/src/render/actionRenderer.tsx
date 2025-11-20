@@ -78,7 +78,7 @@ function createActionHandlers(ctx: ActionRenderContext, dropdownActions: TableAc
 
     // 执行用户自定义事件
     try {
-      event?.(row, index, column, props.form, props.excontext)
+      event?.(row, index, column, props.form, props.excontext, props.editable)
     } catch (e) {
       logger.error('console.table.actionEventError', undefined, e, column)
     }
@@ -119,7 +119,7 @@ function renderActionButton(
  */
 function getButtonAttrs(action: TableAction, ctx: ActionRenderContext) {
   const { row, index, props, column } = ctx
-  
+
   const buttonAttrs: any = {
     type: 'default',
     ...(action.buttonAttrs || {}),
@@ -182,9 +182,9 @@ function renderMoreDropdown(
  */
 function renderDropdownItem(action: TableAction, ctx: ActionRenderContext) {
   const { row, index, props, column } = ctx
-  
+
   return (
-    <ElDropdownItem 
+    <ElDropdownItem
       command={action.name}
       disabled={isDisabledAction(action, row, index, props, column)}
     >

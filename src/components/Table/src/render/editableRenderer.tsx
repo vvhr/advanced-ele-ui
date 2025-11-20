@@ -3,7 +3,8 @@
  * @description 处理编辑模式下的列渲染
  */
 import { ElFormItem } from 'element-plus'
-import type { TableColumn, TableProps, TableEmits, TableSlots, TableFormComponentName, TableFormImportItemConfig } from '../types'
+import type { TableColumn, TableProps, TableEmits, TableSlots, TableFormComponentName } from '../types'
+import type { TableFormImportItemConfig } from '@/types/imports'
 import { useComponent } from '../hook/useComponent'
 import type { Component, VNode } from 'vue'
 import { logger } from '@/locale'

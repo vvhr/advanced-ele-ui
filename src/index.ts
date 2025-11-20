@@ -10,9 +10,19 @@ import { Upload } from './components/Upload'
 import { Dialog } from './components/Dialog'
 import { Drawer } from './components/Drawer'
 import { Tabs, TabPane } from './components/Tabs'
+
+// Import
+import type {
+  FormImportItem,
+  FormImportItemConfig,
+  TableFormImportItem,
+  TableFormImportItemConfig
+} from './types/imports'
+
 // Export global types
 export * from './types'
 
+export type { FormImportItem, FormImportItemConfig, TableFormImportItem, TableFormImportItemConfig }
 // Export components
 export {
   Form as AeForm,
@@ -32,8 +42,6 @@ export type {
   FormDefineProps,
   FormInstance,
   ComponentName,
-  FormImportItem,
-  FormImportItemConfig,
   FormSchema,
   FormSlots,
   FormEmits,
@@ -82,9 +90,7 @@ export type {
   TableFormComponentEventFn,
   TableFormInsidePropsRenders,
   TableFormInsidePropsRender,
-  TableFormAutoRules,
-  TableFormImportItemConfig,
-  TableFormImportItem
+  TableFormAutoRules
 } from './components/Table'
 
 // Icon
@@ -151,6 +157,7 @@ export { default as enUS } from './locale/lang/en-US'
 // Install options
 import { setLocale, setCustomLocale } from './locale'
 import type { Language, LocaleConfig, DeepPartial } from './locale/types'
+import { globalFormImports, globalTableImports } from './utils/imports'
 
 export interface InstallOptions {
   /**
@@ -162,6 +169,14 @@ export interface InstallOptions {
    * 自定义语言包（会与默认语言包深度合并）
    */
   customLocale?: Partial<Record<Language, DeepPartial<LocaleConfig>>>
+  /**
+   * 注册表单自定义组件
+   */
+  formImports?: FormImportItem[]
+  /**
+   * 注册表格自定义编辑组件
+   */
+  tableImports?: TableFormImportItem[]
 }
 
 // Install
@@ -176,6 +191,7 @@ const install = (app: App, options?: InstallOptions) => {
   app.component('AeDrawer', Drawer)
   app.component('AeTabs', Tabs)
   app.component('AeTabPane', TabPane)
+
   // 设置语言
   if (options?.locale) {
     setLocale(options.locale)
@@ -186,6 +202,16 @@ const install = (app: App, options?: InstallOptions) => {
     Object.entries(options.customLocale).forEach(([locale, config]) => {
       setCustomLocale(locale as Language, config)
     })
+  }
+
+  // 注册表单自定义组件
+  if (options?.formImports) {
+    globalFormImports.registerComponents(options.formImports)
+  }
+
+  // 注册表格自定义编辑组件
+  if (options?.tableImports) {
+    globalTableImports.registerComponents(options.tableImports)
   }
 }
 

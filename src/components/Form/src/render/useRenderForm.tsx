@@ -1,19 +1,20 @@
+import type { Component, ComputedRef, Ref, VNode } from 'vue'
 import { ElForm, ElRow, ElFormItem, ElDescriptions, ElDescriptionsItem, ElCol } from 'element-plus'
-import {
-  FormImportItemConfig,
+import type {
   ComponentName,
   ComponentProps,
   FormEmits,
   FormProps,
   FormSchema,
-  FormSlots, DescriptionsSchema
+  FormSlots,
+  DescriptionsSchema
 } from '../types'
+import type { FormImportItemConfig } from '@/types/imports'
 import { getSubLabel, isHidden } from '../utils/schema'
 import { useFormItem } from '../hook/useFormItem'
 import { SchemaLayout } from './SchemaLayout'
 import { getSlot, getStyleWidth } from '@/utils/get'
 import { isExistAttr, isFunction } from '@/utils/is'
-import type { Component, ComputedRef, Ref, VNode } from 'vue'
 import { useComponent } from '../hook/useComponent'
 import { logger } from '@/locale'
 export function useRenderForm(
@@ -29,7 +30,6 @@ export function useRenderForm(
   components: Recordable<Component, ComponentName>,
   componentConfigs: Recordable<FormImportItemConfig, ComponentName>
 ) {
-
   // 渲染容器类组件
   function renderContainer(
     schema: FormSchema,
@@ -38,7 +38,11 @@ export function useRenderForm(
   ): VNode | undefined {
     // 检查组件是否在组件映射中
     if (!schema.component || !isExistAttr(components, schema.component)) {
-      logger.error('console.form.componentNotExist', { type: 'Container', component:  schema.component }, schema)
+      logger.error(
+        'console.form.componentNotExist',
+        { type: 'Container', component: schema.component },
+        schema
+      )
       return undefined
     }
     const { getAnyComponent, freshKey, setComponentProps, setInsideSlots } = useComponent(
@@ -65,7 +69,11 @@ export function useRenderForm(
           </AnyComponent>
         )
       } else {
-        logger.error('console.form.componentError', { type: 'Container', component:  schema.component }, schema)
+        logger.error(
+          'console.form.componentError',
+          { type: 'Container', component: schema.component },
+          schema
+        )
         return undefined
       }
     }
@@ -77,7 +85,11 @@ export function useRenderForm(
   function renderDecorator(schema: FormSchema, componentProps: ComponentProps): VNode | undefined {
     // 检查组件是否在组件映射中
     if (!schema.component || !isExistAttr(components, schema.component)) {
-      logger.error('console.form.componentNotExist', { type: 'Decorator', component:  schema.component }, schema)
+      logger.error(
+        'console.form.componentNotExist',
+        { type: 'Decorator', component: schema.component },
+        schema
+      )
       return undefined
     }
     const {
@@ -89,7 +101,16 @@ export function useRenderForm(
       setComponentProps,
       setComponentEvent,
       setInsideSlots
-    } = useComponent(props, slots, emits, schema, formModel, componentProps, components, componentConfigs)
+    } = useComponent(
+      props,
+      slots,
+      emits,
+      schema,
+      formModel,
+      componentProps,
+      components,
+      componentConfigs
+    )
 
     // 渲染组件
     const renderAnyComponent = () => {
@@ -101,7 +122,11 @@ export function useRenderForm(
           </AnyComponent>
         )
       } else {
-        logger.error('console.form.componentError', { type: 'Decorator', component:  schema.component }, schema)
+        logger.error(
+          'console.form.componentError',
+          { type: 'Decorator', component: schema.component },
+          schema
+        )
         return undefined
       }
     }
@@ -138,7 +163,11 @@ export function useRenderForm(
   ): VNode | undefined {
     // 检查组件是否在组件映射中
     if (!schema.component || !isExistAttr(components, schema.component)) {
-      logger.error('console.form.componentNotExist', { type: 'Inputer', component:  schema.component }, schema)
+      logger.error(
+        'console.form.componentNotExist',
+        { type: 'Inputer', component: schema.component },
+        schema
+      )
       return undefined
     }
     const {
@@ -151,7 +180,17 @@ export function useRenderForm(
       setComponentEvent,
       setComponentProps,
       setInsideSlots
-    } = useComponent(props, slots, emits, schema, formModel, componentProps, components, componentConfigs)
+    } = useComponent(
+      props,
+      slots,
+      emits,
+      schema,
+      formModel,
+      componentProps,
+      components,
+      componentConfigs,
+      disabled
+    )
     const setComponentRef = (el: any) => {
       const refKey = schema.key || schema.field || ''
       // 只有部分特殊组件才存储ref, 比如存储Table组件的ref, 用于表单校验时自动调用Table的校验函数
@@ -177,7 +216,11 @@ export function useRenderForm(
           </AnyComponent>
         )
       } else {
-        logger.error('console.form.componentError', { type: 'Inputer', component:  schema.component }, schema)
+        logger.error(
+          'console.form.componentError',
+          { type: 'Inputer', component: schema.component },
+          schema
+        )
         return undefined
       }
     }
@@ -212,7 +255,16 @@ export function useRenderForm(
       if (isFunction(schema.render)) {
         return schema.render(formModel.value, schema, props.disabled, props.excontext)
       }
-      const { slotKey } = useComponent(props, slots, emits, schema, formModel, {}, components, componentConfigs)
+      const { slotKey } = useComponent(
+        props,
+        slots,
+        emits,
+        schema,
+        formModel,
+        {},
+        components,
+        componentConfigs
+      )
       if (slots[slotKey]) {
         return getSlot(slots, slotKey, formModel.value) as any
       }
@@ -230,7 +282,12 @@ export function useRenderForm(
     if (labelPosition === 'top') {
       // 只要定义了subLabelRender，则优先使用
       if (isFunction(schema.formItemProps?.subLabelRender)) {
-        const renderSubLabel = schema.formItemProps.subLabelRender(formModel.value, schema, props.disabled, props.excontext)
+        const renderSubLabel = schema.formItemProps.subLabelRender(
+          formModel.value,
+          schema,
+          props.disabled,
+          props.excontext
+        )
         if (!!renderSubLabel) {
           return (
             <div class="ae-form-item-label">
@@ -293,19 +350,20 @@ export function useRenderForm(
         logger.error('console.form.nestedDescriptionsNotSupported', undefined, schema)
         return undefined
       case 'Custom': {
-        const { getFormItemProps, slotKey, formItemLabel } = useFormItem(props, slots, schema, formModel)
+        const { getFormItemProps, slotKey, formItemLabel } = useFormItem(
+          props,
+          slots,
+          schema,
+          formModel
+        )
         return (
           <SchemaLayout schema={schema} schemaProps={props.schemaProps} item-key={key}>
             <ElFormItem {...getFormItemProps()}>
               {{
                 ...(slots[`${slotKey}--label`]
-                    ? { label: slots[`${slotKey}--label`] }
-                    : { label: () => renderFormItemLabel(formItemLabel.value, schema) }
-                ),
-                ...(slots[`${slotKey}--error`]
-                    ? { error: slots[`${slotKey}--error`] }
-                    : {}
-                ),
+                  ? { label: slots[`${slotKey}--label`] }
+                  : { label: () => renderFormItemLabel(formItemLabel.value, schema) }),
+                ...(slots[`${slotKey}--error`] ? { error: slots[`${slotKey}--error`] } : {}),
                 default: () => renderCustom(schema)
               }}
             </ElFormItem>
@@ -316,22 +374,16 @@ export function useRenderForm(
         const { trueComponentProps } = useFormItem(props, slots, schema, formModel)
         return (
           <SchemaLayout schema={schema} schemaProps={props.schemaProps} item-key={key}>
-            {
-              renderContainer(schema, trueComponentProps, () => (
-                <ElRow
-                  class="ae-form-main__container_row type-form"
-                  data-id={`container-row-${key}`}
-                  key={`container-row-${key}`}
-                  gutter={10}
-                >
-                  {schema.children
-                    ? schema.children?.map(item =>
-                      renderSchema(item)
-                    )
-                    : undefined}
-                </ElRow>
-              ))
-            }
+            {renderContainer(schema, trueComponentProps, () => (
+              <ElRow
+                class="ae-form-main__container_row type-form"
+                data-id={`container-row-${key}`}
+                key={`container-row-${key}`}
+                gutter={10}
+              >
+                {schema.children ? schema.children?.map(item => renderSchema(item)) : undefined}
+              </ElRow>
+            ))}
           </SchemaLayout>
         )
       }
@@ -345,30 +397,17 @@ export function useRenderForm(
       }
       case 'Inputer':
       default:
-        const { trueComponentProps, isDisabled, getFormItemProps, slotKey, formItemLabel } = useFormItem(
-          props,
-          slots,
-          schema,
-          formModel
-        )
+        const { trueComponentProps, isDisabled, getFormItemProps, slotKey, formItemLabel } =
+          useFormItem(props, slots, schema, formModel)
         return (
           <SchemaLayout schema={schema} schemaProps={props.schemaProps} item-key={key}>
             <ElFormItem {...getFormItemProps()}>
               {{
                 ...(slots[`${slotKey}--label`]
-                    ? { label: slots[`${slotKey}--label`] }
-                    : { label: () => renderFormItemLabel(formItemLabel.value, schema) }
-                ),
-                ...(slots[`${slotKey}--error`]
-                    ? { error: slots[`${slotKey}--error`] }
-                    : {}
-                ),
-                default: () =>
-                  renderInputer(
-                    schema,
-                    trueComponentProps,
-                    isDisabled
-                  )
+                  ? { label: slots[`${slotKey}--label`] }
+                  : { label: () => renderFormItemLabel(formItemLabel.value, schema) }),
+                ...(slots[`${slotKey}--error`] ? { error: slots[`${slotKey}--error`] } : {}),
+                default: () => renderInputer(schema, trueComponentProps, isDisabled)
               }}
             </ElFormItem>
           </SchemaLayout>
@@ -389,10 +428,19 @@ export function useRenderForm(
       logger.error('console.form.keyRequired', undefined, schema)
       return undefined
     }
-    const { getDescriptionsProps, getDescriptionsSlots } = useFormItem(props, slots, schema, formModel)
+    const { getDescriptionsProps, getDescriptionsSlots } = useFormItem(
+      props,
+      slots,
+      schema,
+      formModel
+    )
     return (
       <ElCol span={schema.layoutProps?.span ?? 24}>
-        <ElDescriptions {...getDescriptionsProps()} key={`container-row-${key}`} data-id={`container-row-${key}`}>
+        <ElDescriptions
+          {...getDescriptionsProps()}
+          key={`container-row-${key}`}
+          data-id={`container-row-${key}`}
+        >
           {{
             ...getDescriptionsSlots(),
             default: () => {
@@ -404,7 +452,6 @@ export function useRenderForm(
         </ElDescriptions>
       </ElCol>
     )
-
   }
   // 渲染描述项组件
   function renderDescriptionItem(schema: FormSchema) {
@@ -432,12 +479,14 @@ export function useRenderForm(
         logger.error('console.form.nestedDescriptionsNotSupported', undefined, schema)
         return undefined
       case 'Custom': {
-        const { getFormItemProps, getDescriptionItemProps } = useFormItem(props, slots, schema, formModel)
+        const { getFormItemProps, getDescriptionItemProps } = useFormItem(
+          props,
+          slots,
+          schema,
+          formModel
+        )
         return (
-          <ElDescriptionsItem
-            {...getDescriptionItemProps()}
-            key={key}
-          >
+          <ElDescriptionsItem {...getDescriptionItemProps()} key={key}>
             <ElFormItem {...getFormItemProps()}>
               {{
                 default: () => renderCustom(schema)
@@ -447,12 +496,14 @@ export function useRenderForm(
         )
       }
       case 'Decorator': {
-        const { trueComponentProps, getDescriptionItemProps } = useFormItem(props, slots, schema, formModel)
+        const { trueComponentProps, getDescriptionItemProps } = useFormItem(
+          props,
+          slots,
+          schema,
+          formModel
+        )
         return (
-          <ElDescriptionsItem
-            {...getDescriptionItemProps()}
-            key={key}
-          >
+          <ElDescriptionsItem {...getDescriptionItemProps()} key={key}>
             {renderDecorator(schema, trueComponentProps)}
           </ElDescriptionsItem>
         )
@@ -466,19 +517,11 @@ export function useRenderForm(
           slotKey,
           formItemLabel,
           getDescriptionItemProps
-        } = useFormItem(
-          props,
-          slots,
-          schema,
-          formModel
-        )
+        } = useFormItem(props, slots, schema, formModel)
         return (
-          <ElDescriptionsItem
-            {...getDescriptionItemProps()}
-            key={key}
-          >
+          <ElDescriptionsItem {...getDescriptionItemProps()} key={key}>
             <ElFormItem {...getFormItemProps()}>
-              { renderInputer(schema, trueComponentProps, isDisabled) }
+              {renderInputer(schema, trueComponentProps, isDisabled)}
             </ElFormItem>
           </ElDescriptionsItem>
         )
@@ -517,9 +560,7 @@ export function useRenderForm(
           class="ae-form-main__base_row type-form"
           gutter={10}
         >
-          {currentSchemas.map(item =>
-            renderSchema(item)
-          )}
+          {currentSchemas.map(item => renderSchema(item))}
         </ElRow>
       )
     }
@@ -559,13 +600,10 @@ export function useRenderForm(
           class="ae-form-main__base_row type-desc"
           gutter={10}
         >
-          {descriptionsSchemas.map(item =>
-            renderDescription(item)
-          )}
+          {descriptionsSchemas.map(item => renderDescription(item))}
         </ElRow>
       )
     }
-
 
     // 获取需要透传给el-form的属性
     const getElFormProps = () => {
@@ -594,9 +632,14 @@ export function useRenderForm(
     }
 
     return (
-      <ElForm class="ae-form-main" ref={(el: any) => setElFormRef(el)} {...getElFormProps()} model={formModel.value}>
+      <ElForm
+        class="ae-form-main"
+        ref={(el: any) => setElFormRef(el)}
+        {...getElFormProps()}
+        model={formModel.value}
+      >
         {{
-          default: () => props.type === 'form' ? renderSchemas() : renderDescriptions()
+          default: () => (props.type === 'form' ? renderSchemas() : renderDescriptions())
         }}
       </ElForm>
     )

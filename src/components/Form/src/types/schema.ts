@@ -1,4 +1,4 @@
-import type { ComponentName } from './components'
+import type { ComponentName, ContainerName, DecoratorName, InputerName } from './components'
 import type { CSSProperties, VNode } from 'vue'
 import type { FormItemRule } from 'element-plus'
 import type { AutoRules } from '@/types/rules'
@@ -70,7 +70,7 @@ export interface StepSchema extends FormSchemaBase {
  * @properties
  * - `key`: 必传参数，标识组件的唯一标志。
  * - `type`: 必传参数且始终为`Container`，标识组件为容器。
- * - `component`: 必传参数，标识当前容器块所使用的容器组件类型。
+ * - `component`: {@link ContainerName} 必传参数，标识当前容器块所使用的容器组件类型。
  * - `children`: 必传参数，标识组件的子级。
  * - `label`: 标题，用于`容器组件`的标题。
  * - `hidden`: 是否隐藏，用于隐藏当前容器块及容器内所有子组件。
@@ -81,7 +81,7 @@ export interface StepSchema extends FormSchemaBase {
 export interface ContainerSchema extends FormSchemaBase {
   key: string
   type: 'Container'
-  component: ComponentName
+  component: ContainerName | string
   children: FormSchema[]
   label?: FormSchemaFn<string> | string
   hidden?: FormSchemaFn<boolean> | boolean
@@ -137,7 +137,7 @@ export interface DescriptionsSchema extends FormSchemaBase {
  * @properties
  * - `key`: 必传参数，标识组件的唯一标志。
  * - `type`: 必传参数且始终为`Decorator`，标识组件为装饰组件。
- * - `component`: 必传参数，标识当前所使用的装饰类组件类型。
+ * - `component`: {@link DecoratorName} 必传参数，标识当前所使用的装饰类组件类型。
  * - `label`: 标题，用于`装饰类组件`的标题。
  * - `hidden`: 是否隐藏，用于隐藏当前组件。
  * - `componentProps`: 为组件添加属性
@@ -149,7 +149,7 @@ export interface DescriptionsSchema extends FormSchemaBase {
 export interface DecoratorSchema extends FormSchemaBase {
   key: string
   type: 'Decorator'
-  component: ComponentName
+  component: DecoratorName | string
   label?: FormSchemaFn<string> | string
   hidden?: FormSchemaFn<boolean> | boolean
   componentProps?: ComponentProps
@@ -171,7 +171,7 @@ export interface DecoratorSchema extends FormSchemaBase {
  * @description 输入组件可配置参数如下:
  * @properties
  * - `field`: 必传参数，标识组件的`v-model`绑定值，支持嵌套属性如`userinfo.username`。
- * - `component`: 必传参数，标识当前所使用的输入类组件类型。
+ * - `component`: {@link InputerName} 必传参数，标识当前所使用的输入类组件类型。
  * - `key`: 组件唯一标识符，默认为`field`属性值，可自定义。如果两个输入组件共用同一个`field`则务必给他们设置不同的`key`。
  * - `type`: 默认为`Inputer`，标识当前配置项为输入组件。
  * - `label`: 标题，用于`输入类组件`的标题。
@@ -186,7 +186,7 @@ export interface DecoratorSchema extends FormSchemaBase {
  */
 export interface InputerSchema extends FormSchemaBase {
   field: string
-  component: ComponentName
+  component: InputerName | string
   key?: string
   type?: 'Inputer'
   label?: FormSchemaFn<string> | string

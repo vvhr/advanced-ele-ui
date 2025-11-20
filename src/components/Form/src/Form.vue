@@ -9,7 +9,8 @@ import {
   unref,
   toRaw
 } from 'vue'
-import { FormSchema, FormImportItem, FormSchemaProps } from './types'
+import { FormSchema, FormSchemaProps } from './types'
+import type { FormImportItem } from '@/types/imports'
 import { useRenderForm } from './render/useRenderForm'
 import { useForm } from './hook/useForm'
 import { useImport } from './hook/useImport'
@@ -105,8 +106,8 @@ export default defineComponent({
       default: true
     },
     /**
-     * 加载扩展组件
-     * @description 您可以通过此属性来按需加载一些组件
+     * 加载扩展组件（局部注册，优先级高于全局注册）
+     * @description 您可以通过此属性来按需加载一些组件，局部注册的组件会覆盖全局注册的同名组件
      * @param {FormImportItem[]} imports - 需要导入的组件列表
      */
     imports: {
@@ -116,8 +117,7 @@ export default defineComponent({
   },
   emits: ['register', 'update:stepValue'],
   setup: (props, { emit, attrs, slots, expose }) => {
-    const { components, arrayStrategies, componentConfigs, registerComponents } = useImport()
-    registerComponents(props.imports)
+    const { components, arrayStrategies, componentConfigs } = useImport(props.imports)
 
     const {
       isValidating,

@@ -3,7 +3,6 @@ import Form from './src/Form.vue'
 export type FormDefineProps = InstanceType<typeof Form>['$props']
 export type FormInstance = InstanceType<typeof Form>
 export type { ComponentName } from './src/types/components'
-export type { FormImportItem, FormImportItemConfig } from './src/types/import'
 export type { FormSlots, FormEmits, FormSchemaProps } from './src/types/props'
 export type {
   FormSchema,

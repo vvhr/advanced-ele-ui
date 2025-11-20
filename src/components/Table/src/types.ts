@@ -2,6 +2,7 @@ import { ElTable, type FormItemRule, TableColumnCtx } from 'element-plus'
 import { DictItem, DictMap } from '@/types/dict'
 import type { VNode, Component, CSSProperties, Slots } from 'vue'
 import type { ElButtonProps, OptionKeys } from './internal-types'
+import type { TableFormImportItem } from '@/types/imports'
 
 /**
  * 表格插槽
@@ -147,7 +148,8 @@ export type TableColumnFn<T> = (
   index: number,
   column: TableColumn,
   form: Recordable,
-  excontext: Recordable
+  excontext: Recordable,
+  editable: boolean
 ) => T
 
 /**
@@ -732,14 +734,3 @@ export type TableFormAutoRules =
   | 'onlyNumber' // 只能输入数字
   | 'onlyLetter' // 只能输入字母
   | 'isEmail' // 邮箱号
-
-export interface TableFormImportItemConfig {
-  modelValueKey?: string
-}
-
-export interface TableFormImportItem {
-  name: string
-  component: Component
-  config?: TableFormImportItemConfig
-  isArrayFn?: (cps: Recordable) => boolean
-}

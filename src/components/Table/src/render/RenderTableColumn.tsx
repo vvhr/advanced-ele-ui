@@ -4,9 +4,9 @@ import {
   TableSlotDefault,
   TableColumn,
   TableFormComponentName,
-  TableFormImportItemConfig,
   TableSlots
 } from '../types'
+import type { TableFormImportItemConfig } from '@/types/imports'
 import {
   ElTableColumn,
   ElRadio
@@ -28,8 +28,8 @@ import {
   wrapValueWithFeatures,
   type RenderContext
 } from './columnRenderers'
-import { renderActionColumn, type ActionRenderContext } from './actionRenderer'
-import { renderEditableColumn, type EditableRenderContext } from './editableRenderer'
+import { renderActionColumn } from './actionRenderer'
+import { renderEditableColumn } from './editableRenderer'
 import { logger } from '@/locale'
 
 export function renderTableColumns(
@@ -84,7 +84,7 @@ export function renderTableColumns(
     const renderSelectionColumn = (column: TableColumn) => {
       const setSelectable = (row: any, index: number) => {
         return column.typeProps?.selectable !== undefined
-          ? column.typeProps?.selectable(row, index, column, props.form, props.excontext)
+          ? column.typeProps?.selectable(row, index, column, props.form, props.excontext, props.editable)
           : true
       }
 
@@ -163,12 +163,12 @@ export function renderTableColumns(
       if (column.type === 'default' || !column.type) {
         // 优先使用 render 函数
         if (column.render !== undefined) {
-          return column.render(row, index, column, props.form, props.excontext)
+          return column.render(row, index, column, props.form, props.excontext, props.editable)
         }
 
         // 使用 formatter 函数
         if (column.formatter !== undefined) {
-          const formattedValue = column.formatter(row, index, column, props.form, props.excontext)
+          const formattedValue = column.formatter(row, index, column, props.form, props.excontext, props.editable)
           return wrapValueWithFeatures(ctx, { value: formattedValue })
         }
 
@@ -291,7 +291,7 @@ export function renderTableColumns(
                 renderTableColumnDefault(column, data.row, data.$index),
               header: () =>
                 getSlot(slots, `${columnKey}-header`) ||
-                column.headerRender?.({}, null, column, props.form, props.excontext) || (
+                column.headerRender?.({}, null, column, props.form, props.excontext, props.editable) || (
                   <TooltipHeader title={column.label} subtitle={column.subLabel} />
                 )
             }}
