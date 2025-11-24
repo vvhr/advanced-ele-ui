@@ -163,6 +163,7 @@ function handleClose() {
         height: 0;
         .el-scrollbar {
           height: 100% !important;
+          box-sizing: border-box;
         }
       }
     }
@@ -171,7 +172,7 @@ function handleClose() {
 
 .ae-dialog {
   margin: 0 !important;
-  padding: 0;
+  padding: 0 !important;
   .el-dialog__header {
     height: 54px;
     padding: 0;
