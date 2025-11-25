@@ -37,6 +37,7 @@
         :type="'form'"
         :excontext="{}"
         :auto-init-field="true"
+        :scroll-ref="containerRef"
         :disabled="mode === 'detail'"
         :imports="imports"
         :class="enableBeauty ? 'element-plus-beauty' : ''"
@@ -98,7 +99,9 @@ import type { TableColumn } from '@/components/Table'
 import { ElMessage, ElUpload, ElCard } from 'element-plus'
 import type { UploadRawFile } from '@/components/Upload'
 import type { FormImportItem } from '@/types/imports'
-
+defineProps({
+  containerRef: null
+})
 const imports: FormImportItem[] = [
   {
     name: 'ElUpload',

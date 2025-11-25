@@ -298,10 +298,11 @@ export default defineComponent({
         height: getStyleWidth(props.viewHeight) || 'fit-content'
       }
     })
+    // aie-theme-light
     return () =>
       props.disabled ? (
         <div class="ae-ai-editor-view" style={viewStyle.value}>
-          <div v-html={props.modelValue}></div>
+          <div v-html={props.modelValue} class="aie-container"></div>
         </div>
       ) : (
         <div

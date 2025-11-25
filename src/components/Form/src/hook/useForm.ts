@@ -186,20 +186,31 @@ export function useForm(
     isValidating.value = true
     try {
       const result = await unref(elFormRef)?.validate((valid, fields) => {
-        // 如果配置了props.validateNotice = true 则自动提醒哪个字段校验未通过
-        if (!valid && props.showErrorNotice) {
+        if (!valid) {
           const firstRule = getFirstAttr(fields)
           const findSchema = findNode(
             props.schemas,
             (schema: FormSchema) => schema.field === firstRule[0].field
           )
-          const fieldLabel = findSchema?.label || findSchema?.field
-          if (fieldLabel) {
-            ElNotification({
-              title: t('form.validation.fieldError', { field: fieldLabel }),
-              message: firstRule[0].message,
-              type: 'warning'
-            })
+          // Scroll to the first error field
+          if (props.scrollRef && findSchema) {
+            const container = props.scrollRef.current || props.scrollRef
+            const fieldId = findSchema.key || findSchema.field
+            const element = container.querySelector(`[data-id="${CSS.escape(fieldId)}"]`)
+            if (element) {
+              element.scrollIntoView({ behavior: 'smooth', block: 'center' })
+            }
+          }
+          // If props.showErrorNotice is set to true, it automatically alerts which field validation has failed.
+          if (props.showErrorNotice && findSchema) {
+            const fieldLabel = findSchema?.label || findSchema?.field
+            if (fieldLabel) {
+              ElNotification({
+                title: t('form.validation.fieldError', { field: fieldLabel }),
+                message: firstRule[0].message,
+                type: 'warning'
+              })
+            }
           }
         }
       })

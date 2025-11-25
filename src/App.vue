@@ -1,5 +1,5 @@
 <template>
-  <div class="demo-container" :class="{ dark: isDark }">
+  <div class="demo-container" :class="{ dark: isDark }" ref="containerRef">
     <header class="demo-header">
       <a
         href="https://github.com/vvhr/advanced-ele-ui"
@@ -34,7 +34,7 @@
         <QuickStartExample v-if="activeTab === 'start'" />
       </el-tab-pane>
       <el-tab-pane label="📝 AeForm 表单组件" name="form">
-        <FormExample v-if="activeTab === 'form'" />
+        <FormExample v-if="activeTab === 'form'" :containerRef="containerRef"/>
       </el-tab-pane>
       <el-tab-pane label="📊 AeTable 表格组件" name="table">
         <TableExample v-if="activeTab === 'table'" />
@@ -76,7 +76,7 @@ import QuickStartExample from './examples/QuickStartExample.vue'
 
 const activeTab = ref('start')
 const isDark = ref(false)
-
+const containerRef = ref()
 // 初始化主题
 onMounted(() => {
   const savedTheme = localStorage.getItem('theme')
