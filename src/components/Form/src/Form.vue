@@ -135,7 +135,8 @@ export default defineComponent({
       setValue,
       delValue,
       resetValidate,
-      validate
+      validate,
+      scrollToKey
     } = useForm(props, props.schemas, components, arrayStrategies)
 
     onMounted(() => {
@@ -194,7 +195,8 @@ export default defineComponent({
       setValue,
       delValue,
       validate,
-      resetValidate
+      resetValidate,
+      scrollToKey
     })
     const { renderForm } = useRenderForm(
       props,

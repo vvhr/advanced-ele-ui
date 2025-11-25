@@ -29,6 +29,7 @@ export function useForm(
   delValue: (key: string) => void
   resetValidate: () => void
   validate: () => Promise<any>
+  scrollToKey: (key: string) => void
 } {
   const isValidating = ref(false)
   const formModel = ref<Recordable>({})
@@ -221,6 +222,16 @@ export function useForm(
     }
   }
 
+  function scrollToKey(key: string) {
+    if (props.scrollRef && key) {
+      const container = props.scrollRef
+      const element = container.querySelector(`[data-id="${CSS.escape(key)}"]`)
+      if (element) {
+        element.scrollIntoView({ behavior: 'smooth', block: 'center' })
+      }
+    }
+  }
+
   return {
     isValidating,
     formModel,
@@ -237,6 +248,7 @@ export function useForm(
     setValue,
     delValue,
     resetValidate,
-    validate
+    validate,
+    scrollToKey
   }
 }

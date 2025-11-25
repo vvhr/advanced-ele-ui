@@ -47,11 +47,46 @@ async function generateGlobalDts() {
     return
   }
 
-  // 生成导入语句（导入组件值，不是类型）
-  const imports = `import { ${components.join(', ')} } from './index'`
+  // 组件名到 Props 类型的映射
+  const propsTypeMap: Record<string, string> = {
+    AeForm: 'FormDefineProps',
+    AeTable: 'TableDefineProps',
+    AeIcon: 'IconProps',
+    AeEditor: 'EditorProps',
+    AeUpload: 'UploadProps',
+    AeDialog: 'DialogProps',
+    AeDrawer: 'DrawerProps',
+    AeTabs: 'TabsProps',
+    AeTabPane: 'TabPaneProps'
+  }
 
-  // 生成组件声明（使用 InstanceType<typeof Component>）
-  const declarations = components.map(name => `    ${name}: InstanceType<typeof ${name}>`).join('\n')
+  // 生成导入语句
+  const propsTypes = components
+    .map(name => propsTypeMap[name as string])
+    .filter((type): type is string => Boolean(type))
+  const imports = `import type { DefineComponent } from 'vue'
+import type { ${propsTypes.join(', ')} } from './index'`
+
+  // 生成组件声明
+  const declarations = components
+    .map(name => {
+      const propsType = propsTypeMap[name as string]
+      return propsType ? `    ${name}: DefineComponent<${propsType}>` : null
+    })
+    .filter((decl): decl is string => Boolean(decl))
+    .join('\n')
+
+  // 读取 src/global.d.ts 的内容
+  const srcGlobalDts = resolve(__dirname, 'src/global.d.ts')
+  let globalTypes = ''
+  if (existsSync(srcGlobalDts)) {
+    const srcContent = readFileSync(srcGlobalDts, 'utf-8')
+    // 提取 declare global 块的内容（使用 [\s\S] 代替 . 来匹配换行符）
+    const globalMatch = srcContent.match(/declare global\s*{([\s\S]*?)}\s*export\s*{}/)
+    if (globalMatch) {
+      globalTypes = `\n// Global type definitions\ndeclare global {${globalMatch[1]}}\n`
+    }
+  }
 
   const content = `// GlobalComponents for Volar
 ${imports}
@@ -61,12 +96,12 @@ declare module 'vue' {
 ${declarations}
   }
 }
-
+${globalTypes}
 export {}
 `
 
   writeFileSync(targetFile, content, 'utf-8')
-  console.log(`✓ Created dist/global.d.ts with ${components.length} components`)
+  console.log(`✓ Created dist/global.d.ts with ${components.length} components and global types`)
 }
 
 /**
