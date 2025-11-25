@@ -194,7 +194,7 @@ export function useForm(
           )
           // Scroll to the first error field
           if (props.scrollRef && findSchema) {
-            const container = props.scrollRef.current || props.scrollRef
+            const container = props.scrollRef
             const fieldId = findSchema.key || findSchema.field
             const element = container.querySelector(`[data-id="${CSS.escape(fieldId)}"]`)
             if (element) {

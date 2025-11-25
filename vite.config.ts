@@ -47,11 +47,11 @@ async function generateGlobalDts() {
     return
   }
 
-  // 生成导入语句
-  const imports = `import type { ${components.join(', ')} } from './index'`
+  // 生成导入语句（导入组件值，不是类型）
+  const imports = `import { ${components.join(', ')} } from './index'`
 
-  // 生成组件声明
-  const declarations = components.map(name => `    ${name}: typeof ${name}`).join('\n')
+  // 生成组件声明（使用 InstanceType<typeof Component>）
+  const declarations = components.map(name => `    ${name}: InstanceType<typeof ${name}>`).join('\n')
 
   const content = `// GlobalComponents for Volar
 ${imports}

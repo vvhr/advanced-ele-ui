@@ -1,7 +1,8 @@
 import Table from './src/Table.vue'
+import type { TableExpose } from './src/types'
 
 export type TableDefineProps = InstanceType<typeof Table>['$props']
-export type TableInstance = InstanceType<typeof Table>
+export type TableInstance = InstanceType<typeof Table> & TableExpose
 export type {
   TableSlots,
   TableEmits,
