@@ -17,7 +17,7 @@
   <br/>
 
   <h3>
-    <a href="https://vvhr.github.io/advanced-ele-ui" target="_blank">📱 在线演示</a>
+    <a href="http://aeui.vvhrdesign.com" target="_blank">📱 在线演示</a>
     ·
     <a href="#QuickStart">快速开始</a>
     ·
@@ -253,7 +253,7 @@ import 'advanced-ele-ui/dist/style.css'
 
 ## Documents and Resources
 
-- [在线演示](https://vvhr.github.io/advanced-ele-ui) - 查看所有组件的实时示例
+- [在线演示](http://aeui.vvhrdesign.com) - 查看所有组件的实时示例
 - [NPM 包](https://www.npmjs.com/package/advanced-ele-ui) - 查看发布版本和下载统计
 - [更新日志](./CHANGELOG.md) - 了解版本更新内容
 - [问题反馈](https://github.com/vvhr/advanced-ele-ui/issues) - 提交 Bug 或功能建议

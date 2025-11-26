@@ -18,7 +18,7 @@ English | [简体中文](./README.zh.md)
   <br/>
 
   <h3>
-    <a href="https://vvhr.github.io/advanced-ele-ui" target="_blank">📱 Live Demo</a>
+    <a href="http://aeui.vvhrdesign.com" target="_blank">📱 Live Demo</a>
     ·
     <a href="#QuickStart">Quick Start</a>
     ·
@@ -254,7 +254,7 @@ import 'advanced-ele-ui/dist/style.css'
 
 ## Documents and Resources
 
-- [Live Demo](https://vvhr.github.io/advanced-ele-ui) - View live examples of all components
+- [Live Demo](http://aeui.vvhrdesign.com) - View live examples of all components
 - [NPM Package](https://www.npmjs.com/package/advanced-ele-ui) - View release versions and download statistics
 - [Changelog](./CHANGELOG.md) - Learn about version updates
 - [Issue Feedback](https://github.com/vvhr/advanced-ele-ui/issues) - Submit bugs or feature suggestions
