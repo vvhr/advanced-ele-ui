@@ -22,25 +22,26 @@ export const SchemaLayout = defineComponent({
     const layoutProps = computed(() => {
       return {
         span: props.schema.layoutProps?.span ?? props.schemaProps?.layoutProps?.span ?? 12,
-        alone: props.schema.layoutProps?.alone ?? props.schemaProps?.layoutProps?.alone ?? false
+        alone: props.schema.layoutProps?.alone ?? props.schemaProps?.layoutProps?.alone ?? false,
+        style: props.schema.layoutProps?.colStyle ?? {}
       }
     })
     const type = computed(() => props.schema.type ?? 'Inputer')
     const enableAlone = ['Container', 'Custom', 'Inputer', 'Decorator']
-    
+
     return () => {
       if (layoutProps.value.alone && enableAlone.includes(type.value)) {
         // 如果需要独占一行, 需要包裹 ElCol+ElRow
         return (
           <ElCol span={24} key={props.itemKey} data-id={props.itemKey} class="mb-1">
             <ElRow>
-              <ElCol span={layoutProps.value.span}>{slots.default?.()}</ElCol>
+              <ElCol span={layoutProps.value.span} style={layoutProps.value.style}>{slots.default?.()}</ElCol>
             </ElRow>
           </ElCol>
         )
       } else {
         return (
-          <ElCol span={layoutProps.value.span} key={props.itemKey} data-id={props.itemKey} class="mb-2">
+          <ElCol span={layoutProps.value.span} key={props.itemKey} data-id={props.itemKey} class="mb-2" style={layoutProps.value.style}>
             {slots.default?.()}
           </ElCol>
         )

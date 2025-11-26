@@ -31,6 +31,8 @@ export { AeForm, AeIcon, AeTable, AeEditor, AeUpload, AeDialog, AeDrawer, AeTabs
 export type {
   FormDefineProps,
   FormInstance,
+  FormExpose,
+  FormItemProps,
   ComponentName,
   FormSchema,
   FormSlots,

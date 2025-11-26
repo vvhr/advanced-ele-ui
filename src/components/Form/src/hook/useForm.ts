@@ -197,9 +197,13 @@ export function useForm(
           if (props.scrollRef && findSchema) {
             const container = props.scrollRef
             const fieldId = findSchema.key || findSchema.field
-            const element = container.querySelector(`[data-id="${CSS.escape(fieldId)}"]`)
-            if (element) {
-              element.scrollIntoView({ behavior: 'smooth', block: 'center' })
+            try {
+              const element = container.querySelector(`[data-id="${CSS.escape(fieldId)}"]`)
+              if (element) {
+                element.scrollIntoView({ behavior: 'smooth', block: 'center' })
+              }
+            } catch (e) {
+              console.error('[AeForm] scrollRef is invalid', e)
             }
           }
           // If props.showErrorNotice is set to true, it automatically alerts which field validation has failed.
