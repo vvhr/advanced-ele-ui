@@ -4,6 +4,72 @@
 
 ---
 
+## [0.1.5-beta] - 2025-11-26
+
+### 重构
+* 组件库核心架构重构，为所有组件统一添加 `withInstall` 安装函数，支持组件独立安装和全局注册。
+* 新增 `utils/install.ts` 工具模块，封装 `withInstall` 函数和 `SFCWithInstall` 类型定义。
+* 优化组件导出方式，所有组件现在统一使用 `Ae` 前缀导出（如 `AeForm`、`AeTable` 等），同时保持向后兼容。
+* 重构 `src/index.ts` 中的组件注册逻辑，使用批量 `app.use` 方式安装所有组件。
+* 优化 Vite 构建配置，改进全局类型声明生成逻辑，新增独立的 `global.d.ts` 文件。
+
+### 修复Bug
+* 修正全局类型文件路径，从 `./dist/global.d.ts` 调整为 `./global.d.ts`，确保类型定义正确加载。
+* 在 `package.json` 的 `files` 字段中添加 `global.d.ts`，确保发布时包含该文件。
+
+---
+
+## [0.1.4-beta] - 2025-11-25
+
+### 新增
+* 组件 [AeForm] 新增 `scrollToKey` 方法，支持滚动到指定字段位置。
+* 组件 [AeForm] 新增 `scrollRef` 属性，用于指定滚动容器，实现更灵活的滚动定位。
+* 组件 [AeForm] 在表单验证失败时自动滚动到第一个错误字段，提升用户体验。
+* 新增 `FormExpose` 接口和 `FormInstance` 类型定义，完善表单组件实例类型系统。
+* `FormExpose` 接口包含完整的表单操作方法：初始化、获取/设置表单值、批量操作字段、验证及重置等。
+
+### 修复Bug
+* 组件 [AeForm] 修复表单滚动定位逻辑，修正 `useForm` 中 `scrollRef` 的容器获取逻辑。
+* 组件 [AeForm] 优化错误提示逻辑，确保字段标签正确显示。
+* 组件 [AeEditor] 修复类名缺失问题。
+
+### 重构
+* 将 `FormInstance` 类型导出至独立文件 `src/components/Form/src/types/instance.ts`。
+* 更新 `TableInstance` 类型，合并 `TableExpose` 接口定义。
+* 优化 Vite 配置中的组件导入和全局类型声明生成逻辑。
+
+### 文档
+* 更新示例代码 [FormExample] 以支持新的滚动功能。
+
+---
+
+## [0.1.3-beta] - 2025-11-25
+
+### 新增
+* 组件 [AeForm] 新增表单组件实例类型定义，提供完整的类型支持。
+
+---
+
+## [0.1.2-beta] - 2025-11-24
+
+### 修复Bug
+* 组件 [AeDialog] 调整对话框样式以确保正确显示，为滚动条添加盒模型边框计算。
+* 组件 [AeDialog] 强制设置对话框内边距为 0 以避免布局偏移。
+
+---
+
+## [0.1.1-beta] - 2025-11-20
+
+### 修复Bug
+* 组件 [AeDialog] 修复 `fullscreen` 配置错误。
+* 组件 [AeDialog] 修复关闭按钮无效问题。
+* 修复 UnoCSS 配置问题。
+
+### 重构
+* 移除 `vite.config.demo.ts` 配置文件，简化构建配置。
+
+---
+
 ## [0.1.0] - 2025-11-20
 
 ### 新增

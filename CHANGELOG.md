@@ -4,6 +4,72 @@ English | [简体中文](./CHANGELOG.zh.md)
 
 ---
 
+## [0.1.5-beta] - 2025-11-26
+
+### Refactors
+* Refactored the core architecture of the component library, adding `withInstall` installation function to all components, supporting independent installation and global registration.
+* Added `utils/install.ts` utility module, encapsulating the `withInstall` function and `SFCWithInstall` type definition.
+* Optimized component export approach, all components now use the `Ae` prefix for export (e.g., `AeForm`, `AeTable`, etc.), while maintaining backward compatibility.
+* Refactored component registration logic in `src/index.ts`, using batch `app.use` method to install all components.
+* Optimized Vite build configuration, improved global type declaration generation logic, and added a standalone `global.d.ts` file.
+
+### Bug fixes
+* Fixed global type file path, adjusted from `./dist/global.d.ts` to `./global.d.ts`, ensuring type definitions load correctly.
+* Added `global.d.ts` to the `files` field in `package.json` to ensure the file is included during publishing.
+
+---
+
+## [0.1.4-beta] - 2025-11-25
+
+### Features
+* Component [AeForm] added `scrollToKey` method, supporting scrolling to a specified field position.
+* Component [AeForm] added `scrollRef` property to specify the scroll container, enabling more flexible scroll positioning.
+* Component [AeForm] now automatically scrolls to the first error field when form validation fails, improving user experience.
+* Added `FormExpose` interface and `FormInstance` type definition, completing the form component instance type system.
+* The `FormExpose` interface includes complete form operation methods: initialization, get/set form values, batch field operations, validation and reset, etc.
+
+### Bug fixes
+* Component [AeForm] fixed form scroll positioning logic, corrected the container retrieval logic for `scrollRef` in `useForm`.
+* Component [AeForm] optimized error message logic, ensuring field labels display correctly.
+* Component [AeEditor] fixed missing class name issue.
+
+### Refactors
+* Exported `FormInstance` type to a standalone file `src/components/Form/src/types/instance.ts`.
+* Updated `TableInstance` type, merging the `TableExpose` interface definition.
+* Optimized component import and global type declaration generation logic in Vite configuration.
+
+### Docs
+* Updated example code [FormExample] to support the new scroll functionality.
+
+---
+
+## [0.1.3-beta] - 2025-11-25
+
+### Features
+* Component [AeForm] added form component instance type definition, providing complete type support.
+
+---
+
+## [0.1.2-beta] - 2025-11-24
+
+### Bug fixes
+* Component [AeDialog] adjusted dialog styles to ensure correct display, adding box-sizing border calculation for scrollbars.
+* Component [AeDialog] forced dialog padding to 0 to avoid layout shifts.
+
+---
+
+## [0.1.1-beta] - 2025-11-20
+
+### Bug fixes
+* Component [AeDialog] fixed `fullscreen` configuration error.
+* Component [AeDialog] fixed close button not working issue.
+* Fixed UnoCSS configuration issues.
+
+### Refactors
+* Removed `vite.config.demo.ts` configuration file, simplifying build configuration.
+
+---
+
 ## [0.1.0] - 2025-11-20
 
 ### Features
