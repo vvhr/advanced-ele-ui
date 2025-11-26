@@ -1,5 +1,10 @@
 import Drawer from './src/Drawer.vue'
+import { withInstall } from '@/utils/install'
+import type { SFCWithInstall } from '@/utils/install'
 import type { DrawerProps as ElDrawerProps } from 'element-plus'
+
+export const AeDrawer: SFCWithInstall<typeof Drawer> = withInstall(Drawer)
+export default AeDrawer
 
 /**
  * Drawer 组件的 Props 类型定义
@@ -31,5 +36,5 @@ export type DrawerSlots = {
   footer?: () => any
 }
 
-export { Drawer }
-export default Drawer
+// 兼容旧的导出方式
+export { AeDrawer as Drawer }

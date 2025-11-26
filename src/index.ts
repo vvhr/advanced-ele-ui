@@ -2,14 +2,14 @@ import type { App } from 'vue'
 import 'virtual:uno.css'
 
 // Import components
-import { Form } from './components/Form'
-import { Icon } from './components/Icon'
-import { Table } from './components/Table'
-import { Editor } from './components/Editor'
-import { Upload } from './components/Upload'
-import { Dialog } from './components/Dialog'
-import { Drawer } from './components/Drawer'
-import { Tabs, TabPane } from './components/Tabs'
+import { AeForm } from './components/Form'
+import { AeIcon } from './components/Icon'
+import { AeTable } from './components/Table'
+import { AeEditor } from './components/Editor'
+import { AeUpload } from './components/Upload'
+import { AeDialog } from './components/Dialog'
+import { AeDrawer } from './components/Drawer'
+import { AeTabs, AeTabPane } from './components/Tabs'
 
 // Import
 import type {
@@ -24,17 +24,7 @@ export * from './types'
 
 export type { FormImportItem, FormImportItemConfig, TableFormImportItem, TableFormImportItemConfig }
 // Export components
-export {
-  Form as AeForm,
-  Icon as AeIcon,
-  Table as AeTable,
-  Editor as AeEditor,
-  Upload as AeUpload,
-  Dialog as AeDialog,
-  Drawer as AeDrawer,
-  Tabs as AeTabs,
-  TabPane as AeTabPane
-}
+export { AeForm, AeIcon, AeTable, AeEditor, AeUpload, AeDialog, AeDrawer, AeTabs, AeTabPane }
 
 // Export component's types
 // Form
@@ -181,16 +171,21 @@ export interface InstallOptions {
 
 // Install
 const install = (app: App, options?: InstallOptions) => {
-  // 注册组件
-  app.component('AeForm', Form)
-  app.component('AeTable', Table)
-  app.component('AeIcon', Icon)
-  app.component('AeEditor', Editor)
-  app.component('AeUpload', Upload)
-  app.component('AeDialog', Dialog)
-  app.component('AeDrawer', Drawer)
-  app.component('AeTabs', Tabs)
-  app.component('AeTabPane', TabPane)
+  // 注册组件（所有组件都有 install 方法）
+  const components = [
+    AeForm,
+    AeIcon,
+    AeTable,
+    AeEditor,
+    AeUpload,
+    AeDialog,
+    AeDrawer,
+    AeTabs,
+    AeTabPane
+  ]
+  components.forEach(component => {
+    app.use(component)
+  })
 
   // 设置语言
   if (options?.locale) {
@@ -217,5 +212,5 @@ const install = (app: App, options?: InstallOptions) => {
 
 export default {
   install,
-  version: '0.1.4-beta'
+  version: '0.1.5-beta'
 }

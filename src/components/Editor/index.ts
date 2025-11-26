@@ -1,9 +1,12 @@
 import Editor from './src/Editor.vue'
+import { withInstall } from '@/utils/install'
+import type { SFCWithInstall } from '@/utils/install'
 import type { AiEditorOptions } from 'aieditor'
 import type { ToolbarKey, AddToolItem, AddToolItemPosition } from './src/types'
 
 // 导出组件
-export { Editor }
+export const AeEditor: SFCWithInstall<typeof Editor> = withInstall(Editor)
+export default AeEditor
 
 // 导出类型
 export type { ToolbarKey, AddToolItem, AddToolItemPosition }
@@ -73,4 +76,6 @@ export interface EditorEmits {
 
 // 导出编辑器实例类型（用于 ref 引用）
 export type { AiEditor } from 'aieditor'
-export default Editor
+
+// 兼容旧的导出方式
+export { AeEditor as Editor }

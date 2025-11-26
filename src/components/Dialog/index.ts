@@ -1,5 +1,10 @@
 import Dialog from './src/Dialog.vue'
+import { withInstall } from '@/utils/install'
+import type { SFCWithInstall } from '@/utils/install'
 import type { DialogProps as ElDialogProps } from 'element-plus'
+
+export const AeDialog: SFCWithInstall<typeof Dialog> = withInstall(Dialog)
+export default AeDialog
 
 /**
  * Dialog 组件的 Props 类型定义
@@ -31,5 +36,5 @@ export type DialogSlots = {
   footer?: () => any
 }
 
-export { Dialog }
-export default Dialog
+// 兼容旧的导出方式
+export { AeDialog as Dialog }

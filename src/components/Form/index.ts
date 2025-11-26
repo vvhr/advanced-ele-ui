@@ -1,4 +1,9 @@
 import Form from './src/Form.vue'
+import { withInstall } from '@/utils/install'
+import type { SFCWithInstall } from '@/utils/install'
+
+export const AeForm: SFCWithInstall<typeof Form> = withInstall(Form)
+export default AeForm
 
 export type FormDefineProps = InstanceType<typeof Form>['$props']
 export type { FormInstance } from './src/types/instance'
@@ -33,5 +38,6 @@ export type {
   InsidePropsRenders,
   InsidePropsRender
 } from './src/types/schema-ext'
-export { Form }
-export default Form
+
+// 兼容旧的导出方式
+export { AeForm as Form }

@@ -1,6 +1,12 @@
 import Tabs from './src/Tabs.vue'
 import TabPane from './src/TabPane.vue'
+import { withInstall } from '@/utils/install'
+import type { SFCWithInstall } from '@/utils/install'
 import type { TabsProps as ElTabsProps, TabPaneProps as ElTabPaneProps } from 'element-plus'
+
+export const AeTabs: SFCWithInstall<typeof Tabs> = withInstall(Tabs, { TabPane })
+export const AeTabPane: SFCWithInstall<typeof TabPane> = withInstall(TabPane)
+export default AeTabs
 
 /**
  * Tabs 组件的 Props 类型定义
@@ -36,5 +42,5 @@ export type TabsEmits = {
   edit: (targetName: string | number | undefined, action: 'add' | 'remove') => void
 }
 
-export { Tabs, TabPane }
-export default Tabs
+// 兼容旧的导出方式
+export { AeTabs as Tabs, AeTabPane as TabPane }

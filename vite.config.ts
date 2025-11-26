@@ -20,88 +20,42 @@ const execAsync = promisify(exec)
  */
 async function generateGlobalDts() {
   const indexFile = resolve(__dirname, 'src/index.ts')
-  const targetFile = resolve(__dirname, 'dist/global.d.ts')
+  const targetFile = resolve(__dirname, 'global.d.ts')
 
   // 读取 src/index.ts 并提取组件导出
   const indexContent = readFileSync(indexFile, 'utf-8')
 
-  // 匹配 // Export components 后面的 export { ... } 语句
-  const exportMatch = indexContent.match(/\/\/\s*Export components\s*\nexport\s*{\s*([^}]+)}/)
+  // 定义所有组件名称
+  const components = [
+    'AeForm',
+    'AeIcon',
+    'AeTable',
+    'AeEditor',
+    'AeUpload',
+    'AeDialog',
+    'AeDrawer',
+    'AeTabs',
+    'AeTabPane'
+  ]
 
-  if (!exportMatch) {
-    console.warn('⚠ Could not find component exports in src/index.ts')
-    return
-  }
-
-  // 提取组件名称 (AeForm, AeIcon, etc.)
-  const components = exportMatch[1]
-    .split(',')
-    .map(item => {
-      const match = item.trim().match(/as\s+(\w+)/)
-      return match ? match[1] : null
-    })
-    .filter(Boolean)
-
-  if (components.length === 0) {
-    console.warn('⚠ No components found in exports')
-    return
-  }
-
-  // 组件名到 Props 类型的映射
-  const propsTypeMap: Record<string, string> = {
-    AeForm: 'FormDefineProps',
-    AeTable: 'TableDefineProps',
-    AeIcon: 'IconProps',
-    AeEditor: 'EditorProps',
-    AeUpload: 'UploadProps',
-    AeDialog: 'DialogProps',
-    AeDrawer: 'DrawerProps',
-    AeTabs: 'TabsProps',
-    AeTabPane: 'TabPaneProps'
-  }
-
-  // 生成导入语句
-  const propsTypes = components
-    .map(name => propsTypeMap[name as string])
-    .filter((type): type is string => Boolean(type))
-  const imports = `import type { DefineComponent } from 'vue'
-import type { ${propsTypes.join(', ')} } from './index'`
-
-  // 生成组件声明
+  // 生成组件声明（使用 Element Plus 的模式）
   const declarations = components
-    .map(name => {
-      const propsType = propsTypeMap[name as string]
-      return propsType ? `    ${name}: DefineComponent<${propsType}>` : null
-    })
-    .filter((decl): decl is string => Boolean(decl))
+    .map(name => `    ${name}: typeof import('advanced-ele-ui')['${name}']`)
     .join('\n')
 
-  // 读取 src/global.d.ts 的内容
-  const srcGlobalDts = resolve(__dirname, 'src/global.d.ts')
-  let globalTypes = ''
-  if (existsSync(srcGlobalDts)) {
-    const srcContent = readFileSync(srcGlobalDts, 'utf-8')
-    // 提取 declare global 块的内容（使用 [\s\S] 代替 . 来匹配换行符）
-    const globalMatch = srcContent.match(/declare global\s*{([\s\S]*?)}\s*export\s*{}/)
-    if (globalMatch) {
-      globalTypes = `\n// Global type definitions\ndeclare global {${globalMatch[1]}}\n`
-    }
-  }
-
-  const content = `// GlobalComponents for Volar
-${imports}
-
+  const content = `/* prettier-ignore */
 declare module 'vue' {
+  // GlobalComponents for Volar
   export interface GlobalComponents {
 ${declarations}
   }
 }
-${globalTypes}
+
 export {}
 `
 
   writeFileSync(targetFile, content, 'utf-8')
-  console.log(`✓ Created dist/global.d.ts with ${components.length} components and global types`)
+  console.log(`✓ Created global.d.ts with ${components.length} components`)
 }
 
 /**
