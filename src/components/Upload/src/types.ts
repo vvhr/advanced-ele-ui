@@ -36,7 +36,33 @@ export interface FileTemplate {
   url: string
 }
 
-// 组件属性
+/**
+ * 上传组件属性
+ * @description 上传组件属性
+ * @remarks
+ * - `modelValue`: 双向绑定业务系统的文件列表, 务必含有文件名称和文件预览地址的字段
+ * - `fileKeys`: 文件列表的键映射，默认为 { name: 'name', url: 'url' }, 用于获取文件名称和文件预览地址
+ * - `upload`: 上传文件处理函数，返回一个 Promise，resolve 返回业务系统的文件对象，reject 返回 false
+ * - `multiple`: 是否支持多文件选择, 默认为 false, 透传给 input 组件
+ * - `accept`: 接受的文件类型, 默认为 '*', 透传给 input 组件
+ * - `limit`: 最大上传文件数量, 默认为不限制, 如果为单文件上传请设置为 1
+ * - `size`: 组件尺寸, 默认为 'default'
+ * - `sizeLimit`: 文件大小限制, 默认为不设限制, 默认单位为 MB
+ * - `disabled`: 是否禁用上传组件, 默认为 false
+ * - `listType`: 文件列表类型, 默认为 'picture', 可选值有 'picture' | 'text'
+ * - `objectFit`: 图片填充模式, 默认为 'fill', 可选值有 'fill' | 'contain' | 'cover' | 'none' | 'scale-down'
+ * - `examples`: 示例图列表, 默认不显示, 示例对象: {@link FileTemplate}
+ * - `templates`: 模板列表, 默认不显示, 示例对象: {@link FileTemplate}
+ * - `tips`: 提示信息, 默认不显示
+ * - `autoCompress`: 是否自动压缩图片, 默认为 false
+ * - `previewable`: 是否允许预览文件, 默认为 true
+ * - `downloadable`: 是否允许下载文件, 默认为 false
+ * - `preview`: 文件预览处理函数, 未定义时将仅对图片文件根据url进行预览
+ * - `downloadFile`: 文件下载处理函数, 未定义时将仅对图片文件根据url进行下载
+ * - `beforeUpload`: 上传文件前的处理函数, 返回 true 或 Promise<true> 表示允许上传, 返回 false 或 Promise<false> 表示不允许上传
+ * - `beforeRemove`: 删除文件前的处理函数, 返回 true 或 Promise<true> 表示允许删除, 返回 false 或 Promise<false> 表示不允许删除
+ * - `downloadTemplate`: 模板下载处理函数, 未定义时将仅对模板文件根据url进行下载
+ */
 export interface UploadProps {
   modelValue?: UploadFile[]
   fileKeys?: FileKeys
