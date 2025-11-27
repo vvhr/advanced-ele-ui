@@ -16,7 +16,6 @@ import { useRenderForm } from './render/useRenderForm'
 import { useForm } from './hook/useForm'
 import { useRenderAnchor } from './render/useRenderAnchor'
 import { useImport } from './hook/useImport'
-import type { AnchorProps } from 'element-plus'
 export default defineComponent({
   name: 'AeForm',
   props: {
@@ -127,7 +126,7 @@ export default defineComponent({
      * 锚点组件属性
      */
     anchorProps: {
-      type: Object as PropType<Partial<AnchorProps>>,
+      type: Object as PropType<Recordable>,
       default: () => {}
     },
     /**
