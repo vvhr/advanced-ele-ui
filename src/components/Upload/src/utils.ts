@@ -160,6 +160,9 @@ export function getFileIcon(url: string, fileName?: string): string {
  * 从文件对象中获取指定键的值
  */
 export function getFileValue(file: UploadFile, keys: FileKeys, key: keyof FileKeys): string {
+  if (!file) {
+    return ''
+  }
   return file[keys[key]] || ''
 }
 

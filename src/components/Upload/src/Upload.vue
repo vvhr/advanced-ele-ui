@@ -318,7 +318,6 @@ async function handleFileChange(e: Event) {
 async function processFile(file: File) {
   let rawFile = file as any
   rawFile.uid = generateUid()
-
   // before-upload 钩子
   if (props.beforeUpload) {
     try {
@@ -328,7 +327,6 @@ async function processFile(file: File) {
       return
     }
   }
-
   // 自动压缩图片
   if (props.autoCompress && isImageFileByType(rawFile)) {
     try {
@@ -342,30 +340,27 @@ async function processFile(file: File) {
       // 压缩失败，继续使用原文件
     }
   }
-
   // 检查文件大小（压缩后）
   if (props.sizeLimit && !checkFileSize(rawFile, props.sizeLimit)) {
     const limit = parseSizeLimit(props.sizeLimit)
     ElMessage.error(t('upload.fileSizeLimit', { size: formatFileSize(limit) }))
     return
   }
-
   // 添加到列表（uploading 状态）
   const internalFile: InternalUploadFile = {
     uid: rawFile.uid,
     status: 'uploading',
     rawFile,
+    data: {},
     imageLoadError: false
   }
   internalFileList.value.push(internalFile)
-
   // 调用上传函数
   if (!props.upload) {
     ElMessage.error(t('upload.uploadFunctionRequired'))
     internalFileList.value = internalFileList.value.filter(item => item.uid !== internalFile.uid)
     return
   }
-
   try {
     const result = await props.upload(rawFile)
 
@@ -384,7 +379,8 @@ async function processFile(file: File) {
       emit('upload', result)
       emit('change', getSuccessFiles())
     }
-  } catch {
+  } catch (e) {
+    console.error('[AeUpload] exception in upload:', e)
     // 上传失败，移除文件
     internalFileList.value = internalFileList.value.filter(item => item.uid !== internalFile.uid)
   }
