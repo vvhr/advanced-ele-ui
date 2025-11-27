@@ -23,7 +23,7 @@
               <el-radio-button value="left">居左</el-radio-button>
               <el-radio-button value="right">居右</el-radio-button>
             </el-radio-group>
-             <el-radio-group v-model="enableAnchor">
+            <el-radio-group v-model="enableAnchor">
               <el-radio-button :value="true">导航锚点</el-radio-button>
               <el-radio-button :value="false">隐藏导航</el-radio-button>
             </el-radio-group>
@@ -437,7 +437,7 @@ const formSchemas = reactive<FormSchema[]>([
       autoRules: ['isRequired']
     }
   },
-   {
+  {
     key: 'skillsAndMajor',
     type: 'Decorator',
     component: 'Divider',

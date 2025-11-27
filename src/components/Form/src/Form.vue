@@ -127,7 +127,7 @@ export default defineComponent({
      * 锚点组件属性
      */
     anchorProps: {
-      type: Object as PropType<AnchorProps>,
+      type: Object as PropType<Partial<AnchorProps>>,
       default: () => {}
     },
     /**
