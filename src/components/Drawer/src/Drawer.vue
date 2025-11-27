@@ -27,7 +27,7 @@ const props = defineProps({
     default: true
   }
 })
-
+const emit = defineEmits(['update:modelValue'])
 const getBindValue = computed(() => {
   const delArr: string[] = ['title', 'direction', 'size', 'scrollable']
   const attrs = useAttrs()
@@ -39,6 +39,10 @@ const getBindValue = computed(() => {
   }
   return obj
 })
+
+const onClose = () => {
+  emit('update:modelValue', false)
+}
 </script>
 
 <template>
@@ -50,6 +54,7 @@ const getBindValue = computed(() => {
     :close-on-click-modal="false"
     :show-close="false"
     class="ae-drawer"
+    @close="onClose"
   >
     <template #header="{ close }">
       <div class="flex justify-between items-center h-54px pl-15px pr-15px">
@@ -88,8 +93,8 @@ const getBindValue = computed(() => {
     height: 54px;
     padding: 0;
     margin-bottom: 0 !important;
-    border-bottom: 1px solid var(--el-border-color);
-    background-color: var(--el-color-white);
+    border-bottom: 1px solid var(--el-border-color-extra-light);
+    background-color: var(--el-bg-color);
   }
 
   .el-drawer__body {
@@ -100,8 +105,8 @@ const getBindValue = computed(() => {
 
   .el-drawer__footer {
     padding: 15px;
-    background-color: var(--el-color-white);
-    border-top: 1px solid var(--el-border-color);
+    background-color: var(--el-bg-color);
+    border-top: 1px solid var(--el-border-color-extra-light);
   }
 
   .drawer-scrollbar {
