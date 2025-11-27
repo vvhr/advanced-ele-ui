@@ -10,6 +10,7 @@ const fullscreenDialogVisible = ref(false)
 const beforeCloseDialogVisible = ref(false)
 const tabsDialogVisible = ref(false)
 const customActionsDialogVisible = ref(false)
+const noHeaderDialogVisible = ref(false)
 const activeTab = ref('first')
 // 处理基础对话框确认
 const handleBasicConfirm = () => {
@@ -67,6 +68,7 @@ const handlePrint = () => {
       <el-button type="warning" @click="customActionsDialogVisible = true">
         自定义操作按钮
       </el-button>
+      <el-button type="warning" @click="noHeaderDialogVisible = true">无标题对话框</el-button>
     </el-card>
 
     <Dialog
@@ -219,210 +221,26 @@ const handlePrint = () => {
         <el-button @click="customActionsDialogVisible = false">关闭</el-button>
       </template>
     </Dialog>
-
-    <!-- 二次封装说明 -->
-    <el-card class="demo-card feature-card">
-      <template #header>
-        <div class="card-header">
-          <span>🎯 二次封装的优势</span>
-        </div>
-      </template>
-      <div class="feature-content">
-        <h3>为什么要二次封装 ElDialog？</h3>
+    <Dialog
+      v-model="noHeaderDialogVisible"
+      width="600px"
+      :no-header="true"
+      :close-on-click-modal="true"
+    >
+      <div>
+        <p>📌 无标题栏对话框</p>
         <p>
-          虽然 Element Plus 的 ElDialog
-          已经很强大，但在实际项目中，我们发现了一些可以优化的地方。通过二次封装，我们解决了以下问题：
+          通过
+          <code>no-header</code>
+          属性可以关闭对话框的标题栏。
         </p>
-
-        <div class="feature-section">
-          <h4>🎨 1. 统一的视觉风格</h4>
-          <ul>
-            <li>
-              <strong>问题：</strong>
-              原生 ElDialog 的标题栏和底部样式需要每次手动调整
-            </li>
-            <li>
-              <strong>解决：</strong>
-              统一的 54px 标题栏高度、边框样式、内边距，开箱即用
-            </li>
-          </ul>
-        </div>
-
-        <div class="feature-section">
-          <h4>🔧 2. 优化的操作按钮</h4>
-          <ul>
-            <li>
-              <strong>问题：</strong>
-              原生关闭按钮样式单一，缺少全屏切换等常用功能
-            </li>
-            <li>
-              <strong>解决：</strong>
-              重新设计的操作按钮（32x32px），带 hover 效果，支持全屏切换和自定义按钮
-            </li>
-          </ul>
-        </div>
-
-        <div class="feature-section">
-          <h4>📜 3. 内置滚动条支持</h4>
-          <ul>
-            <li>
-              <strong>问题：</strong>
-              内容过多时需要手动添加滚动容器，高度计算复杂
-            </li>
-            <li>
-              <strong>解决：</strong>
-              内置 ElScrollbar，自动处理滚动，支持 maxHeight 配置
-            </li>
-          </ul>
-        </div>
-
-        <div class="feature-section">
-          <h4>🖱️ 4. 可选的拖拽功能</h4>
-          <ul>
-            <li>
-              <strong>问题：</strong>
-              原生 draggable 属性缺少视觉提示
-            </li>
-            <li>
-              <strong>解决：</strong>
-              添加拖拽图标指示器，用户一眼就能看出对话框可拖拽
-            </li>
-          </ul>
-        </div>
-
-        <div class="feature-section">
-          <h4>🎯 5. 灵活的布局模式</h4>
-          <ul>
-            <li>
-              <strong>问题：</strong>
-              嵌套 Tabs、Tree 等组件时，滚动条会导致布局问题
-            </li>
-            <li>
-              <strong>解决：</strong>
-              提供 scrollable 属性，可切换为 flex 布局，完美支持各种嵌套场景
-            </li>
-          </ul>
-        </div>
-
-        <div class="feature-section">
-          <h4>🔌 6. 扩展性更强</h4>
-          <ul>
-            <li>
-              <strong>问题：</strong>
-              标题栏无法方便地添加自定义操作按钮
-            </li>
-            <li>
-              <strong>解决：</strong>
-              提供 header-actions 插槽，轻松添加刷新、下载、打印等按钮
-            </li>
-          </ul>
-        </div>
-
-        <div class="feature-section">
-          <h4>⚙️ 7. 更好的默认配置</h4>
-          <ul>
-            <li>
-              <strong>问题：</strong>
-              每次使用都要配置 destroy-on-close、close-on-click-modal 等属性
-            </li>
-            <li>
-              <strong>解决：</strong>
-              预设最佳实践的默认值，减少重复配置
-            </li>
-          </ul>
-        </div>
-
-        <div class="summary">
-          <h4>💡 总结</h4>
-          <p>
-            二次封装不是重复造轮子，而是在保留 Element Plus
-            强大功能的基础上，针对实际项目需求进行优化。
-            <strong>所有 ElDialog 的原生属性和事件都完全支持</strong>
-            ，同时提供了更好的开发体验和用户体验。
-          </p>
-        </div>
+        <p>
+          通过
+          <code>close-on-click-modal</code>
+          属性可以点击模态框背景关闭对话框，但不会触发beforeClose事件。
+        </p>
+        <el-button @click="noHeaderDialogVisible = false">关闭</el-button>
       </div>
-    </el-card>
+    </Dialog>
   </div>
 </template>
-
-<style scoped>
-.feature-card {
-  margin-top: 20px;
-}
-
-.feature-content {
-  line-height: 1.8;
-}
-
-.feature-content h3 {
-  font-size: 20px;
-  font-weight: 600;
-  color: var(--el-text-color-primary);
-  margin-bottom: 15px;
-}
-
-.feature-content > p {
-  color: var(--el-text-color-regular);
-  margin-bottom: 20px;
-}
-
-.feature-section {
-  margin-bottom: 20px;
-  padding: 15px;
-  background: var(--el-fill-color-lighter);
-  border-radius: 8px;
-  border-left: 4px solid var(--el-color-primary);
-}
-
-.feature-section h4 {
-  font-size: 16px;
-  font-weight: 600;
-  color: var(--el-text-color-primary);
-  margin-bottom: 10px;
-}
-
-.feature-section ul {
-  margin: 0;
-  padding-left: 20px;
-}
-
-.feature-section li {
-  margin: 8px 0;
-  color: var(--el-text-color-regular);
-}
-
-.feature-section strong {
-  color: var(--el-color-primary);
-  font-weight: 600;
-}
-
-.summary {
-  margin-top: 25px;
-  padding: 20px;
-  background: linear-gradient(
-    135deg,
-    var(--el-color-primary-light-9) 0%,
-    var(--el-color-success-light-9) 100%
-  );
-  border-radius: 8px;
-  border: 1px solid var(--el-color-primary-light-7);
-}
-
-.summary h4 {
-  font-size: 16px;
-  font-weight: 600;
-  color: var(--el-text-color-primary);
-  margin-bottom: 10px;
-}
-
-.summary p {
-  color: var(--el-text-color-regular);
-  margin: 0;
-}
-
-.summary strong {
-  color: var(--el-color-primary);
-  font-weight: 600;
-}
-</style>
