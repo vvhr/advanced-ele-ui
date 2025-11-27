@@ -34,6 +34,8 @@ export interface FileKeys {
 export interface FileTemplate {
   name: string
   url: string
+  // 支持扩展
+  [key: string]: any
 }
 
 /**
@@ -42,7 +44,7 @@ export interface FileTemplate {
  * @remarks
  * - `modelValue`: 双向绑定业务系统的文件列表, 务必含有文件名称和文件预览地址的字段
  * - `fileKeys`: 文件列表的键映射，默认为 { name: 'name', url: 'url' }, 用于获取文件名称和文件预览地址
- * - `upload`: 上传文件处理函数，返回一个 Promise，resolve 返回业务系统的文件对象，reject 返回 false
+ * - `upload`: 上传文件处理函数，返回一个 Promise，resolve 返回业务系统的文件对象，reject 返回 false. 或直接返回false表示上传失败
  * - `multiple`: 是否支持多文件选择, 默认为 false, 透传给 input 组件
  * - `accept`: 接受的文件类型, 默认为 '*', 透传给 input 组件
  * - `limit`: 最大上传文件数量, 默认为不限制, 如果为单文件上传请设置为 1
@@ -60,7 +62,7 @@ export interface FileTemplate {
  * - `preview`: 文件预览处理函数, 未定义时将仅对图片文件根据url进行预览
  * - `downloadFile`: 文件下载处理函数, 未定义时将仅对图片文件根据url进行下载
  * - `beforeUpload`: 上传文件前的处理函数, 返回 true 或 Promise<true> 表示允许上传, 返回 false 或 Promise<false> 表示不允许上传
- * - `beforeRemove`: 删除文件前的处理函数, 返回 true 或 Promise<true> 表示允许删除, 返回 false 或 Promise<false> 表示不允许删除
+ * - `beforeRemove`: 删除文件前的处理函数, 一般用于删除前检查及调用API删除云盘文件, 返回 true 或 Promise<true> 表示允许删除, 返回 false 或 Promise<false> 表示不允许删除.
  * - `downloadTemplate`: 模板下载处理函数, 未定义时将仅对模板文件根据url进行下载
  */
 export interface UploadProps {
