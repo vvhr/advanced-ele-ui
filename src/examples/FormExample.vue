@@ -51,7 +51,7 @@
       />
     </el-card>
 
-    <el-card class="demo-card" v-if="false">
+    <el-card class="demo-card">
       <template #header>
         <div class="card-header">
           <span>描述表单示例</span>
