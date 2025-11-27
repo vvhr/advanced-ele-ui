@@ -23,6 +23,10 @@
               <el-radio-button value="left">居左</el-radio-button>
               <el-radio-button value="right">居右</el-radio-button>
             </el-radio-group>
+             <el-radio-group v-model="enableAnchor">
+              <el-radio-button :value="true">导航锚点</el-radio-button>
+              <el-radio-button :value="false">隐藏导航</el-radio-button>
+            </el-radio-group>
             <el-button type="primary" @click="onSubmit">提交</el-button>
             <el-button style="margin-left: 0" @click="onReset">重置</el-button>
           </div>
@@ -36,6 +40,9 @@
         :schema-props="schemaProps"
         :type="'form'"
         :excontext="{}"
+        :anchor="enableAnchor"
+        :anchor-props="anchorProps"
+        :anchor-affix-style="anchorAffixStyle"
         :auto-init-field="true"
         :scroll-ref="containerRef"
         :disabled="mode === 'detail'"
@@ -44,7 +51,7 @@
       />
     </el-card>
 
-    <el-card class="demo-card">
+    <el-card class="demo-card" v-if="false">
       <template #header>
         <div class="card-header">
           <span>描述表单示例</span>
@@ -99,7 +106,7 @@ import type { TableColumn } from '@/components/Table'
 import { ElMessage, ElUpload, ElCard } from 'element-plus'
 import type { UploadRawFile } from '@/components/Upload'
 import type { FormImportItem } from '@/types/imports'
-defineProps({
+const props = defineProps({
   containerRef: null
 })
 const imports: FormImportItem[] = [
@@ -117,9 +124,21 @@ const imports: FormImportItem[] = [
   }
 ]
 const enableBeauty = ref(true)
+const enableAnchor = ref(false)
 const mode = ref('edit')
 const mode2 = ref('edit')
-
+const anchorProps = reactive({
+  container: props.containerRef,
+  offset: 50,
+  bound: 15,
+  duration: 300,
+  type: 'underline',
+  selectScrollTop: false
+})
+const anchorAffixStyle = {
+  width: '150px',
+  boxShadow: '1px 0px 4px 0 rgba(169,169,169,1)'
+}
 const schemaProps = reactive<FormSchemaProps>({
   layoutProps: {
     span: 12
@@ -225,6 +244,21 @@ const formModel2 = ref({
 })
 const descriptionsDirection = ref<'vertical' | 'horizontal'>('horizontal')
 const formSchemas = reactive<FormSchema[]>([
+  {
+    key: 'baseInfo',
+    type: 'Decorator',
+    component: 'Divider',
+    insideProps: {
+      renders: {
+        default: () => '基本信息'
+      }
+    },
+    anchorLinkProps: {
+      enable: true,
+      title: '基本信息'
+    },
+    layoutProps: { alone: true, span: 24 }
+  },
   {
     field: 'username',
     label: '用户名',
@@ -402,6 +436,21 @@ const formSchemas = reactive<FormSchema[]>([
       subLabel: '采用 RadioButton 类型',
       autoRules: ['isRequired']
     }
+  },
+   {
+    key: 'skillsAndMajor',
+    type: 'Decorator',
+    component: 'Divider',
+    insideProps: {
+      renders: {
+        default: () => '专业与技能'
+      }
+    },
+    anchorLinkProps: {
+      enable: true,
+      title: '专业与技能'
+    },
+    layoutProps: { alone: true, span: 24 }
   },
   {
     key: 'skills1',
