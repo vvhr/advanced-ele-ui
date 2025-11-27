@@ -33,15 +33,30 @@ export const SchemaLayout = defineComponent({
       if (layoutProps.value.alone && enableAlone.includes(type.value)) {
         // 如果需要独占一行, 需要包裹 ElCol+ElRow
         return (
-          <ElCol span={24} key={props.itemKey} data-id={props.itemKey} class="mb-1">
+          <ElCol
+            span={24}
+            key={props.itemKey}
+            data-id={props.itemKey}
+            class="mb-1"
+            id={props.itemKey}
+          >
             <ElRow>
-              <ElCol span={layoutProps.value.span} style={layoutProps.value.style}>{slots.default?.()}</ElCol>
+              <ElCol span={layoutProps.value.span} style={layoutProps.value.style}>
+                {slots.default?.()}
+              </ElCol>
             </ElRow>
           </ElCol>
         )
       } else {
         return (
-          <ElCol span={layoutProps.value.span} key={props.itemKey} data-id={props.itemKey} class="mb-2" style={layoutProps.value.style}>
+          <ElCol
+            span={layoutProps.value.span}
+            key={props.itemKey}
+            data-id={props.itemKey}
+            id={props.itemKey}
+            class="mb-2"
+            style={layoutProps.value.style}
+          >
             {slots.default?.()}
           </ElCol>
         )

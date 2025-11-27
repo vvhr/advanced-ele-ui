@@ -77,6 +77,7 @@ export interface StepSchema extends FormSchemaBase {
  * - `insideProps`: 为容器组件自身添加插槽内容
  * - `componentProps`: 为容器组件添加属性
  * - `layoutProps`: 布局属性，可设置容器外层的el-col的属性
+ * - `anchorLinkProps`: 锚点链接配置
  */
 export interface ContainerSchema extends FormSchemaBase {
   key: string
@@ -88,6 +89,7 @@ export interface ContainerSchema extends FormSchemaBase {
   insideProps?: InsideProps
   componentProps?: ComponentProps
   layoutProps?: LayoutProps
+  anchorLinkProps?: AnchorLinkProps
   // Container类型不需要的属性
   field?: never
   step?: never
@@ -110,6 +112,7 @@ export interface ContainerSchema extends FormSchemaBase {
  * - `insideProps`: 为容器组件自身添加插槽内容
  * - `componentProps`: {@link DescriptionsProps} 为描述组件添加属性
  * - `layoutProps`: 布局属性，可设置容器外层的el-col的属性
+ * - `anchorLinkProps`: 锚点链接配置
  */
 export interface DescriptionsSchema extends FormSchemaBase {
   key: string
@@ -120,6 +123,7 @@ export interface DescriptionsSchema extends FormSchemaBase {
   insideProps?: InsideProps
   componentProps?: DescriptionsProps
   layoutProps?: LayoutProps
+  anchorLinkProps?: AnchorLinkProps
   // Container类型不需要的属性
   field?: never
   step?: never
@@ -145,6 +149,7 @@ export interface DescriptionsSchema extends FormSchemaBase {
  * - `layoutProps`: 布局属性，可设置组件外层的el-col的属性
  * - `outsideProps`: 为任何组件前置及后置添加自定义组件
  * - `insideProps`: 为组件自身添加插槽内容
+ * - `anchorLinkProps`: 锚点链接配置
  */
 export interface DecoratorSchema extends FormSchemaBase {
   key: string
@@ -157,6 +162,7 @@ export interface DecoratorSchema extends FormSchemaBase {
   layoutProps?: LayoutProps
   outsideProps?: OutsideProps
   insideProps?: InsideProps
+  anchorLinkProps?: AnchorLinkProps
   // Decorator类不需要的属性
   field?: never
   step?: never
@@ -202,6 +208,7 @@ export interface InputerSchema extends FormSchemaBase {
   step?: never
   children?: never
   render?: never
+  anchorLinkProps?: never
 }
 
 /**
@@ -236,6 +243,7 @@ export interface CustomSchema extends FormSchemaBase {
   componentEvent?: never
   outsideProps?: never
   insideProps?: never
+  anchorLinkProps?: never
 }
 
 /**
@@ -362,6 +370,12 @@ export interface FormSchemaBase {
    * @notes 仅在类型为`Inputer(输入组件)`、`Container(容器组件)`、`Decorator(装饰组件)`时生效
    */
   insideProps?: InsideProps
+  /**
+   * 锚点链接配置
+   * @description 自定义配置当前锚点链接属性
+   * @notes 仅在类型为`Container(容器组件)` 或 `Descriptions(描述块) 或 Decorator(装饰组件)`时生效
+   */
+  anchorLinkProps?: AnchorLinkProps
 }
 
 /**
@@ -527,4 +541,27 @@ export interface LayoutProps {
    * @since 0.1.6-beta
    */
   colStyle?: CSSProperties | string
+}
+
+/**
+ * 锚点链接属性
+ * @experimental 此功能为实验性功能，API 可能会变更
+ * @since 0.1.6-beta.1
+ * @notes 仅对 `type`: `Container` / `Descriptions` / `Decorator` 的表单项有效
+ * @description 当表单激活了`anchor`属性时, 所有容器组件会自动构造为锚点链接, 若你不希望某个容器生成锚点, 则将`enable`设置为`false`
+ */
+export interface AnchorLinkProps {
+  /**
+   * 是否生成锚点链接
+   * @default true
+   */
+  enable?: boolean
+  /**
+   * 锚点链接标题
+   */
+  title?: string
+  /**
+   * 锚点链接地址
+   */
+  href?: string
 }

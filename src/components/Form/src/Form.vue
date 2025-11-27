@@ -7,14 +7,16 @@ import {
   computed,
   watch,
   unref,
-  toRaw
+  toRaw,
+  CSSProperties
 } from 'vue'
 import { FormSchema, FormSchemaProps } from './types'
 import type { FormImportItem } from '@/types/imports'
 import { useRenderForm } from './render/useRenderForm'
 import { useForm } from './hook/useForm'
+import { useRenderAnchor } from './render/useRenderAnchor'
 import { useImport } from './hook/useImport'
-
+import type { AnchorProps } from 'element-plus'
 export default defineComponent({
   name: 'AeForm',
   props: {
@@ -113,6 +115,27 @@ export default defineComponent({
     imports: {
       type: Array as PropType<FormImportItem[]>,
       default: () => []
+    },
+    /**
+     * 启用锚点
+     */
+    anchor: {
+      type: Boolean,
+      default: false
+    },
+    /**
+     * 锚点组件属性
+     */
+    anchorProps: {
+      type: Object as PropType<AnchorProps>,
+      default: () => {}
+    },
+    /**
+     * 描点容器样式
+     */
+    anchorAffixStyle: {
+      type: Object as PropType<CSSProperties>,
+      default: () => {}
     }
   },
   emits: ['register', 'update:stepValue'],
@@ -211,7 +234,13 @@ export default defineComponent({
       components,
       componentConfigs
     )
-    return () => <div class="ae-form">{renderForm()}</div>
+    const { renderAnchor } = useRenderAnchor(props, formModel)
+    return () => (
+      <div class="ae-form">
+        {props.anchor && renderAnchor()}
+        {renderForm()}
+      </div>
+    )
   }
 })
 </script>
