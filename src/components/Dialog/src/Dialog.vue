@@ -43,6 +43,10 @@ const props = defineProps({
   },
   beforeClose: {
     type: Function as PropType<DialogBeforeCloseFn>
+  },
+  noHeader: {
+    type: Boolean,
+    default: false
   }
 })
 const emit = defineEmits(['update:modelValue'])
@@ -53,7 +57,8 @@ const getBindValue = computed(() => {
     'maxHeight',
     'draggable',
     'scrollable',
-    'beforeClose'
+    'beforeClose',
+    'noHeader'
   ]
   const attrs = useAttrs()
   const obj = { ...attrs, ...props }
@@ -96,6 +101,10 @@ function handleClose() {
     emit('update:modelValue', false)
   }
 }
+
+function onClose() {
+  emit('update:modelValue', false)
+}
 </script>
 
 <template>
@@ -108,9 +117,10 @@ function handleClose() {
     top="0"
     :close-on-click-modal="false"
     :show-close="false"
-    class="ae-dialog"
+    :class="'ae-dialog' + (noHeader ? ' no-header' : '')"
+    @close="onClose"
   >
-    <template #header>
+    <template v-if="!noHeader" #header>
       <div class="flex justify-between items-center h-54px pl-15px pr-15px relative">
         <div class="flex items-center">
           <Icon v-if="draggable" icon="mdi:drag" class="draggable-indicator" :size="30" />
@@ -173,12 +183,17 @@ function handleClose() {
 .ae-dialog {
   margin: 0 !important;
   padding: 0 !important;
+  &.no-header {
+    .el-dialog__header {
+      display: none;
+    }
+  }
   .el-dialog__header {
     height: 54px;
     padding: 0;
     margin-right: 0 !important;
-    border-bottom: 1px solid var(--el-border-color);
-    background-color: var(--el-color-white);
+    border-bottom: 1px solid var(--el-border-color-extra-light);
+    background-color: var(--el-bg-color);
     z-index: 2;
   }
 
@@ -189,8 +204,8 @@ function handleClose() {
   .el-dialog__footer {
     padding: 15px;
     z-index: 2;
-    background-color: var(--el-color-white);
-    border-top: 1px solid var(--el-border-color);
+    background-color: var(--el-bg-color);
+    border-top: 1px solid var(--el-border-color-extra-light);
   }
 
   .el-dialog__headerbtn {
