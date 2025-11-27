@@ -501,22 +501,30 @@ export interface FormItemProps {
 /**
  * 布局属性
  * @description 所有组件都会被`el-col`包裹，此属性用于控制`el-col`的属性。
- * @remarks
- * - `span`: 设置包裹组件的栅格组件的占位格数，可取1-24，默认值为12
- * - `alone`: 是否单独占一行，独占一行的组件会额外被el-row包裹，这样即便span为12，组件也会占满一行
- * - `rowspan`: 仅在Form的`type`为`desc`时生效，设置组件占的行数，可取1-24，默认值为1
- * - `colStyle`: `(ver >= 0.1.6)` 自定义el-col样式
  */
 export interface LayoutProps {
+  /**
+   * 栅格占位格数
+   * @description 可取 1-24，默认值为 12
+   * @default 12
+   */
   span?: number
+  /**
+   * 是否单独占一行
+   * @description 独占一行的组件会额外被 el-row 包裹，即便 span 为 12 也会占满一行
+   */
   alone?: boolean
   /**
-   * 仅在Form的`type`为`desc`时生效
+   * 描述项所占的行数
+   * @description 默认值为 1
+   * @remarks 仅在 Form 的 `type` 为 `desc` 时生效
+   * @default 1
    */
   rowspan?: number
   /**
-   * 自定义el-col样式
-   * @version `0.1.6`
+   * 自定义 el-col 样式
+   * @experimental 此功能为实验性功能，API 可能会变更
+   * @since 0.1.6-beta
    */
   colStyle?: CSSProperties | string
 }

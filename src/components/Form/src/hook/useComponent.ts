@@ -49,19 +49,31 @@ export function useComponent(
    * 为组件构造双向绑定
    */
   function setModelValue() {
+    const bindings: Record<string, any> = {}
+    // 1. Handle the default modelValue binding
     if (schema.field) {
       const modelValueKey = isExistAttr(components, schema.component)
         ? componentConfigs[schema.component]?.modelValueKey || 'modelValue'
         : 'modelValue'
-      return {
-        [modelValueKey]: get(formModel.value, schema.field),
-        [`onUpdate:${modelValueKey}`]: (value: any) => {
-          // 使用响应式安全的方式更新值
-          setReactiveValue(formModel.value, schema.field, value)
-        }
+
+      bindings[modelValueKey] = get(formModel.value, schema.field)
+      bindings[`onUpdate:${modelValueKey}`] = (value: any) => {
+        setReactiveValue(formModel.value, schema.field, value)
       }
     }
-    return {}
+    // 2. Handling additional vBinds bindings
+    if (schema.field && schema.componentProps?.vBinds) {
+      Object.entries(schema.componentProps.vBinds).forEach(([propName, fieldPath]) => {
+        // 校验propName和fieldPath不得为空
+        if (propName && fieldPath && typeof fieldPath === 'string') {
+          bindings[propName] = get(formModel.value, fieldPath)
+          bindings[`onUpdate:${propName}`] = (value: any) => {
+            setReactiveValue(formModel.value, fieldPath, value)
+          }
+        }
+      })
+    }
+    return bindings
   }
 
   /**
@@ -87,8 +99,14 @@ export function useComponent(
       }
       // 针对部分组件删除选项属性
       removeAttrsOptions(compProps, schema)
+      // 删除vBinds属性
+      if (Reflect.has(compProps, 'vBinds')) {
+        delete compProps.vBinds
+      }
       // 删除optionKeys属性
-      delete compProps.optionKeys
+      if (Reflect.has(compProps, 'optionKeys')) {
+        delete compProps.optionKeys
+      }
     } else if (type === 'Container') {
       compProps = {
         // 容器组件将自动将label和subLabel传递给组件

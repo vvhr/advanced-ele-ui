@@ -2,28 +2,6 @@ import type { ComponentEventFn, FormSchemaFn } from './schema-ext'
 import type { CSSProperties } from 'vue'
 
 /**
- * 表达式值映射类型
- * @description `ev`=`expression value`，组件自身属性众多，如果该属性需要动态取值，不可能逐一预先定义来解析表达式，因此只要使用_ev_开头的属性，则可被自动解析为表达式并取值
- * @notes 同名属性存在时，本属性优先级高于其他属性，例如：`_ev_disabled` 将覆盖 `disabled`
- * @example
- * // 1.动态获取Input组件的type值
- * { component: 'Input', componentProps._ev_type = '{{ form.type === '1' ? 'text' : 'textarea' }}'}
- * // 2.动态获取DatePicker组件的type值
- * { component: 'DatePicker', componentProps._ev_type = '{{ form.type === '1' ? 'date' : 'datetime' }}'}
- */
-// type ExpressionValueProps = {
-//   [K in `_ev_${string}`]?: FormSchemaExpression
-// }
-
-/**
- * 表达式函数映射类型
- * @description `ef`=`expression function`，组件自身方法属性众多，因此只要使用_ef_开头的属性，则可被自动解析为表达式并转为方法函数
- */
-// type ExpressionFunctionProps = {
-//   [K in `_ef_${string}`]?: FormSchemaExpression
-// }
-
-/**
  * 动态属性值
  * @description 任何组件的ComponentProps属性都可以使用_v_前缀修饰，便可以使用函数来动态计算
  * @notes 同名属性存在时，本属性优先级高于原属性，例如：`_v_disabled` 将覆盖 `disabled`
@@ -79,6 +57,24 @@ export interface ComponentProps extends AnyComponentProps {
    * @description 适用于`Select` `Input` 等组件
    */
   placeholder?: string
+  /**
+   * 其他需要双向绑定的属性
+   * @description
+   * 如果组件自身支持多个`双向绑定属性`，且你需要调用除 `modelValue` 以外的`双向绑定属性`则在此定义。
+   * `键`为组件的`属性名`，`值`为 formModel 中的`字段名`。
+   * 需要注意的是, `Form`的`autoInitFields`功能并不会自动为这些属性进行初始化，建议你自行初始化。
+   * @notes 仅对 `Inputer` 类型的组件有效，且当前`FormSchema`中必须已设置`field`。
+   * @experimental 此功能为实验性功能，API 可能会变更
+   * @since 0.1.6-beta.0
+   * @example
+   * {
+   *   // v-model:fileList = formModel.attachments
+   *   fileList: 'attachments'
+   *   // v-model:bizNo = formModel.businessId
+   *   bizNo: 'businessId'
+   * }
+   */
+  vBinds?: Recordable<string, string>
   // 其他组件自身属性
   [key: string]: any
 }
