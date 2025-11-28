@@ -58,7 +58,7 @@ export function useFormItem(
       align: schema.formItemProps?.align ?? props.schemaProps?.formItemProps?.align ?? 'left',
       labelAlign: schema.formItemProps?.labelAlign ?? props.schemaProps?.formItemProps?.labelAlign ?? undefined,
       className: 'ae-description-item-content',
-      labelClassName: 'ae-description-item-label' + (getDescriptionItemRequired() && ' is-required')
+      labelClassName: 'ae-description-item-label' + (getDescriptionItemRequired() ? ' is-required' : '')
     }
   }
 
