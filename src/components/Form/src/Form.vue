@@ -258,6 +258,11 @@ export default defineComponent({
     .ae-form-item {
       margin-top: 11px;
       margin-bottom: 11px;
+      &.no-label {
+        > .el-form-item__content {
+          margin-left: 0 !important;
+        }
+      }
       &.no-margin-bottom {
         margin-bottom: 0;
         margin-top: 0;

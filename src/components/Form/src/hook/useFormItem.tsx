@@ -151,7 +151,7 @@ export function useFormItem(
 
   // el-form-item的el-form-item__content始终有外左边距, 如果没有标题则不需要外左边距
   function getNoLabelClass() {
-    return formItemLabel?.value?.length === 0 ? 'no-label' : ''
+    return formItemLabel?.value?.length === 0 || props.type === 'desc' ? 'no-label' : ''
   }
 
   // 当没有自定义label插槽时, 为form-item添加一个类名

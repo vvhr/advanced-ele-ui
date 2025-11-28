@@ -156,9 +156,7 @@ const schemaProps2 = reactive<FormSchemaProps>({
   layoutProps: {
     span: 12
   },
-  formItemProps: {
-    labelPosition: 'top'
-  },
+  formItemProps: {},
   componentProps: {
     clearable: true,
     autoPlaceholder: true
@@ -1085,7 +1083,8 @@ const formSchemas2 = reactive<FormSchema[]>([
           rowspan: 2
         },
         formItemProps: {
-          width: 140
+          width: 140,
+          labelWidth: 50
         }
       },
       {
