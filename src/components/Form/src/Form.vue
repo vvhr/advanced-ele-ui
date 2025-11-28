@@ -137,7 +137,7 @@ export default defineComponent({
       default: () => {}
     }
   },
-  emits: ['register', 'update:stepValue', 'init'],
+  emits: ['register', 'update:stepValue', 'init', 'change'],
   setup: (props, { emit, attrs, slots, expose }) => {
     const { components, arrayStrategies, componentConfigs } = useImport(props.imports)
 
