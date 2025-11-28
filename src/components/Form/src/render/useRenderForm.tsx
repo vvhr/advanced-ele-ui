@@ -1,5 +1,13 @@
 import type { Component, ComputedRef, Ref, VNode } from 'vue'
-import { ElForm, ElRow, ElFormItem, ElDescriptions, ElDescriptionsItem, ElCol } from 'element-plus'
+import {
+  ElForm,
+  ElRow,
+  ElFormItem,
+  ElDescriptions,
+  ElDescriptionsItem,
+  ElCol,
+  ElTooltip
+} from 'element-plus'
 import type {
   ComponentName,
   ComponentProps,
@@ -272,6 +280,21 @@ export function useRenderForm(
     logger.error('console.form.customComponentError', undefined, schema)
     return undefined
   }
+  // 渲染描述块标签
+  function renderDescItemLabel(label: string, schema: FormSchema) {
+    const subLabel = getSubLabel(schema, formModel.value, props)
+    const popperStyle = {
+      width: '150px'
+    }
+    if (!!subLabel) {
+      return (
+        <ElTooltip content={subLabel} popper-class="ae-form-label-popper" popper-style={popperStyle}>
+          <span class="ae-description-item-label__text has-sub-label">{label}</span>
+        </ElTooltip>
+      )
+    }
+    return <span class="ae-description-item-label__text">{label}</span>
+  }
 
   // 渲染表单项标签
   function renderFormItemLabel(label: string, schema: FormSchema) {
@@ -479,7 +502,7 @@ export function useRenderForm(
         logger.error('console.form.nestedDescriptionsNotSupported', undefined, schema)
         return undefined
       case 'Custom': {
-        const { getFormItemProps, getDescriptionItemProps } = useFormItem(
+        const { formItemLabel, getFormItemProps, getDescriptionItemProps } = useFormItem(
           props,
           slots,
           schema,
@@ -487,16 +510,21 @@ export function useRenderForm(
         )
         return (
           <ElDescriptionsItem {...getDescriptionItemProps()} key={key}>
-            <ElFormItem {...getFormItemProps()}>
-              {{
-                default: () => renderCustom(schema)
-              }}
-            </ElFormItem>
+            {{
+              label: () => renderDescItemLabel(formItemLabel.value, schema),
+              default: () => (
+                <ElFormItem {...getFormItemProps()}>
+                  {{
+                    default: () => renderCustom(schema)
+                  }}
+                </ElFormItem>
+              )
+            }}
           </ElDescriptionsItem>
         )
       }
       case 'Decorator': {
-        const { trueComponentProps, getDescriptionItemProps } = useFormItem(
+        const { formItemLabel, trueComponentProps, getDescriptionItemProps } = useFormItem(
           props,
           slots,
           schema,
@@ -504,12 +532,15 @@ export function useRenderForm(
         )
         return (
           <ElDescriptionsItem {...getDescriptionItemProps()} key={key}>
-            {renderDecorator(schema, trueComponentProps)}
+            {{
+              label: () => renderDescItemLabel(formItemLabel.value, schema),
+              default: () => renderDecorator(schema, trueComponentProps)
+            }}
           </ElDescriptionsItem>
         )
       }
       case 'Inputer':
-      default:
+      default: {
         const {
           trueComponentProps,
           isDisabled,
@@ -520,11 +551,17 @@ export function useRenderForm(
         } = useFormItem(props, slots, schema, formModel)
         return (
           <ElDescriptionsItem {...getDescriptionItemProps()} key={key}>
-            <ElFormItem {...getFormItemProps()}>
-              {renderInputer(schema, trueComponentProps, isDisabled)}
-            </ElFormItem>
+            {{
+              label: () => renderDescItemLabel(formItemLabel.value, schema),
+              default: () => (
+                <ElFormItem {...getFormItemProps()}>
+                  {renderInputer(schema, trueComponentProps, isDisabled)}
+                </ElFormItem>
+              )
+            }}
           </ElDescriptionsItem>
         )
+      }
     }
   }
 

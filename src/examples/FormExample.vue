@@ -1084,7 +1084,9 @@ const formSchemas2 = reactive<FormSchema[]>([
         },
         formItemProps: {
           width: 140,
-          labelWidth: 50
+          labelWidth: 50,
+          subLabel:
+            '在formItemProps.subLabel配置副标题时，主标题将展现为特殊样式，并通过tooltip组件展示副标题内容'
         }
       },
       {

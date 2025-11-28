@@ -246,6 +246,14 @@ export default defineComponent({
 
 <style lang="less">
 .ae-form {
+  .ae-description-item-label {
+    .ae-description-item-label__text {
+      &.has-sub-label {
+        cursor: pointer;
+        border-bottom: 1px dashed var(--el-color-primary);
+      }
+    }
+  }
   .ae-description-item-label.is-required {
     &::before {
       left: 0;
