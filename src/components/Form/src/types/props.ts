@@ -75,7 +75,7 @@ export interface FormEmits {
   (e: 'register', elFormRef: ComponentRef<typeof ElForm>): void
   (e: 'update:stepValue', stepValue: number | null): void
   (e: 'init', form: Recordable): void
-  (e: 'change', data: { value: any; field: string }): void
+  (e: 'change', data: { value: any; field: string; oldValue: any }): void
 }
 
 /**
