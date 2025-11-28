@@ -59,6 +59,7 @@ export function useComponent(
       bindings[modelValueKey] = get(formModel.value, schema.field)
       bindings[`onUpdate:${modelValueKey}`] = (value: any) => {
         setReactiveValue(formModel.value, schema.field, value)
+        emits('change', { value: value, field: schema.field })
       }
     }
     // 2. Handling additional vBinds bindings
@@ -69,6 +70,7 @@ export function useComponent(
           bindings[propName] = get(formModel.value, fieldPath)
           bindings[`onUpdate:${propName}`] = (value: any) => {
             setReactiveValue(formModel.value, fieldPath, value)
+            emits('change', { value: value, field: schema.field })
           }
         }
       })

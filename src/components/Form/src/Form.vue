@@ -137,7 +137,7 @@ export default defineComponent({
       default: () => {}
     }
   },
-  emits: ['register', 'update:stepValue'],
+  emits: ['register', 'update:stepValue', 'init'],
   setup: (props, { emit, attrs, slots, expose }) => {
     const { components, arrayStrategies, componentConfigs } = useImport(props.imports)
 
@@ -165,7 +165,7 @@ export default defineComponent({
       emit('register', unref(elFormRef))
       // 组件完成加载时会初始化一次表单,但如果组件配置或表单对象是异步传入的, 则需要手动调用初始化函数
       unref(props).autoInitField ? initValues(props.model) : setValues(props.model)
-      // resetValidate()
+      emit('init', formModel.value)
     })
 
     onBeforeUnmount(() => {
