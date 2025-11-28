@@ -55,7 +55,7 @@ export function useForm(
       if (!schema.field || !['Custom', 'Inputer'].includes(type)) {
         // 是否存在子组件
         if (
-          ['Step', 'Container'].includes(type) &&
+          ['Step', 'Container', 'Descriptions'].includes(type) &&
           schema.children &&
           Array.isArray(schema.children)
         ) {
