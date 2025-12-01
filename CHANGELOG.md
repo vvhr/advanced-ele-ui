@@ -4,6 +4,49 @@ English | [简体中文](./CHANGELOG.zh.md)
 
 ---
 
+## [0.1.7] - 2025-12-01
+
+### Features
+* Component [AeForm] added `change` event, triggered when form field values change, including `key`, `value`, and `oldValue` parameters.
+* Component [AeForm] added `init` event, triggered when form initialization is complete.
+* Component [AeForm] added subtitle support for description block labels with optimized styling.
+* Component [AeForm] added anchor navigation rendering hook function, supporting custom anchor navigation rendering.
+
+### Bug fixes
+* Component [AeForm] fixed undeclared `change` event issue.
+* Component [AeForm] fixed description item required style concatenation issue.
+* Component [AeForm] fixed left margin and label width issues for items without titles.
+* Component [AeForm] corrected anchor property type definitions and code formatting issues.
+* Component [AeForm] modified anchor component property type definitions.
+* Component [AeForm] allowed `Descriptions` type containers when auto-initializing field values.
+* Component [AeUpload] optimized exception handling and code structure for file upload process.
+* Fixed known slot warnings for Element Plus components in core module.
+* Fixed CSS variable injection issue in UnoCSS preflight configuration.
+* Fixed display issues with form example cards.
+
+### Docs
+* Added form navigation anchor functionality demonstration to example pages.
+
+---
+
+## [0.1.6-beta] - 2025-11-27
+
+### Features
+* Component [AeForm] added anchor navigation functionality, supporting quick positioning of form fields.
+* Component [AeForm] added anchor navigation rendering hook function, supporting custom anchor rendering logic.
+
+### Bug fixes
+* Component [AeForm] fixed left margin and label width issues for items without titles.
+* Component [AeForm] corrected anchor property type definitions and code formatting issues.
+* Component [AeUpload] optimized exception handling and code structure for file upload process.
+* Fixed known slot warnings for Element Plus components in core module.
+* Fixed CSS variable injection issue in UnoCSS preflight configuration.
+
+### Docs
+* Added form navigation anchor functionality demonstration to example pages.
+
+---
+
 ## [0.1.5-beta] - 2025-11-26
 
 ### Refactors
