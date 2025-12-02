@@ -50,7 +50,7 @@ export function getAutoRulesMap(): Record<AutoRules, FormItemRule> {
       message: t('form.validation.idCard'),
       trigger: 'change',
       validator: createValidator(
-        v => /^(?:\d{15}|\d{18}|\d{17}[\dX])/.test(v),
+        v => /^(?:\d{15}|\d{18}|\d{17}[\dX])$/.test(v),
         'form.validation.idCard'
       )
     },
