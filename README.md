@@ -3,7 +3,7 @@
 English | [简体中文](./README.zh.md)
 
   <h1><a href="https://github.com/vvhr/advanced-ele-ui">Advanced Element UI</a></h1>
-  <p>Advanced component library for low-code and AI based on Vue 3 + Element Plus</p>
+  <p>**Configuration-Driven** Advanced component library built on Vue 3 and Element Plus</p>
   <img alt="logo" height="154px" src="https://image.howcat.cn/thumbnails/5d0a2d8352a09debab8f8d233a8fc67d.png" title="logo" width="400px"/>
 
   [![npm version](https://img.shields.io/npm/v/advanced-ele-ui.svg?style=flat-square)](https://www.npmjs.com/package/advanced-ele-ui)
@@ -29,8 +29,6 @@ English | [简体中文](./README.zh.md)
 </div>
 
 ---
-> Warning: This project is in early development and rapid iteration. There may be bugs. Please follow this repository and avoid using it in production environments for now. Stay tuned for the first official release.
-> 2025.11.10
 
 ## Introduction
 
@@ -217,13 +215,15 @@ import 'advanced-ele-ui/dist/style.css'
 - ✅ `AeIcon`: Dynamic icon component: Based on [Iconify](https://icon-sets.iconify.design/), supporting 100,000+ icon libraries for dynamic rendering.
 - ✅ `AeEditor`: Rich text component: A rich text component based on [AiEditor](https://aieditor.dev/docs) with AI assistant functionality.
 - ✅ `AeUpload`: Upload component: A feature-rich native upload component. The component itself does not control uploading, leaving it entirely to you to implement upload requests. The component focuses on data and styles.
-
+- ✅ `AeDialog`: Dialog component: A feature-rich dialog component.  
+- ✅ `AeDrawer`: Drawer component: A feature-rich drawer component.
+- ✅ `AeTabs`: Tabs component: A feature-rich tabs component.
 ---
 
 ## Roadmap
 
 ### 🎯 Short-term Plan (v1.0.0)
-- ⬜ Release the first official version
+- ✅ Release the first official version
 - ✅ `AeForm`: Improve the `type`: `desc` mode, commonly used for displaying information on detail pages, to satisfy the idea of presenting forms in a Word-like form style.
 - ⬜ `AeForm`: Improve the `designable`: `true` mode, which will be used in `AeFormDesginer` to implement form toolbar, drag-and-drop, selection, etc. The plan is to adopt a non-intrusive design that only provides hook functions and does not embed directly into the `AeForm` component.
 - ✅ `AeTable`: Improve the strategy for rendering editable components when `editable`: `true`; introduce more component types and support on-demand registration of components with `AeForm`.
@@ -234,20 +234,6 @@ import 'advanced-ele-ui/dist/style.css'
 - ✅ `AeDialog`: Enhance the dialog component. `el-dialog` is currently rough in style and functionality; we will encapsulate a more attractive and controllable dialog component.
 - ✅ `AeDrawer`: Drawer component, same as above.
 - ✅ `AeTabs`: Tabs component, same as above.
-> The following components will be released separately as the **advanced-ai-ui** component package for on-demand importing.
-- ⬜ `AeInputAI`: A dialog component specialized for AI chat scenarios, supporting a custom toolbar, text input, file upload, image upload, voice input, and theme switching.
-- ⬜ `AeMessageAI`: A chat bubble component for AI chat scenarios, supporting avatar, name, time, content area, deep-thought area, attached images and file display, buttons for copy, resend, like, feedback, voice playback, etc. Supports custom footer controls.
-> The following components will be released separately as the **advanced-lowcode-ui** component package for on-demand importing.
-- ⬜ `AeFormDesginer`: Visual form designer.
-- ⬜ `AeTableDesginer`: Visual table designer.
-- ⬜ `AeCodeViewer`: Lightweight code viewer with light/dark theme switching and syntax highlighting, supporting display of languages such as js, ts, vue2, vue3, css, less, etc. Supports line numbers and fold/unfold.
-- ⬜ `AeCodeEditor`: Code editor with two-way binding, theme switching, syntax highlighting, line numbers, folding/unfolding, custom completion, and basic syntax checking.
-- ⬜ `AeJsonViewer`: JSON viewer that supports theme switching, lightweight JSON display, node expand/collapse, and different highlight colors for different value types.
-- ⬜ `AeJsonEditor`: Lightweight JSON editor that displays JSON data as tree nodes, supports node expand/collapse, editing property names or values, adding or removing properties for objects, and adding or removing members for arrays.
-- ⬜ `AeJsFuncEditor`: JavaScript function editor that, unlike a code editor, focuses on editing the body of a single function while the function name, input parameters, and output types are predefined. Can be used in the form designer to configure component function properties.
-- ⬜ `AeOptionsEditor`: Options editor specialized for custom option data; allows predefining the option data structure, maximum count, and whether it's hierarchical, and renders input fields based on that structure. Supports quick import mode.
-- ⬜ `AeSandbox`: Code sandbox plugin that can execute and validate functions or code online, with built-in security checks to prevent illegal injection.
-
 > 💡 If you have good ideas or suggestions, feel free to raise them in [Issues](https://github.com/vvhr/advanced-ele-ui/issues)!
 
 ---
