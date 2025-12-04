@@ -1078,13 +1078,13 @@ const formSchemas2 = reactive<FormSchema[]>([
             })
           }
         },
-        layoutProps: {
+        descriptionsItemProps: {
           span: 1,
-          rowspan: 2
+          rowspan: 2,
+          width: 140,
+          labelWidth: 50
         },
         formItemProps: {
-          width: 140,
-          labelWidth: 50,
           subLabel:
             '在formItemProps.subLabel配置副标题时，主标题将展现为特殊样式，并通过tooltip组件展示副标题内容'
         }
@@ -1094,7 +1094,7 @@ const formSchemas2 = reactive<FormSchema[]>([
         label: '用户名',
         value: '',
         component: 'Input',
-        layoutProps: { span: 1 },
+        descriptionsItemProps: { span: 1 },
         formItemProps: {
           autoRules: ['isRequired']
         }
@@ -1104,7 +1104,7 @@ const formSchemas2 = reactive<FormSchema[]>([
         label: '手机号码',
         value: '',
         component: 'Input',
-        layoutProps: { span: 1 },
+        descriptionsItemProps: { span: 1 },
         formItemProps: {
           autoRules: ['isRequired', 'isTelephone']
         }
@@ -1148,7 +1148,7 @@ const formSchemas2 = reactive<FormSchema[]>([
             }
           ]
         },
-        layoutProps: { span: 1 }
+        descriptionsItemProps: { span: 1 }
       },
       {
         field: 'sex',
@@ -1161,7 +1161,7 @@ const formSchemas2 = reactive<FormSchema[]>([
             { label: '女', value: 'female' }
           ]
         },
-        layoutProps: { span: 1 },
+        descriptionsItemProps: { span: 1 },
         formItemProps: {
           autoRules: ['isRequired']
         }
@@ -1181,7 +1181,7 @@ const formSchemas2 = reactive<FormSchema[]>([
             { label: 'React', value: 'react' }
           ]
         },
-        layoutProps: { span: 3 },
+        descriptionsItemProps: { span: 3 },
         formItemProps: {
           autoRules: ['isRequiredArray']
         }
@@ -1195,7 +1195,7 @@ const formSchemas2 = reactive<FormSchema[]>([
           type: 'textarea',
           rows: 2
         },
-        layoutProps: { span: 3 },
+        descriptionsItemProps: { span: 3 },
         formItemProps: {
           autoRules: ['isRequired']
         }
@@ -1228,7 +1228,7 @@ const formSchemas2 = reactive<FormSchema[]>([
         formItemProps: {
           autoRules: ['isRequired']
         },
-        layoutProps: { span: 12 }
+        descriptionsItemProps: { span: 12 }
       },
       {
         field: 'email',
@@ -1256,7 +1256,7 @@ const formSchemas2 = reactive<FormSchema[]>([
         formItemProps: {
           autoRules: ['isRequired']
         },
-        layoutProps: { span: 12 }
+        descriptionsItemProps: { span: 12 }
       },
       {
         field: 'status',
@@ -1273,7 +1273,7 @@ const formSchemas2 = reactive<FormSchema[]>([
         formItemProps: {
           autoRules: ['isRequired']
         },
-        layoutProps: { span: 12 }
+        descriptionsItemProps: { span: 12 }
       },
       {
         field: 'hobby',
@@ -1294,7 +1294,7 @@ const formSchemas2 = reactive<FormSchema[]>([
         formItemProps: {
           // autoRules: ['isRequiredArray']
         },
-        layoutProps: { span: 12 }
+        descriptionsItemProps: { span: 12 }
       },
       {
         key: 'longLabel1',
@@ -1306,10 +1306,9 @@ const formSchemas2 = reactive<FormSchema[]>([
           type: 'textarea',
           rows: 5
         },
-        layoutProps: { span: 24 },
+        descriptionsItemProps: { span: 24 },
         formItemProps: {
-          subLabel: '请切换到居左或居右模式查看效果，使用了labelMaxWidth属性来美化长标题',
-          labelMaxWidth: 100,
+          subLabel: '',
           autoRules: ['isRequired']
         }
       },
@@ -1323,10 +1322,9 @@ const formSchemas2 = reactive<FormSchema[]>([
           type: 'textarea',
           rows: 5
         },
-        layoutProps: { span: 24 },
+        descriptionsItemProps: { span: 24 },
         formItemProps: {
-          subLabel: '请切换到居左或居右模式查看效果，使用了labelMaxWidth属性来美化长标题',
-          labelMaxWidth: 100,
+          subLabel: '',
           autoRules: ['isRequired']
         }
       }

@@ -163,7 +163,8 @@ export function useComponent(
             formModel.value,
             schema,
             props.disabled,
-            props.excontext
+            props.excontext,
+            props.domCreator
           ) || undefined
         )
       }
@@ -196,7 +197,8 @@ export function useComponent(
             formModel.value,
             schema,
             props.disabled,
-            props.excontext
+            props.excontext,
+            props.domCreator
           ) || undefined
         )
       }
@@ -226,7 +228,8 @@ export function useComponent(
       if (!insideSlots.hasOwnProperty(slotName)) {
         const fn = insideRenders[slotName]
         if (isFunction(fn)) {
-          slotObj[slotName] = () => fn(formModel.value, schema, props.disabled, props.excontext)
+          slotObj[slotName] = () =>
+            fn(formModel.value, schema, props.disabled, props.excontext, props.domCreator)
         } else if (typeof fn === 'string') {
           slotObj[slotName] = () => fn
         }

@@ -1,5 +1,6 @@
 import { ElForm } from 'element-plus'
-import { Slots } from 'vue'
+import type { Slots } from 'vue'
+import type { FormSchema } from './schema'
 
 /**
  * 表单插槽规范
@@ -69,6 +70,12 @@ export interface FormSlots extends Slots {
    * 例如：在Input组件后面插入一个查询按钮，注意不是在Input输入框内部，而是在后面
    */
   [key: `${string}--out-append`]: (form: Recordable) => any
+
+  /**
+   * 自定义设计模式组件容器插槽
+   * @description 设计模式中通常需要为组件容器添加一些操作栏, 可使用本插槽来自定义
+   */
+  [key: `${string}--design`]: (column: FormSchema) => any
 }
 
 export interface FormEmits {
@@ -86,12 +93,14 @@ export interface FormEmits {
  * - `formItemProps`: 表单项属性({@link FspLayoutFormItemProps})
  * - `componentProps`: 组件属性({@link FspComponentProps})
  * - `descriptionsProps`: 描述块属性({@link FspDescriptionsProps})
+ * - `descriptionsItemProps`: 描述列属性({@link FspDescriptionsItemProps})
  */
 export interface FormSchemaProps {
   layoutProps?: FspLayoutProps
   formItemProps?: FspLayoutFormItemProps
   componentProps?: FspComponentProps
   descriptionsProps?: FspDescriptionsProps
+  descriptionsItemProps?: FspDescriptionsItemProps
 }
 
 /**
@@ -140,7 +149,7 @@ interface FspComponentProps {
 
 /**
  * 全局表单项默认配置 - 描述块属性
- * @description 为所有表单项添加默认描述块属性，以避免重复劳动
+ * @description 为所有表单项的描述块添加默认属性，以避免重复劳动
  * @remarks
  * - `column`: 默认: `3`, 列数
  * - `direction`: 默认: `'horizontal'`, 排列方向
@@ -150,4 +159,22 @@ interface FspDescriptionsProps {
   column?: number
   direction?: 'vertical' | 'horizontal'
   border?: boolean
+}
+
+/**
+ * 全局表单项默认配置 - 描述列属性
+ * @description 为所有表单项的描述列添加默认属性，以避免重复劳动
+ */
+interface FspDescriptionsItemProps {
+  span?: number
+  width?: string | number
+  minWidth?: string | number
+  align?: 'left' | 'center' | 'right'
+  labelAlign?: 'left' | 'center' | 'right'
+  labelWidth?: string | number
+}
+
+export interface DesignableDirectives {
+  baseRow: Recordable
+  containerRow: Recordable
 }

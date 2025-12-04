@@ -49,6 +49,7 @@ export type {
   OptionKeys,
   FormSchemaType,
   FormSchemaFn,
+  FormSchemaDomFn,
   ComponentEventFn,
   OutsidePropsDirection,
   OutsidePropsPrependSlot,
@@ -214,5 +215,5 @@ const install = (app: App, options?: InstallOptions) => {
 
 export default {
   install,
-  version: '0.1.7'
+  version: '0.1.8-beta.1'
 }

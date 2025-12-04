@@ -261,7 +261,13 @@ export function useRenderForm(
   function renderCustom(schema: FormSchema): VNode | undefined {
     if (schema?.type === 'Custom') {
       if (isFunction(schema.render)) {
-        return schema.render(formModel.value, schema, props.disabled, props.excontext)
+        return schema.render(
+          formModel.value,
+          schema,
+          props.disabled,
+          props.excontext,
+          props.domCreator
+        )
       }
       const { slotKey } = useComponent(
         props,
@@ -288,7 +294,11 @@ export function useRenderForm(
     }
     if (!!subLabel) {
       return (
-        <ElTooltip content={subLabel} popper-class="ae-form-label-popper" popper-style={popperStyle}>
+        <ElTooltip
+          content={subLabel}
+          popper-class="ae-form-label-popper"
+          popper-style={popperStyle}
+        >
           <span class="ae-description-item-label__text has-sub-label">{label}</span>
         </ElTooltip>
       )
@@ -309,7 +319,8 @@ export function useRenderForm(
           formModel.value,
           schema,
           props.disabled,
-          props.excontext
+          props.excontext,
+          props.domCreator
         )
         if (!!renderSubLabel) {
           return (
@@ -380,41 +391,82 @@ export function useRenderForm(
           formModel
         )
         return (
-          <SchemaLayout schema={schema} schemaProps={props.schemaProps} item-key={key}>
-            <ElFormItem {...getFormItemProps()}>
-              {{
-                ...(slots[`${slotKey}--label`]
-                  ? { label: slots[`${slotKey}--label`] }
-                  : { label: () => renderFormItemLabel(formItemLabel.value, schema) }),
-                ...(slots[`${slotKey}--error`] ? { error: slots[`${slotKey}--error`] } : {}),
-                default: () => renderCustom(schema)
-              }}
-            </ElFormItem>
+          <SchemaLayout
+            schema={schema}
+            schemaProps={props.schemaProps}
+            item-key={key}
+            designable={props.designable}
+            designableColProps={props.designableColProps}
+          >
+            {{
+              default: () => (
+                <ElFormItem {...getFormItemProps()}>
+                  {{
+                    ...(slots[`${slotKey}--label`]
+                      ? { label: slots[`${slotKey}--label`] }
+                      : { label: () => renderFormItemLabel(formItemLabel.value, schema) }),
+                    ...(slots[`${slotKey}--error`] ? { error: slots[`${slotKey}--error`] } : {}),
+                    default: () => renderCustom(schema)
+                  }}
+                </ElFormItem>
+              ),
+              ...(props.designable && {
+                design: (column: FormSchema) => slots[`${slotKey}--design`]?.(column)
+              })
+            }}
           </SchemaLayout>
         )
       }
       case 'Container': {
         const { trueComponentProps } = useFormItem(props, slots, schema, formModel)
+        const containerRowDirectives =
+          props.designable && props.type !== 'desc'
+            ? props.designableDirectives?.containerRow || {}
+            : {}
         return (
-          <SchemaLayout schema={schema} schemaProps={props.schemaProps} item-key={key}>
-            {renderContainer(schema, trueComponentProps, () => (
-              <ElRow
-                class="ae-form-main__container_row type-form"
-                data-id={`container-row-${key}`}
-                key={`container-row-${key}`}
-                gutter={10}
-              >
-                {schema.children ? schema.children?.map(item => renderSchema(item)) : undefined}
-              </ElRow>
-            ))}
+          <SchemaLayout
+            schema={schema}
+            schemaProps={props.schemaProps}
+            item-key={key}
+            designable={props.designable}
+            designableColProps={props.designableColProps}
+          >
+            {{
+              default: () =>
+                renderContainer(schema, trueComponentProps, () => (
+                  <ElRow
+                    class="ae-form-main__container_row type-form"
+                    data-id={`container-row-${key}`}
+                    key={`container-row-${key}`}
+                    gutter={10}
+                    {...containerRowDirectives}
+                  >
+                    {schema.children ? schema.children?.map(item => renderSchema(item)) : undefined}
+                  </ElRow>
+                )),
+              ...(props.designable && {
+                design: (column: FormSchema) => slots[`${slotKey}--design`]?.(column)
+              })
+            }}
           </SchemaLayout>
         )
       }
       case 'Decorator': {
         const { trueComponentProps } = useFormItem(props, slots, schema, formModel)
         return (
-          <SchemaLayout schema={schema} schemaProps={props.schemaProps} item-key={key}>
-            {renderDecorator(schema, trueComponentProps)}
+          <SchemaLayout
+            schema={schema}
+            schemaProps={props.schemaProps}
+            item-key={key}
+            designable={props.designable}
+            designableColProps={props.designableColProps}
+          >
+            {{
+              default: () => renderDecorator(schema, trueComponentProps),
+              ...(props.designable && {
+                design: (column: FormSchema) => slots[`${slotKey}--design`]?.(column)
+              })
+            }}
           </SchemaLayout>
         )
       }
@@ -423,16 +475,29 @@ export function useRenderForm(
         const { trueComponentProps, isDisabled, getFormItemProps, slotKey, formItemLabel } =
           useFormItem(props, slots, schema, formModel)
         return (
-          <SchemaLayout schema={schema} schemaProps={props.schemaProps} item-key={key}>
-            <ElFormItem {...getFormItemProps()}>
-              {{
-                ...(slots[`${slotKey}--label`]
-                  ? { label: slots[`${slotKey}--label`] }
-                  : { label: () => renderFormItemLabel(formItemLabel.value, schema) }),
-                ...(slots[`${slotKey}--error`] ? { error: slots[`${slotKey}--error`] } : {}),
-                default: () => renderInputer(schema, trueComponentProps, isDisabled)
-              }}
-            </ElFormItem>
+          <SchemaLayout
+            schema={schema}
+            schemaProps={props.schemaProps}
+            item-key={key}
+            designable={props.designable}
+            designableColProps={props.designableColProps}
+          >
+            {{
+              default: () => (
+                <ElFormItem {...getFormItemProps()}>
+                  {{
+                    ...(slots[`${slotKey}--label`]
+                      ? { label: slots[`${slotKey}--label`] }
+                      : { label: () => renderFormItemLabel(formItemLabel.value, schema) }),
+                    ...(slots[`${slotKey}--error`] ? { error: slots[`${slotKey}--error`] } : {}),
+                    default: () => renderInputer(schema, trueComponentProps, isDisabled)
+                  }}
+                </ElFormItem>
+              ),
+              ...(props.designable && {
+                design: (column: FormSchema) => slots[`${slotKey}--design`]?.(column)
+              })
+            }}
           </SchemaLayout>
         )
     }
@@ -589,6 +654,9 @@ export function useRenderForm(
       const setBaseElFormRef = (el: ComponentRef<typeof ElRow>) => {
         baseElRowRef.value = el
       }
+      // 为根级绑定设计模式需要的拖拽指令
+      const baseRowDirectives =
+        props.designable && props.type !== 'desc' ? props.designableDirectives?.baseRow || {} : {}
       return (
         <ElRow
           ref={(el: any) => setBaseElFormRef(el)}
@@ -596,6 +664,7 @@ export function useRenderForm(
           key="base-row"
           class="ae-form-main__base_row type-form"
           gutter={10}
+          {...baseRowDirectives}
         >
           {currentSchemas.map(item => renderSchema(item))}
         </ElRow>

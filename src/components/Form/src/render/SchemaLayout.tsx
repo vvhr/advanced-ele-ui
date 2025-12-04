@@ -16,6 +16,14 @@ export const SchemaLayout = defineComponent({
     itemKey: {
       type: String,
       required: true
+    },
+    designable: {
+      type: Boolean,
+      default: false
+    },
+    designableColProps: {
+      type: Object as PropType<Recordable>,
+      default: () => {}
     }
   },
   setup(props, { slots }) {
@@ -28,6 +36,8 @@ export const SchemaLayout = defineComponent({
     })
     const type = computed(() => props.schema.type ?? 'Inputer')
     const enableAlone = ['Container', 'Custom', 'Inputer', 'Decorator']
+    // 如果是设计模式{
+    const designableColProps = props.designable ? {...(props.designableColProps || {})} : {}
 
     return () => {
       if (layoutProps.value.alone && enableAlone.includes(type.value)) {
@@ -37,14 +47,16 @@ export const SchemaLayout = defineComponent({
             span={24}
             key={props.itemKey}
             data-id={props.itemKey}
-            class="mb-1"
+            class="mb-2"
             id={props.itemKey}
+            {...designableColProps}
           >
             <ElRow>
               <ElCol span={layoutProps.value.span} style={layoutProps.value.style}>
                 {slots.default?.()}
               </ElCol>
             </ElRow>
+            { props.designable ? slots.design?.(props.schema) : undefined }
           </ElCol>
         )
       } else {
@@ -56,8 +68,10 @@ export const SchemaLayout = defineComponent({
             id={props.itemKey}
             class="mb-2"
             style={layoutProps.value.style}
+            {...designableColProps}
           >
             {slots.default?.()}
+            { props.designable ? slots.design?.(props.schema) : undefined }
           </ElCol>
         )
       }

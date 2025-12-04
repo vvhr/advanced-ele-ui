@@ -10,7 +10,7 @@ import {
   toRaw,
   CSSProperties
 } from 'vue'
-import { FormSchema, FormSchemaProps } from './types'
+import { FormSchema, FormSchemaProps, DomCreator, DesignableDirectives } from './types'
 import type { FormImportItem } from '@/types/imports'
 import { useRenderForm } from './render/useRenderForm'
 import { useForm } from './hook/useForm'
@@ -69,6 +69,20 @@ export default defineComponent({
     designable: {
       type: Boolean,
       default: false
+    },
+    /**
+     * 设计模式时为根级和容器根级注册可拖拽事件
+     */
+    designableDirectives: {
+      type: Object as PropType<DesignableDirectives>,
+      default: () => {}
+    },
+    /**
+     * 设计模式时为所有组件的最外层Col添加属性
+     */
+    designableColProps: {
+      type: Object as PropType<Recordable>,
+      default: () => {}
     },
     /**
      * 表单扩展上下文
@@ -135,6 +149,13 @@ export default defineComponent({
     anchorAffixStyle: {
       type: Object as PropType<CSSProperties>,
       default: () => {}
+    },
+    /**
+     * 自定义DOM解析器
+     */
+    domCreator: {
+      type: Function as PropType<DomCreator>,
+      default: () => <span>No DomCreator</span>
     }
   },
   emits: ['register', 'update:stepValue', 'init', 'change'],

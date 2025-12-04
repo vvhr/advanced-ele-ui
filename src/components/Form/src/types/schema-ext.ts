@@ -42,51 +42,29 @@ export type ComponentEventFn<T> = (
 ) => void
 
 /**
- * 表单项属性的文本表达式
- * @description 当采用低代码架构时，FormSchema中某属性需要将函数或特殊对象以纯文本方式编写，则可以采用表达式的方式编写。
- * - 必须使用 `{{ xxx }}` 包裹函数内容，并确保有return语句！
- * - 支持的参数：
- * -- `form`: 表单数据对象
- * -- `column`: 当前列对象
- * -- `disabled`: 表单禁用状态
- * -- `excontext`: 表单数据源上下文
- * -- `tools`: 工具对象（包含lodash/dateFn等工具函数）
- * @example
- * // 1.动态隐藏示例: 当form.status等于1时，该组件被隐藏
- * hidden: '{{ form.status === 1 }}'
- * // 2.动态标题示例: 根据数据源中的type属性值返回对应的标题
- * label: '{{ return excontext.type === 1 ? '类型1' : '类型2' }}'
- * // 3.动态选项示例: 根据数据源中的xxlx属性值返回对应的选项
- * componentProps.options: `{{
- *  if(form.xxlx === '小学') return [{ value: '1', label: '一年级' }...{ value: '6', label: '六年级' }]
- *  if(form.xxlx === '中学') return [{ value: '7', label: '初一' }...{ value: '9', label: '初三' }]
- *  return [{ value: '10', label: '高一' }...{ value: '12', label: '高三' }]
- * }}`
+ * 动态取VNode函数
+ * @description 基于某种逻辑动态取值
+ * @param form - 表单数据对象
+ * @param column - 当前列配置
+ * @param disabled - 表单自身是否禁用
+ * @param excontext - 表单数据源上下文
+ * @param domCreator - 可通过config构建dom内容
  */
-// export type FormSchemaExpression = `{{${string}}}`
+export type FormSchemaDomFn<T> = (
+  form: Recordable,
+  column: FormSchema,
+  disabled: boolean,
+  excontext: Recordable,
+  domCreator: DomCreator
+) => T
 
-/**
- * 组件事件的文本表达式
- * @description 当采用低代码架构时，componentEvent中某事件需要用纯文本编写
- * - 必须使用 `{{ xxx }}` 包裹函数内容，无需返回值
- * - 支持的参数：
- * -- `event`: 原始事件参数
- * -- `form`: 表单数据对象
- * -- `column`: 当前列对象
- * -- `disabled`: 表单禁用状态
- * -- `excontext`: 表单数据源上下文
- * -- `tools`: 工具对象（包含lodash/dateFn等工具函数）
- * @example
- * // 监听输入框的值被改变: 当用户名称变化时，将idCard字段置空
- * {
- *   field: 'name',
- *   component: 'Input',
- *   componentEvent: {
- *     onChange: '{{ form.idCard = '' }}'
- *   }
- * }
- */
-// export type ComponentEventExpression = `{{${string}}}`
+export type DomCreator = (
+  config: any,
+  form: Recordable,
+  column: FormSchema,
+  disabled: boolean,
+  excontext: Recordable
+) => VNode | undefined
 
 /**
  * 组件布局方向
@@ -139,7 +117,7 @@ export type OutsidePropsAppendSlot = FormSchemaFn<boolean> | boolean
  *  )
  * }
  */
-export type OutsidePropsPrependRender = FormSchemaFn<VNode | false> | false
+export type OutsidePropsPrependRender = FormSchemaDomFn<VNode | false> | false
 
 /**
  * 自定义组件后置组件
@@ -158,7 +136,7 @@ export type OutsidePropsPrependRender = FormSchemaFn<VNode | false> | false
  *  )
  * }
  */
-export type OutsidePropsAppendRender = FormSchemaFn<VNode | false> | false
+export type OutsidePropsAppendRender = FormSchemaDomFn<VNode | false> | false
 
 /**
  * 激活插槽类型对象
@@ -192,4 +170,4 @@ export type InsidePropsSlots = Recordable<FormSchemaFn<boolean> | boolean>
  * { insideProps.renders.suffix: '元' }
  */
 export type InsidePropsRenders = Recordable<InsidePropsRender>
-export type InsidePropsRender = FormSchemaFn<VNode | string | false> | false | string
+export type InsidePropsRender = FormSchemaDomFn<VNode | string | false> | false | string

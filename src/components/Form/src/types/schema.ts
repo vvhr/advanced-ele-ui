@@ -5,6 +5,7 @@ import type { AutoRules } from '@/types/rules'
 import type {
   FormSchemaType,
   FormSchemaFn,
+  FormSchemaDomFn,
   OutsidePropsDirection,
   OutsidePropsAppendSlot,
   OutsidePropsAppendRender,
@@ -62,6 +63,7 @@ export interface StepSchema extends FormSchemaBase {
   layoutProps?: never
   outsideProps?: never
   insideProps?: never
+  descriptionsItemProps?: never
 }
 
 /**
@@ -98,6 +100,7 @@ export interface ContainerSchema extends FormSchemaBase {
   componentEvent?: never
   formItemProps?: never
   outsideProps?: never
+  descriptionsItemProps?: never
 }
 
 /**
@@ -133,6 +136,7 @@ export interface DescriptionsSchema extends FormSchemaBase {
   componentEvent?: never
   outsideProps?: never
   formItemProps?: never
+  descriptionsItemProps?: never
 }
 
 /**
@@ -163,6 +167,7 @@ export interface DecoratorSchema extends FormSchemaBase {
   outsideProps?: OutsideProps
   insideProps?: InsideProps
   anchorLinkProps?: AnchorLinkProps
+  descriptionsItemProps?: DescriptionsItemProps
   // Decorator类不需要的属性
   field?: never
   step?: never
@@ -204,6 +209,7 @@ export interface InputerSchema extends FormSchemaBase {
   layoutProps?: LayoutProps
   outsideProps?: OutsideProps
   insideProps?: InsideProps
+  descriptionsItemProps?: DescriptionsItemProps
   // Inputer类型不需要的属性
   step?: never
   children?: never
@@ -232,9 +238,10 @@ export interface CustomSchema extends FormSchemaBase {
   label?: FormSchemaFn<string> | string
   hidden?: FormSchemaFn<boolean> | boolean
   value?: FormSchemaFn<any> | any
-  render?: FormSchemaFn<VNode>
+  render?: FormSchemaDomFn<VNode>
   formItemProps?: FormItemProps
   layoutProps?: LayoutProps
+  descriptionsItemProps?: DescriptionsItemProps
   // Custom类型不需要的属性
   step?: never
   component?: never
@@ -334,7 +341,7 @@ export interface FormSchemaBase {
    * @example render: (form, column, disabled, excontext) => <el-input vModel={form.username} />
    * @remarks 如果您希望通过插槽方式编写，则在Form组件内使用<template #{组件的key或field}={ form }>...</template>方式编写
    */
-  render?: FormSchemaFn<VNode>
+  render?: FormSchemaDomFn<VNode>
   /**
    * 组件属性
    * @description 组件的属性，会根据此属性进行渲染对应的组件属性。
@@ -376,6 +383,10 @@ export interface FormSchemaBase {
    * @notes 仅在类型为`Container(容器组件)` 或 `Descriptions(描述块) 或 Decorator(装饰组件)`时生效
    */
   anchorLinkProps?: AnchorLinkProps
+  /**
+   * 描述列属性
+   */
+  descriptionsItemProps?: DescriptionsItemProps
 }
 
 /**
@@ -457,7 +468,7 @@ export interface FormItemProps {
    * @description 使用render函数自定义副标题的内容, 返回false则不显示, 优先级高于`subLabel`
    * @notes 仅在`labelPosition`为`top`时显示在主标题下方，其他情况时无效
    */
-  subLabelRender?: FormSchemaFn<VNode | false>
+  subLabelRender?: FormSchemaDomFn<VNode | false>
   /**
    * formItem组件的标题宽度
    * @default 'auto'
@@ -486,30 +497,6 @@ export interface FormItemProps {
    */
   autoRules?: AutoRules[] // 使用内置校验方法
   style?: CSSProperties | string // 该表单项的样式
-  /**
-   * 描述项宽度
-   * @default ''
-   * @notes 仅在表单为`desc`类型时生效
-   */
-  width?: string | number
-  /**
-   * 描述项最小宽度
-   * @default ''
-   * @notes 仅在表单为`desc`类型时生效
-   */
-  minWidth?: string | number
-  /**
-   * 描述项内容布局
-   * @default 'left'
-   * @notes 仅在表单为`desc`类型时生效
-   */
-  align?: 'left' | 'center' | 'right'
-  /**
-   * 描述项标题布局
-   * @default undefined
-   * @notes 仅在表单为`desc`类型时生效
-   */
-  labelAlign?: 'left' | 'center' | 'right'
 }
 
 /**
@@ -528,13 +515,6 @@ export interface LayoutProps {
    * @description 独占一行的组件会额外被 el-row 包裹，即便 span 为 12 也会占满一行
    */
   alone?: boolean
-  /**
-   * 描述项所占的行数
-   * @description 默认值为 1
-   * @remarks 仅在 Form 的 `type` 为 `desc` 时生效
-   * @default 1
-   */
-  rowspan?: number
   /**
    * 自定义 el-col 样式
    * @experimental 此功能为实验性功能，API 可能会变更
@@ -564,4 +544,53 @@ export interface AnchorLinkProps {
    * 锚点链接地址
    */
   href?: string
+}
+
+/**
+ * 描述列属性
+ * @since 0.1.8
+ * @notes 仅对 `type`: `Inputer` / `Custom` / `Decorator` 的表单项有效
+ */
+export interface DescriptionsItemProps {
+  /**
+   * 描述列所占的列数, 应小于等于描述块的column
+   */
+  span?: number
+  /**
+   * 描述列所占的行数
+   * @description 默认值为 1
+   * @remarks 仅在 Form 的 `type` 为 `desc` 时生效
+   * @default 1
+   */
+  rowspan?: number
+  /**
+   * 描述项宽度
+   * @default ''
+   * @notes 仅在表单为`desc`类型时生效
+   */
+  width?: string | number
+  /**
+   * 描述项最小宽度
+   * @default ''
+   * @notes 仅在表单为`desc`类型时生效
+   */
+  minWidth?: string | number
+  /**
+   * 描述项内容布局
+   * @default 'left'
+   * @notes 仅在表单为`desc`类型时生效
+   */
+  align?: 'left' | 'center' | 'right'
+  /**
+   * 描述项标题布局
+   * @default undefined
+   * @notes 仅在表单为`desc`类型时生效
+   */
+  labelAlign?: 'left' | 'center' | 'right'
+  /**
+   * 列标签宽
+   * @default 'auto'
+   * @description 列标签宽，如果未设置，它将与列宽度相同。 比 Descriptions 的 label-width 优先级高
+   */
+  labelWidth?: string | number
 }

@@ -25,7 +25,12 @@ export type {
   ComponentEvent,
   OptionKeys
 } from './src/types/schema-component'
-export type { FormSchemaType, FormSchemaFn, ComponentEventFn } from './src/types/schema-ext'
+export type {
+  FormSchemaType,
+  FormSchemaFn,
+  ComponentEventFn,
+  FormSchemaDomFn
+} from './src/types/schema-ext'
 export type {
   OutsidePropsDirection,
   OutsidePropsPrependSlot,

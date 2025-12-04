@@ -50,13 +50,13 @@ export function useFormItem(
   function getDescriptionItemProps() {
     return {
       label: formItemLabel.value,
-      span: schema.layoutProps?.span ?? props.schemaProps?.layoutProps?.span ?? 1,
-      rowspan: schema.layoutProps?.rowspan ?? 1,
-      width: schema.formItemProps?.width ?? undefined,
-      minWidth: schema.formItemProps?.minWidth ?? '150px',
-      labelWidth: schema.formItemProps?.labelWidth ?? undefined,
-      align: schema.formItemProps?.align ?? props.schemaProps?.formItemProps?.align ?? 'left',
-      labelAlign: schema.formItemProps?.labelAlign ?? props.schemaProps?.formItemProps?.labelAlign ?? undefined,
+      span: schema.descriptionsItemProps?.span ?? props.schemaProps?.descriptionsItemProps?.span ?? 1,
+      rowspan: schema.descriptionsItemProps?.rowspan ?? 1,
+      width: schema.descriptionsItemProps?.width ?? undefined,
+      minWidth: schema.descriptionsItemProps?.minWidth ?? '150px',
+      labelWidth: schema.descriptionsItemProps?.labelWidth ?? undefined,
+      align: schema.descriptionsItemProps?.align ?? props.schemaProps?.descriptionsItemProps?.align ?? 'left',
+      labelAlign: schema.descriptionsItemProps?.labelAlign ?? props.schemaProps?.descriptionsItemProps?.labelAlign ?? undefined,
       className: 'ae-description-item-content',
       labelClassName: 'ae-description-item-label' + (getDescriptionItemRequired() ? ' is-required' : '')
     }
@@ -172,7 +172,7 @@ export function useFormItem(
       if (!insideSlots.hasOwnProperty(slotName)) {
         const fn = insideRenders[slotName]
         if (isFunction(fn)) {
-          slotObj[slotName] = () => fn(formModel.value, schema, props.disabled, props.excontext)
+          slotObj[slotName] = () => fn(formModel.value, schema, props.disabled, props.excontext, props.domCreator)
         } else if (typeof fn === 'string') {
           slotObj[slotName] = () => fn
         }
