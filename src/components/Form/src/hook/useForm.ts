@@ -136,9 +136,7 @@ export function useForm(
   function resetValidate() {
     unref(elFormRef)?.clearValidate()
     // 找到所有可见的表格组件
-    const tableSchemas = findNodes(schemas, (node: FormSchema) => {
-      return node.component === 'Table' && !isHidden(node, formModel.value, props)
-    })
+    const tableSchemas = getVisibleTableSchemas()
     if (tableSchemas?.length) {
       tableSchemas.forEach((v: FormSchema) => {
         const tableRef = getComponentRef(v.key || v.field)
@@ -152,13 +150,19 @@ export function useForm(
   const getComponentRef = (key: string) => {
     return key ? componentRefs.value[`${key}Ref`] : undefined
   }
+
+  // 辅助函数：获取所有可见的Table组件Schema
+  const getVisibleTableSchemas = () => {
+    const rawSchemas = toRaw(schemas)
+    return findNodes(rawSchemas, (node: FormSchema) => {
+      return node.component === 'Table' && !isHidden(node, formModel.value, props)
+    })
+  }
+
   // 辅助函数：校验表格
   const validateTables = async () => {
     // 找到所有可见的表格组件
-    const rawSchemas = toRaw(schemas)
-    const tableSchemas = findNodes(rawSchemas, (node: FormSchema) => {
-      return node.component === 'Table' && !isHidden(node, formModel.value, props)
-    })
+    const tableSchemas = getVisibleTableSchemas()
     if (tableSchemas?.length) {
       for (const item of tableSchemas) {
         const tableRef = getComponentRef(item.key || item.field)

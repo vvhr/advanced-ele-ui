@@ -38,3 +38,5 @@ export const dateRangeTypes = [
   'monthrange',
   'yearrange'
 ]
+
+export const COMPONENTS_NEEDING_REF = ['Table']
