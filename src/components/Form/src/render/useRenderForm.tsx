@@ -495,9 +495,23 @@ export function useRenderForm(
       case SchemaType.STEP:
         logger.error('console.form.nestedStepNotSupported', undefined, schema)
         return undefined
-      case SchemaType.CONTAINER:
-        logger.error('console.form.nestedContainerNotSupported', undefined, schema)
-        return undefined
+      case SchemaType.CONTAINER: {
+        const { trueComponentProps } = useFormItem(props, slots, schema, formModel)
+        return (
+          <SchemaLayout schema={schema} schemaProps={props.schemaProps} item-key={key}>
+            {renderContainer(schema, trueComponentProps, () => (
+              <ElRow
+                class="ae-form-main__container_row type-form"
+                data-id={`container-row-${key}`}
+                key={`container-row-${key}`}
+                gutter={10}
+              >
+                {schema.children ? schema.children?.map(item => renderSchema(item)) : undefined}
+              </ElRow>
+            ))}
+          </SchemaLayout>
+        )
+      }
       case SchemaType.DESCRIPTIONS:
         logger.error('console.form.nestedDescriptionsNotSupported', undefined, schema)
         return undefined
