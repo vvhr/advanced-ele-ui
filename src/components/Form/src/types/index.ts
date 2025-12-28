@@ -4,5 +4,6 @@ export * from './schema'
 export * from './props'
 export * from './schema-component'
 export * from './schema-ext'
+export * from './schema-json'
 export * from './instance'
 export type FormProps = InstanceType<typeof Form>['$props']

@@ -38,6 +38,22 @@ export type {
   InsidePropsRenders,
   InsidePropsRender
 } from './src/types/schema-ext'
+export type {
+  FormSchemaForJson,
+  ComponentConfig,
+  RenderForJson,
+  FormItemPropsForJson,
+  OutsidePropsForJson,
+  InsidePropsForJson,
+  LayoutPropsForJson,
+  AnchorLinkPropsForJson
+} from './src/types/schema-json'
+export {
+  jsonToFormSchema,
+  jsonToFormSchemas,
+  formSchemaToJson,
+  formSchemasToJson
+} from './src/utils/schema-converter'
 
 // 兼容旧的导出方式
 export { AeForm as Form }
