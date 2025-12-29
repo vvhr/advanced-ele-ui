@@ -10,7 +10,12 @@ import {
   toRaw,
   CSSProperties
 } from 'vue'
-import { FormSchema, FormSchemaProps, DomCreator, DesignableDirectives } from './types'
+import {
+  FormSchema,
+  FormSchemaProps,
+  DesignableDirectives,
+  DesignableColProps
+} from './types'
 import type { FormImportItem } from '@/types/imports'
 import { useRenderForm } from './render/useRenderForm'
 import { useForm } from './hook/useForm'
@@ -81,7 +86,7 @@ export default defineComponent({
      * 设计模式时为所有组件的最外层Col添加属性
      */
     designableColProps: {
-      type: Object as PropType<Recordable>,
+      type: Function as PropType<DesignableColProps>,
       default: () => {}
     },
     /**
@@ -149,13 +154,6 @@ export default defineComponent({
     anchorAffixStyle: {
       type: Object as PropType<CSSProperties>,
       default: () => {}
-    },
-    /**
-     * 自定义DOM解析器
-     */
-    domCreator: {
-      type: Function as PropType<DomCreator>,
-      default: () => <span>No DomCreator</span>
     }
   },
   emits: ['register', 'update:stepValue', 'init', 'change'],

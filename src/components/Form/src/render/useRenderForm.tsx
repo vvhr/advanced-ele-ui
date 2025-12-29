@@ -1,4 +1,5 @@
 import type { Component, ComputedRef, Ref, VNode } from 'vue'
+import { withDirectives, resolveDirective } from 'vue'
 import {
   ElForm,
   ElRow,
@@ -25,6 +26,25 @@ import { getSlot, getStyleWidth } from '@/utils/get'
 import { isExistAttr, isFunction } from '@/utils/is'
 import { useComponent } from '../hook/useComponent'
 import { logger } from '@/locale'
+
+// 应用指令的辅助函数
+const applyDirectives = (vnode: any, directivesObj: Record<string, any>) => {
+  if (!directivesObj || Object.keys(directivesObj).length === 0) {
+    return vnode
+  }
+
+  const directiveBindings = Object.entries(directivesObj)
+    .map(([key, value]) => {
+      // 移除 'v-' 前缀
+      const directiveName = key.replace(/^v-/, '')
+      const directive = resolveDirective(directiveName)
+      return directive ? [directive, value] : null
+    })
+    .filter(Boolean)
+
+  return directiveBindings.length > 0 ? withDirectives(vnode, directiveBindings as any) : vnode
+}
+
 export function useRenderForm(
   props: FormProps,
   emits: FormEmits,
@@ -265,8 +285,7 @@ export function useRenderForm(
           formModel.value,
           schema,
           props.disabled,
-          props.excontext,
-          props.domCreator
+          props.excontext
         )
       }
       const { slotKey } = useComponent(
@@ -319,8 +338,7 @@ export function useRenderForm(
           formModel.value,
           schema,
           props.disabled,
-          props.excontext,
-          props.domCreator
+          props.excontext
         )
         if (!!renderSubLabel) {
           return (
@@ -366,7 +384,8 @@ export function useRenderForm(
     // 判断当前是否隐藏
     const hidden = isHidden(schema, formModel.value, props)
     if (hidden) {
-      return undefined
+      // 设计模式时不隐藏
+      if (!props.designable) return undefined
     }
     // 获取组件key
     const key = schema.key ?? schema.field
@@ -397,6 +416,7 @@ export function useRenderForm(
             item-key={key}
             designable={props.designable}
             designableColProps={props.designableColProps}
+            is-hidden={hidden}
           >
             {{
               default: () => (
@@ -411,7 +431,7 @@ export function useRenderForm(
                 </ElFormItem>
               ),
               ...(props.designable && {
-                design: (column: FormSchema) => slots[`${slotKey}--design`]?.(column)
+                design: (column: FormSchema) => slots.design?.(column)
               })
             }}
           </SchemaLayout>
@@ -419,10 +439,29 @@ export function useRenderForm(
       }
       case 'Container': {
         const { trueComponentProps } = useFormItem(props, slots, schema, formModel)
-        const containerRowDirectives =
-          props.designable && props.type !== 'desc'
-            ? props.designableDirectives?.containerRow || {}
-            : {}
+        const useDesignable = props.designable && props.type !== 'desc'
+        const containerRowDirectives = useDesignable
+          ? props.designableDirectives?.containerRow || {}
+          : {}
+        // 根据是否有指令来改变 key，强制重新渲染
+        const rowKey =
+          containerRowDirectives && Object.keys(containerRowDirectives).length > 0
+            ? `container-row-${key}-designable`
+            : `container-row-${key}`
+        const renderContainerBaseRow = () => (
+          <ElRow
+            class={{
+              'ae-form-main__container_row': true,
+              'type-form': true,
+              'is-designable': props.designable
+            }}
+            data-id={`container-row-${key}`}
+            key={rowKey}
+            gutter={10}
+          >
+            {schema.children ? schema.children?.map(item => renderSchema(item)) : undefined}
+          </ElRow>
+        )
         return (
           <SchemaLayout
             schema={schema}
@@ -430,22 +469,19 @@ export function useRenderForm(
             item-key={key}
             designable={props.designable}
             designableColProps={props.designableColProps}
+            is-hidden={hidden}
           >
             {{
               default: () =>
-                renderContainer(schema, trueComponentProps, () => (
-                  <ElRow
-                    class="ae-form-main__container_row type-form"
-                    data-id={`container-row-${key}`}
-                    key={`container-row-${key}`}
-                    gutter={10}
-                    {...containerRowDirectives}
-                  >
-                    {schema.children ? schema.children?.map(item => renderSchema(item)) : undefined}
-                  </ElRow>
-                )),
+                renderContainer(
+                  schema,
+                  trueComponentProps,
+                  () => useDesignable
+                    ? applyDirectives(renderContainerBaseRow(), containerRowDirectives)
+                    : renderContainerBaseRow()
+                ),
               ...(props.designable && {
-                design: (column: FormSchema) => slots[`${slotKey}--design`]?.(column)
+                design: (column: FormSchema) => slots.design?.(column)
               })
             }}
           </SchemaLayout>
@@ -460,11 +496,12 @@ export function useRenderForm(
             item-key={key}
             designable={props.designable}
             designableColProps={props.designableColProps}
+            is-hidden={hidden}
           >
             {{
               default: () => renderDecorator(schema, trueComponentProps),
               ...(props.designable && {
-                design: (column: FormSchema) => slots[`${slotKey}--design`]?.(column)
+                design: (column: FormSchema) => slots.design?.(column)
               })
             }}
           </SchemaLayout>
@@ -481,6 +518,7 @@ export function useRenderForm(
             item-key={key}
             designable={props.designable}
             designableColProps={props.designableColProps}
+            is-hidden={hidden}
           >
             {{
               default: () => (
@@ -495,7 +533,7 @@ export function useRenderForm(
                 </ElFormItem>
               ),
               ...(props.designable && {
-                design: (column: FormSchema) => slots[`${slotKey}--design`]?.(column)
+                design: (column: FormSchema) => slots.design?.(column)
               })
             }}
           </SchemaLayout>
@@ -655,20 +693,32 @@ export function useRenderForm(
         baseElRowRef.value = el
       }
       // 为根级绑定设计模式需要的拖拽指令
-      const baseRowDirectives =
-        props.designable && props.type !== 'desc' ? props.designableDirectives?.baseRow || {} : {}
-      return (
+      const useDesignable = props.designable && props.type !== 'desc'
+      const baseRowDirectives = useDesignable ? props.designableDirectives?.baseRow || {} : {}
+
+      // 根据是否有指令来改变 key，强制重新渲染
+      const rowKey =
+        useDesignable && Object.keys(baseRowDirectives).length > 0
+          ? 'base-row-designable'
+          : 'base-row'
+
+      const renderBaseRow = () => (
         <ElRow
           ref={(el: any) => setBaseElFormRef(el)}
           data-id="base-row"
-          key="base-row"
-          class="ae-form-main__base_row type-form"
+          key={rowKey}
+          class={{
+            'ae-form-main__base_row': true,
+            'type-form': true,
+            'is-designable': props.designable
+          }}
           gutter={10}
-          {...baseRowDirectives}
         >
           {currentSchemas.map(item => renderSchema(item))}
         </ElRow>
       )
+
+      return useDesignable ? applyDirectives(renderBaseRow(), baseRowDirectives) : renderBaseRow()
     }
 
     /**
@@ -721,12 +771,17 @@ export function useRenderForm(
         'disabled',
         'type',
         'designable',
+        'designableDirectives',
+        'designableColProps',
         'excontext',
         'schemaProps',
         'showErrorNotice',
         'scrollRef',
         'autoInitField',
-        'imports'
+        'imports',
+        'anchor',
+        'anchorProps',
+        'anchorAffixStyle'
       ]
       // 将removeProps从elFormProps中删除
       removeProps.forEach(prop => delete elFormProps[prop])
@@ -737,9 +792,14 @@ export function useRenderForm(
       elFormRef.value = el
     }
 
+    const formClass = {
+      'ae-form-main': true,
+      'is-designable': props.designable
+    }
+
     return (
       <ElForm
-        class="ae-form-main"
+        class={formClass}
         ref={(el: any) => setElFormRef(el)}
         {...getElFormProps()}
         model={formModel.value}

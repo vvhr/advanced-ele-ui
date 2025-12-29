@@ -75,7 +75,7 @@ export interface FormSlots extends Slots {
    * 自定义设计模式组件容器插槽
    * @description 设计模式中通常需要为组件容器添加一些操作栏, 可使用本插槽来自定义
    */
-  [key: `${string}--design`]: (column: FormSchema) => any
+  design?: (column: FormSchema) => any
 }
 
 export interface FormEmits {
@@ -178,3 +178,5 @@ export interface DesignableDirectives {
   baseRow: Recordable
   containerRow: Recordable
 }
+
+export type DesignableColProps = (key: string, column: FormSchema, isHidden: boolean) => Recordable

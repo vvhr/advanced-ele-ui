@@ -48,23 +48,13 @@ export type ComponentEventFn<T> = (
  * @param column - 当前列配置
  * @param disabled - 表单自身是否禁用
  * @param excontext - 表单数据源上下文
- * @param domCreator - 可通过config构建dom内容
  */
 export type FormSchemaDomFn<T> = (
   form: Recordable,
   column: FormSchema,
   disabled: boolean,
-  excontext: Recordable,
-  domCreator: DomCreator
-) => T
-
-export type DomCreator = (
-  config: any,
-  form: Recordable,
-  column: FormSchema,
-  disabled: boolean,
   excontext: Recordable
-) => VNode | undefined
+) => T
 
 /**
  * 组件布局方向

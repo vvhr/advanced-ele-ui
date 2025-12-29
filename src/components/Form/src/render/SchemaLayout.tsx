@@ -1,5 +1,5 @@
 import { defineComponent, computed, type PropType } from 'vue'
-import type { FormSchema, FormSchemaProps } from '../types'
+import type { FormSchema, FormSchemaProps, DesignableColProps } from '../types'
 import { ElCol, ElRow } from 'element-plus'
 
 export const SchemaLayout = defineComponent({
@@ -22,8 +22,12 @@ export const SchemaLayout = defineComponent({
       default: false
     },
     designableColProps: {
-      type: Object as PropType<Recordable>,
+      type: Function as PropType<DesignableColProps>,
       default: () => {}
+    },
+    isHidden: {
+      type: Boolean,
+      default: false
     }
   },
   setup(props, { slots }) {
@@ -36,42 +40,43 @@ export const SchemaLayout = defineComponent({
     })
     const type = computed(() => props.schema.type ?? 'Inputer')
     const enableAlone = ['Container', 'Custom', 'Inputer', 'Decorator']
-    // 如果是设计模式{
-    const designableColProps = props.designable ? {...(props.designableColProps || {})} : {}
-
     return () => {
+      // 每次渲染时重新计算
+      const designableColProps = props.designable
+        ? { ...(props.designableColProps?.(props.itemKey, props.schema, props.isHidden) || {}) }
+        : {}
       if (layoutProps.value.alone && enableAlone.includes(type.value)) {
         // 如果需要独占一行, 需要包裹 ElCol+ElRow
         return (
           <ElCol
+            class="mb-2"
+            {...designableColProps}
             span={24}
             key={props.itemKey}
             data-id={props.itemKey}
-            class="mb-2"
             id={props.itemKey}
-            {...designableColProps}
           >
             <ElRow>
               <ElCol span={layoutProps.value.span} style={layoutProps.value.style}>
                 {slots.default?.()}
               </ElCol>
             </ElRow>
-            { props.designable ? slots.design?.(props.schema) : undefined }
+            {props.designable ? slots.design?.(props.schema) : undefined}
           </ElCol>
         )
       } else {
         return (
           <ElCol
+            class="mb-2"
+            {...designableColProps}
             span={layoutProps.value.span}
             key={props.itemKey}
             data-id={props.itemKey}
             id={props.itemKey}
-            class="mb-2"
             style={layoutProps.value.style}
-            {...designableColProps}
           >
             {slots.default?.()}
-            { props.designable ? slots.design?.(props.schema) : undefined }
+            {props.designable ? slots.design?.(props.schema) : undefined}
           </ElCol>
         )
       }

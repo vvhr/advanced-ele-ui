@@ -8,7 +8,7 @@ export default AeForm
 export type FormDefineProps = InstanceType<typeof Form>['$props']
 export type { FormInstance, FormExpose } from './src/types/instance'
 export type { ComponentName } from './src/types/components'
-export type { FormSlots, FormEmits, FormSchemaProps } from './src/types/props'
+export type { FormSlots, FormEmits, FormSchemaProps, DesignableColProps } from './src/types/props'
 export type {
   FormSchema,
   FormSchemaBase,
