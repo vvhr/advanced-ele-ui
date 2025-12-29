@@ -8,6 +8,7 @@ import type {
   FormSchemaProps,
   ComponentName
 } from '../types'
+import { SchemaType } from '../constants'
 import type { FormImportItemConfig } from '@/types/imports'
 import { defineComponent, type Component, type Ref, type VNode, type ComputedRef } from 'vue'
 import { get } from 'lodash-es'
@@ -30,9 +31,9 @@ export function useComponent(
   componentConfigs: Recordable<FormImportItemConfig, ComponentName>,
   disabled?: ComputedRef<boolean>
 ) {
-  const type = schema.type ?? 'Inputer'
+  const type: any = schema.type ?? SchemaType.INPUTER
   const getAnyComponent = () => {
-    if (['Container', 'Inputer', 'Decorator'].includes(type)) {
+    if ([SchemaType.CONTAINER, SchemaType.INPUTER, SchemaType.DECORATOR].includes(type)) {
       if (isExistAttr(components, schema?.component || 'Input')) {
         return components[schema.component] as ReturnType<typeof defineComponent>
       }
@@ -40,7 +41,7 @@ export function useComponent(
     }
     return undefined
   }
-  const enableOutside = ['Inputer', 'Decorator'].includes(type)
+  const enableOutside = [SchemaType.INPUTER, SchemaType.DECORATOR].includes(type)
     ? (schema.outsideProps?.enable ?? false)
     : false
   const slotKey = (schema.key || schema.field).replace(/\./g, '-')
@@ -86,7 +87,7 @@ export function useComponent(
   function setComponentProps(): Recordable {
     let compProps: Recordable = {}
     // 仅对输入组件
-    if (type === 'Inputer') {
+    if (type === SchemaType.INPUTER) {
       compProps = {
         // 自动添加clearable属性
         ...getClearable(schema, props.schemaProps),
@@ -111,7 +112,7 @@ export function useComponent(
       if (Reflect.has(compProps, 'optionKeys')) {
         delete compProps.optionKeys
       }
-    } else if (type === 'Container') {
+    } else if (type === SchemaType.CONTAINER) {
       compProps = {
         // 容器组件将自动将label和subLabel传递给组件
         label: schema.label || '',
@@ -119,7 +120,7 @@ export function useComponent(
         // 注入组件属性
         ...(componentProps || {})
       }
-    } else if (type === 'Decorator') {
+    } else if (type === SchemaType.DECORATOR) {
       compProps = {
         // 注入组件属性
         ...(componentProps || {})
@@ -403,8 +404,8 @@ function setAttrsOptions(
 function getClearable(schema: FormSchema, schemaProps: FormSchemaProps) {
   const clearable = schemaProps?.componentProps?.clearable ?? true
   if (clearable) {
-    const type = schema.type ?? 'Inputer'
-    if (type === 'Inputer' && schema.component) {
+    const type = schema.type ?? SchemaType.INPUTER
+    if (type === SchemaType.INPUTER && schema.component) {
       if (needClearable.includes(schema.component)) {
         return { clearable: true }
       }
@@ -418,10 +419,12 @@ function getPlaceholder(schema: FormSchema, schemaProps: FormSchemaProps, props:
   const setPlaceholderInDisabled = schemaProps?.componentProps?.setPlaceholderInDisabled
 
   if (autoPlaceholder || (props.disabled && setPlaceholderInDisabled !== undefined)) {
-    const type = schema.type ?? 'Inputer'
-    if (type === 'Inputer') {
+    const type = schema.type ?? SchemaType.INPUTER
+    if (type === SchemaType.INPUTER) {
       const needInputPlaceholder = ['Autocomplete', 'Editor', 'Input', 'InputNumber', 'Mention']
       const needSelectPlaceholder = ['Cascader', 'DatePicker', 'Select', 'TimePicker', 'TimeSelect']
+      const labelStr = typeof schema?.label === 'string' ? schema.label : ''
+
       if (needInputPlaceholder.includes(schema.component)) {
         if (props.disabled && setPlaceholderInDisabled !== undefined) {
           return {
@@ -429,7 +432,7 @@ function getPlaceholder(schema: FormSchema, schemaProps: FormSchemaProps, props:
           }
         }
         return {
-          placeholder: '请填写' + schema?.label || ''
+          placeholder: labelStr ? '请填写' + labelStr : ''
         }
       }
       if (needSelectPlaceholder.includes(schema.component)) {
@@ -442,10 +445,10 @@ function getPlaceholder(schema: FormSchema, schemaProps: FormSchemaProps, props:
           }
         }
         return {
-          startPlaceholder: '选择' + schema?.label,
-          endPlaceholder: '选择' + schema?.label,
+          startPlaceholder: labelStr ? '选择' + labelStr : '',
+          endPlaceholder: labelStr ? '选择' + labelStr : '',
           rangeSeparator: '-',
-          placeholder: '请选择' + schema?.label || ''
+          placeholder: labelStr ? '请选择' + labelStr : ''
         }
       }
     }

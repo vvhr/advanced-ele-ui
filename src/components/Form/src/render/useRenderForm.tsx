@@ -18,6 +18,7 @@ import type {
   FormSlots,
   DescriptionsSchema
 } from '../types'
+import { SchemaType, COMPONENTS_NEEDING_REF } from '../constants'
 import type { FormImportItemConfig } from '@/types/imports'
 import { getSubLabel, isHidden } from '../utils/schema'
 import { useFormItem } from '../hook/useFormItem'
@@ -68,7 +69,7 @@ export function useRenderForm(
     if (!schema.component || !isExistAttr(components, schema.component)) {
       logger.error(
         'console.form.componentNotExist',
-        { type: 'Container', component: schema.component },
+        { type: SchemaType.CONTAINER, component: schema.component },
         schema
       )
       return undefined
@@ -99,7 +100,7 @@ export function useRenderForm(
       } else {
         logger.error(
           'console.form.componentError',
-          { type: 'Container', component: schema.component },
+          { type: SchemaType.CONTAINER, component: schema.component },
           schema
         )
         return undefined
@@ -115,7 +116,7 @@ export function useRenderForm(
     if (!schema.component || !isExistAttr(components, schema.component)) {
       logger.error(
         'console.form.componentNotExist',
-        { type: 'Decorator', component: schema.component },
+        { type: SchemaType.DECORATOR, component: schema.component },
         schema
       )
       return undefined
@@ -152,7 +153,7 @@ export function useRenderForm(
       } else {
         logger.error(
           'console.form.componentError',
-          { type: 'Decorator', component: schema.component },
+          { type: SchemaType.DECORATOR, component: schema.component },
           schema
         )
         return undefined
@@ -193,7 +194,7 @@ export function useRenderForm(
     if (!schema.component || !isExistAttr(components, schema.component)) {
       logger.error(
         'console.form.componentNotExist',
-        { type: 'Inputer', component: schema.component },
+        { type: SchemaType.INPUTER, component: schema.component },
         schema
       )
       return undefined
@@ -222,8 +223,7 @@ export function useRenderForm(
     const setComponentRef = (el: any) => {
       const refKey = schema.key || schema.field || ''
       // 只有部分特殊组件才存储ref, 比如存储Table组件的ref, 用于表单校验时自动调用Table的校验函数
-      const enableComponents = ['Table']
-      if (el && refKey && enableComponents.includes(schema.component)) {
+      if (el && refKey && COMPONENTS_NEEDING_REF.includes(schema.component)) {
         componentRefs.value[`${refKey}Ref`] = el
       }
     }
@@ -246,7 +246,7 @@ export function useRenderForm(
       } else {
         logger.error(
           'console.form.componentError',
-          { type: 'Inputer', component: schema.component },
+          { type: SchemaType.INPUTER, component: schema.component },
           schema
         )
         return undefined
@@ -279,7 +279,7 @@ export function useRenderForm(
 
   // 渲染自定义类组件
   function renderCustom(schema: FormSchema): VNode | undefined {
-    if (schema?.type === 'Custom') {
+    if (schema?.type === SchemaType.CUSTOM) {
       if (isFunction(schema.render)) {
         return schema.render(
           formModel.value,
@@ -394,15 +394,15 @@ export function useRenderForm(
       return undefined
     }
     // 根据组件类型
-    const type = schema.type ?? 'Inputer'
+    const type = schema.type ?? SchemaType.INPUTER
     switch (type) {
-      case 'Step':
+      case SchemaType.STEP:
         logger.error('console.form.nestedStepNotSupported', undefined, schema)
         return undefined
-      case 'Descriptions':
+      case SchemaType.DESCRIPTIONS:
         logger.error('console.form.nestedDescriptionsNotSupported', undefined, schema)
         return undefined
-      case 'Custom': {
+      case SchemaType.CUSTOM: {
         const { getFormItemProps, slotKey, formItemLabel } = useFormItem(
           props,
           slots,
@@ -437,7 +437,7 @@ export function useRenderForm(
           </SchemaLayout>
         )
       }
-      case 'Container': {
+      case SchemaType.CONTAINER: {
         const { trueComponentProps } = useFormItem(props, slots, schema, formModel)
         const useDesignable = props.designable && props.type !== 'desc'
         const containerRowDirectives = useDesignable
@@ -487,7 +487,7 @@ export function useRenderForm(
           </SchemaLayout>
         )
       }
-      case 'Decorator': {
+      case SchemaType.DECORATOR: {
         const { trueComponentProps } = useFormItem(props, slots, schema, formModel)
         return (
           <SchemaLayout
@@ -507,7 +507,7 @@ export function useRenderForm(
           </SchemaLayout>
         )
       }
-      case 'Inputer':
+      case SchemaType.INPUTER:
       default:
         const { trueComponentProps, isDisabled, getFormItemProps, slotKey, formItemLabel } =
           useFormItem(props, slots, schema, formModel)
@@ -593,18 +593,18 @@ export function useRenderForm(
       return undefined
     }
     // 根据组件类型
-    const type = schema.type ?? 'Inputer'
+    const type = schema.type ?? SchemaType.INPUTER
     switch (type) {
-      case 'Step':
+      case SchemaType.STEP:
         logger.error('console.form.nestedStepNotSupported', undefined, schema)
         return undefined
-      case 'Container':
+      case SchemaType.CONTAINER:
         logger.error('console.form.nestedContainerNotSupported', undefined, schema)
         return undefined
-      case 'Descriptions':
+      case SchemaType.DESCRIPTIONS:
         logger.error('console.form.nestedDescriptionsNotSupported', undefined, schema)
         return undefined
-      case 'Custom': {
+      case SchemaType.CUSTOM: {
         const { formItemLabel, getFormItemProps, getDescriptionItemProps } = useFormItem(
           props,
           slots,
@@ -626,7 +626,7 @@ export function useRenderForm(
           </ElDescriptionsItem>
         )
       }
-      case 'Decorator': {
+      case SchemaType.DECORATOR: {
         const { formItemLabel, trueComponentProps, getDescriptionItemProps } = useFormItem(
           props,
           slots,
@@ -642,7 +642,7 @@ export function useRenderForm(
           </ElDescriptionsItem>
         )
       }
-      case 'Inputer':
+      case SchemaType.INPUTER:
       default: {
         const {
           trueComponentProps,
@@ -674,7 +674,7 @@ export function useRenderForm(
       if (props.stepValue !== null) {
         // 找到对应步骤块
         const stepSchema = schemas.find(
-          schema => schema?.type === 'Step' && schema.step === props.stepValue
+          schema => schema?.type === SchemaType.STEP && schema.step === props.stepValue
         )
         return stepSchema ? stepSchema.children || [] : []
       } else {
@@ -732,7 +732,7 @@ export function useRenderForm(
       // 检查是否存在未被容器包裹的表单项
       const descriptionsSchemas: DescriptionsSchema[] = currentSchemas
         .filter(item => {
-          if (item.type == 'Container' || item.type === 'Descriptions') {
+          if (item.type == SchemaType.CONTAINER || item.type === SchemaType.DESCRIPTIONS) {
             return true
           } else {
             logger.error('console.form.wrapInDescriptions', undefined, item)
@@ -742,7 +742,7 @@ export function useRenderForm(
         .map(item => {
           return {
             ...item,
-            type: 'Descriptions'
+            type: SchemaType.DESCRIPTIONS
           } as DescriptionsSchema
         })
       const setBaseElFormRef = (el: ComponentRef<typeof ElRow>) => {

@@ -10,12 +10,7 @@ import {
   toRaw,
   CSSProperties
 } from 'vue'
-import {
-  FormSchema,
-  FormSchemaProps,
-  DesignableDirectives,
-  DesignableColProps
-} from './types'
+import { FormSchema, FormSchemaProps, DesignableDirectives, DesignableColProps } from './types'
 import type { FormImportItem } from '@/types/imports'
 import { useRenderForm } from './render/useRenderForm'
 import { useForm } from './hook/useForm'

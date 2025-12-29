@@ -6,6 +6,15 @@ export const DEFAULT_DESCS_ATTRS: DescriptionsProps = {
   direction: 'horizontal'
 }
 
+export const SchemaType = {
+  STEP: 'Step',
+  CONTAINER: 'Container',
+  DECORATOR: 'Decorator',
+  INPUTER: 'Inputer',
+  CUSTOM: 'Custom',
+  DESCRIPTIONS: 'Descriptions'
+} as const
+
 export const needClearable = [
   'Autocomplete',
   'Cascader',
@@ -29,3 +38,5 @@ export const dateRangeTypes = [
   'monthrange',
   'yearrange'
 ]
+
+export const COMPONENTS_NEEDING_REF = ['Table']
