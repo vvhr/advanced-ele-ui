@@ -4,6 +4,20 @@
 
 ---
 
+## [0.1.8] - 2025-12-29
+
+### 新增
+* 组件 [AeForm] 已全面支持 `desginable` 模式，并新增了 `desginableDirectives` 属性和 `designableColProps` 属性，在`desginable` 模式激活时，所有表单组件同级将支持 `design` 插槽，用于渲染组件设计工具栏，
+
+### 修复Bug
+* 修正 `rules.ts` 中校验身份证号码的正则表达式错误。
+* 组件 [AeForm] 使用 `desc` 模式时，描述列的宽度属性(`width`,`minWidth`,`labelWidth`)从 `formItemProps` 读取时存在冲突，已迁移至`descriptionsItemProps`，避免冲突。
+
+### 重构
+* 组件 [AeForm] 使用 `desc` 模式时，关于描述列的属性配置从`layoutProps`迁移至`descriptionsItemProps`，以便配置结构更清晰和规范。
+
+---
+
 ## [0.1.7] - 2025-12-01
 
 ### 新增

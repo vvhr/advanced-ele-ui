@@ -221,7 +221,7 @@ const install = (app: App, options?: InstallOptions) => {
 
 export default {
   install,
-  version: '0.1.8-beta.4',
+  version: '0.1.8',
   buildVersion: VERSION_INFO.buildVersion,
   versionInfo: VERSION_INFO
 }

@@ -4,6 +4,20 @@ English | [简体中文](./CHANGELOG.zh.md)
 
 ---
 
+## [0.1.8] - 2025-12-29
+
+### Features
+* Component [AeForm] now fully supports `desginable` mode, and has added the `desginableDirectives` property and `designableColProps` property. When `desginable` mode is activated, all form components at the same level will support the `design` slot for rendering the component design toolbar.
+
+### Bug fixes
+* Fixed the regular expression error in `rules.ts` for validating ID numbers.
+* When using the `desc` mode, the width properties (`width`, `minWidth`, `labelWidth`) for description columns in component [AeForm] were conflicting when read from `formItemProps`, they have been moved to `descriptionsItemProps` to avoid conflicts.
+
+### Refactors
+* When using the `desc` mode, the attribute configuration for description columns in component [AeForm] has been moved from `layoutProps` to `descriptionsItemProps`, to make the configuration structure clearer and more standardized.
+
+---
+
 ## [0.1.7] - 2025-12-01
 
 ### Features
