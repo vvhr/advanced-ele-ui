@@ -11,6 +11,9 @@ import { AeDialog } from './components/Dialog'
 import { AeDrawer } from './components/Drawer'
 import { AeTabs, AeTabPane } from './components/Tabs'
 
+// Import version info
+import { VERSION_INFO, getVersionInfo, printVersionInfo } from './version'
+
 // Import
 import type {
   FormImportItem,
@@ -25,6 +28,9 @@ export * from './types'
 export type { FormImportItem, FormImportItemConfig, TableFormImportItem, TableFormImportItemConfig }
 // Export components
 export { AeForm, AeIcon, AeTable, AeEditor, AeUpload, AeDialog, AeDrawer, AeTabs, AeTabPane }
+
+// Export version info
+export { VERSION_INFO, getVersionInfo, printVersionInfo }
 
 // Export component's types
 // Form
@@ -215,5 +221,7 @@ const install = (app: App, options?: InstallOptions) => {
 
 export default {
   install,
-  version: '0.1.8-beta.1'
+  version: '0.1.8-beta.4',
+  buildVersion: VERSION_INFO.buildVersion,
+  versionInfo: VERSION_INFO
 }
