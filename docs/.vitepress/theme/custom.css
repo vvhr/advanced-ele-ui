@@ -1,0 +1,30 @@
+/* 覆盖 VitePress 默认布局变量 */
+:root {
+  --vp-layout-max-width: 1600px !important; /* 增加最大宽度 */
+  --vp-sidebar-width: 280px !important;     /* 调整侧边栏宽度 */
+}
+
+/* 调整内容区内边距，使其利用率更高 */
+.vp-doc {
+  padding-left: 0 !important;
+  max-width: 100% !important;
+}
+
+/* 针对大屏幕的优化 */
+@media (min-width: 1440px) {
+  .VPContent .container {
+    max-width: 1400px !important;
+    padding: 0 40px !important;
+  }
+}
+
+/* 调整 DemoBlock 样式，使其更贴合 */
+.demo-block {
+  margin: 20px 0;
+}
+
+/* 优化表格样式，避免太宽时阅读困难 */
+.vp-doc table {
+  display: table;
+  width: 100%;
+}

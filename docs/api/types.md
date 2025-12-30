@@ -26,6 +26,10 @@ export interface FormSchema {
   layoutProps?: ColProps
   // 子组件 (用于 Group/Container)
   children?: FormSchema[]
+  // 内部渲染属性 (插槽)
+  insideProps?: InsideProps
+  // 外部包裹属性
+  outsideProps?: OutsideProps
 }
 ```
 
@@ -64,6 +68,23 @@ export interface FormItemProps {
   required?: boolean
   // 副标题
   subLabel?: string
+  // 标签最大宽度 (用于自动处理长标题)
+  labelMaxWidth?: number
+}
+```
+
+### FormInstance
+
+Form 组件实例类型。
+
+```typescript
+export interface FormInstance {
+  initValues: (model: Recordable) => void
+  getFormModel: () => Recordable
+  setValues: (values: Recordable) => void
+  validate: () => Promise<boolean>
+  resetValidate: () => void
+  scrollToKey: (key: string) => void
 }
 ```
 
@@ -91,6 +112,12 @@ export interface TableColumn {
   editProps?: TableColumnEditProps
   // 类型特有配置
   typeProps?: TableColumnTypeProps
+  // 列是否可复制
+  copyable?: boolean
+  // 列是否隐藏
+  hidden?: boolean | ((...args: any[]) => boolean)
+  // 是否可点击
+  clickable?: boolean
 }
 ```
 
@@ -143,5 +170,55 @@ export interface TableAction {
   event?: (row: any) => void
   // 是否隐藏
   hidden?: boolean | ((row: any) => boolean)
+  // 是否禁用
+  disabled?: boolean | ((row: any) => boolean)
 }
+```
+
+## Editor
+
+### EditorInstance
+
+富文本编辑器实例接口。
+
+```typescript
+export interface EditorInstance {
+  insert: (html: string) => void
+  clear: () => void
+  focus: () => void
+  getHtml: () => string
+}
+```
+
+## Upload
+
+### UploadFile
+
+上传文件对象。
+
+```typescript
+export interface UploadFile {
+  name: string
+  url: string
+  percentage?: number
+  status?: 'ready' | 'uploading' | 'success' | 'fail'
+  uid: number
+}
+```
+
+## Common
+
+### AutoRules
+
+支持的自动校验规则类型。
+
+```typescript
+export type AutoRules =
+  | 'isRequired'
+  | 'isRequiredArray'
+  | 'isEmail'
+  | 'isPhone'
+  | 'isIdCard'
+  | 'onlyNumber'
+  // ...
 ```
