@@ -4,7 +4,7 @@
 
   <h1><a href="https://github.com/vvhr/advanced-ele-ui">Advanced Element UI</a></h1>
   <p>基于 Vue 3 和 Element Plus 构建的**配置驱动**高级组件库</p>
-  <img alt="logo" height="154px" src="https://image.howcat.cn/thumbnails/5d0a2d8352a09debab8f8d233a8fc67d.png" title="logo" width="400px"/>
+  <img alt="logo" height="154px" src="https://img.howcat.cn/LxLGz5p-v_cQsTA0sP_oQ" title="logo" width="400px"/>
 
   [![npm version](https://img.shields.io/npm/v/advanced-ele-ui.svg?style=flat-square)](https://www.npmjs.com/package/advanced-ele-ui)
   [![npm downloads](https://img.shields.io/npm/dt/advanced-ele-ui.svg?style=flat-square)](https://www.npmjs.com/package/advanced-ele-ui)
@@ -222,7 +222,7 @@ import 'advanced-ele-ui/dist/style.css'
 ### 🎯 近期计划 (v1.0.0)
 - ✅ 发布第一个正式版本
 - ✅ `AeForm`: 将完善 `type`: `desc` 模式, 常用于详情页信息展示，满足您希望以类似Word表单的样式展示表单的想法。
-- ⬜ `AeForm`: 将完善 `designable`: `true` 模式, 该模式将用于在`AeFormDesginer`中实现表单工具栏、拖拽、选中等功能，计划采用非入侵式设计，只提供钩子函数，不直接编入`AeForm`组件内部。
+- ✅ `AeForm`: 将完善 `designable`: `true` 模式, 该模式将用于在`AeFormDesginer`中实现表单工具栏、拖拽、选中等功能，计划采用非入侵式设计，只提供钩子函数，不直接编入`AeForm`组件内部。
 - ✅ `AeTable`: 完善 `editable`: `true` 时, 渲染可编辑组件的策略，将引入更多组件类型，并支持与`AeForm`的按需注册组件的功能。
 - ✅ 编写 `element-plus-beauty.less` 样式类，用于优化`element-plus`组件原生样式，使其在禁用状态下提供更好的用户体验。
 - ⬜ 构建 `advanced-ele-ui-docs` 组件库文档项目，以便为您提供更好的使用指南！

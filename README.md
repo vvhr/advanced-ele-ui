@@ -4,7 +4,7 @@ English | [简体中文](./README.zh.md)
 
   <h1><a href="https://github.com/vvhr/advanced-ele-ui">Advanced Element UI</a></h1>
   <p>**Configuration-Driven** Advanced component library built on Vue 3 and Element Plus</p>
-  <img alt="logo" height="154px" src="https://image.howcat.cn/thumbnails/5d0a2d8352a09debab8f8d233a8fc67d.png" title="logo" width="400px"/>
+  <img alt="logo" height="154px" src="https://img.howcat.cn/LxLGz5p-v_cQsTA0sP_oQ" title="logo" width="400px"/>
 
   [![npm version](https://img.shields.io/npm/v/advanced-ele-ui.svg?style=flat-square)](https://www.npmjs.com/package/advanced-ele-ui)
   [![npm downloads](https://img.shields.io/npm/dt/advanced-ele-ui.svg?style=flat-square)](https://www.npmjs.com/package/advanced-ele-ui)
@@ -225,7 +225,7 @@ import 'advanced-ele-ui/dist/style.css'
 ### 🎯 Short-term Plan (v1.0.0)
 - ✅ Release the first official version
 - ✅ `AeForm`: Improve the `type`: `desc` mode, commonly used for displaying information on detail pages, to satisfy the idea of presenting forms in a Word-like form style.
-- ⬜ `AeForm`: Improve the `designable`: `true` mode, which will be used in `AeFormDesginer` to implement form toolbar, drag-and-drop, selection, etc. The plan is to adopt a non-intrusive design that only provides hook functions and does not embed directly into the `AeForm` component.
+- ✅ `AeForm`: Improve the `designable`: `true` mode, which will be used in `AeFormDesginer` to implement form toolbar, drag-and-drop, selection, etc. The plan is to adopt a non-intrusive design that only provides hook functions and does not embed directly into the `AeForm` component.
 - ✅ `AeTable`: Improve the strategy for rendering editable components when `editable`: `true`; introduce more component types and support on-demand registration of components with `AeForm`.
 - ✅ Write the `element-plus-beauty.less` style class to optimize the native styles of `element-plus` components, providing a better user experience when they are disabled.
 - ⬜ Build the `advanced-ele-ui-docs` component library documentation project to provide better usage guidance!

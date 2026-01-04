@@ -1,5 +1,5 @@
 <template>
-  <div class="demo-container" :class="{ dark: isDark }" ref="containerRef">
+  <div ref="containerRef" class="demo-container" :class="{ dark: isDark }">
     <header class="demo-header">
       <a
         href="https://github.com/vvhr/advanced-ele-ui"
@@ -22,7 +22,7 @@
         @change="toggleTheme"
       />
       <img
-        src="https://image.howcat.cn/thumbnails/5d0a2d8352a09debab8f8d233a8fc67d.png"
+        src="https://img.howcat.cn/LxLGz5p-v_cQsTA0sP_oQ"
         title="logo"
         width="400px"
         alt="logo"
@@ -34,7 +34,7 @@
         <QuickStartExample v-if="activeTab === 'start'" />
       </el-tab-pane>
       <el-tab-pane label="📝 AeForm 表单组件" name="form">
-        <FormExample v-if="activeTab === 'form'" :containerRef="containerRef"/>
+        <FormExample v-if="activeTab === 'form'" :container-ref="containerRef" />
       </el-tab-pane>
       <el-tab-pane label="📊 AeTable 表格组件" name="table">
         <TableExample v-if="activeTab === 'table'" />

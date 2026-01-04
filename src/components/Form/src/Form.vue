@@ -291,6 +291,15 @@ export default defineComponent({
       }
     }
   }
+  .ae-form-item-label {
+    .label {
+      &.has-sub-label {
+        cursor: pointer;
+        border-bottom: 1px dashed var(--el-color-primary);
+      }
+    }
+  }
+
   // 居上布局时
   .el-form-item--label-top {
     // 没有使用自定义label插槽时

@@ -369,6 +369,25 @@ export function useRenderForm(
         lineHeight: schema.formItemProps?.labelMaxWidth ? "var(--el-font-size-base, '14px')" : '',
         marginTop: schema.formItemProps?.labelMaxWidth ? '5px' : ''
       }
+      const subLabel = getSubLabel(schema, formModel.value, props)
+      if (!!subLabel) {
+        const popperStyle = {
+          width: '150px'
+        }
+        return (
+          <ElTooltip
+            content={subLabel}
+            popper-class="ae-form-label-popper"
+            popper-style={popperStyle}
+          >
+            <div class="ae-form-item-label inline-flex">
+              <span class="label has-sub-label" style={labelStyle}>
+                {label}
+              </span>
+            </div>
+          </ElTooltip>
+        )
+      }
       return (
         <div class="ae-form-item-label inline-flex">
           <span class="label" style={labelStyle}>
