@@ -6,7 +6,7 @@ export const VERSION_INFO = {
   // npm 版本
   version: '0.1.8',
   // 构建版本（内部测试用）
-  buildVersion: 'dev-20251229-1000',
+  buildVersion: 'dev-20251230-1754',
   // 构建时间
   buildTime: new Date().toISOString(),
   // 环境标识
