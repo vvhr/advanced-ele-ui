@@ -45,7 +45,7 @@ export interface TableEmits {
   (e: 'current-change', currentRow: any): void
   (e: 'row-click', row: Recordable): void
   (e: 'value-click', key: string, row: Recordable): void
-  (e: 'action', name: string, row: Recordable): void
+  (e: 'action', event: { name: string; row: Recordable; index: number }): void
 }
 
 /**

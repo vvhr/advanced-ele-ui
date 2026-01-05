@@ -153,7 +153,7 @@ export function getComponentEventFunction(
 ) {
   // 是否是方法
   if (typeof eventValue === 'function') {
-    return (...args: any[]) => eventValue(...args, form, column, disabled, excontext)
+    return (e: any) => eventValue(e, form, column, disabled, excontext)
   }
   return () => undefined
 }

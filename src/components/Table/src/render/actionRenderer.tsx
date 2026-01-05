@@ -74,7 +74,7 @@ function createActionHandlers(ctx: ActionRenderContext, dropdownActions: TableAc
 
   const handleClick = (name: string, event?: TableColumnFn<void>) => {
     // 发送表格 action 事件
-    emit('action', name, row)
+    emit('action', { name: name, row: row, index: index })
 
     // 执行用户自定义事件
     try {
