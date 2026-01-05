@@ -8,4 +8,4 @@
 
 # 删除
 npm view advanced-ele-ui versions
-npm unpublish advanced-ele-ui@0.1.2-beta
+npm unpublish advanced-ele-ui@0.1.9

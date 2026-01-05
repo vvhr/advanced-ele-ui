@@ -4,7 +4,7 @@ English | [简体中文](./CHANGELOG.zh.md)
 
 ---
 
-## [0.1.8] - 2025-01-05
+## [0.1.9] - 2025-01-05
 
 ### Features
 * Component [AeForm] now fully supports `desginable` mode, and has added the `desginableDirectives` property and `designableColProps` property. When `desginable` mode is activated, all form components at the same level will support the `design` slot for rendering the component design toolbar.
@@ -16,7 +16,6 @@ English | [简体中文](./CHANGELOG.zh.md)
 
 ### Refactors
 * When using the `desc` mode, the attribute configuration for description columns in component [AeForm] has been moved from `layoutProps` to `descriptionsItemProps`, to make the configuration structure clearer and more standardized.
-* The `ComponentEventFn` of component [AeForm] has been changed from passing a single parameter to expanding the parameter list, updating from `(event: any) => (event, form, column, disabled, excontext)` to `(...args) => (...args, form, column, disabled, excontext)`. This change will affect the writing of multi-parameter events, so please check carefully.
 
 ---
 
