@@ -25,7 +25,9 @@ export interface EditorProps {
   /** 占位符 */
   placeholder?: string
   /** 高度 */
-  height?: number | string
+  editorHeight?: number | string
+  /** 阅读模式最大高度 */
+  viewHeight?: number | string
   /** 模式 `simple`: 简单模式 `full`: 全功能模式 `custom`: 自定义模式 */
   mode?: 'simple' | 'full' | 'custom'
   /** 尺寸 */
