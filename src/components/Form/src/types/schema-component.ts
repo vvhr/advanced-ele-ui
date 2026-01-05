@@ -84,24 +84,24 @@ export interface ComponentEvent {
    * 值发生变化时触发
    * @notes 适用于`Select` `Input` 等组件
    */
-  onChange?: ComponentEventFn<any>
+  onChange?: ComponentEventFn<[any]>
   /**
    * 在点击由 `clearable` 属性生成的清空按钮时触发
    * @notes 适用于`Select` `Input` 等组件
    */
-  onClear?: ComponentEventFn<void>
+  onClear?: ComponentEventFn<[void]>
   /**
    * 输入框失去焦点时触发
    * @notes 适用于`Select` `Input` 等组件
    */
-  onBlur?: ComponentEventFn<FocusEvent>
+  onBlur?: ComponentEventFn<[FocusEvent]>
   /**
    * 输入框获得焦点时触发
    * @notes 适用于`Select` `Input` 等组件
    */
-  onFocus?: ComponentEventFn<FocusEvent>
+  onFocus?: ComponentEventFn<[FocusEvent]>
   // 其他事件，以element plus的组件文档中的事件为准
-  [key: string]: ComponentEventFn<any>
+  [key: string]: ComponentEventFn<any[]>
 }
 export type OptionKeys = {
   label?: string // 自定义标题字段名

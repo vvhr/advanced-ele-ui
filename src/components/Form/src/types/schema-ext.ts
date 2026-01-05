@@ -33,12 +33,8 @@ export type FormSchemaFn<T> = (
  * @param disabled - 表单自身是否禁用
  * @param excontext - 表单数据源上下文
  */
-export type ComponentEventFn<T> = (
-  event: T,
-  form: Recordable,
-  column: FormSchema,
-  disabled: boolean,
-  excontext: Recordable
+export type ComponentEventFn<T extends any[] = any[]> = (
+  ...args: [...T, Recordable, FormSchema, boolean, Recordable]
 ) => void
 
 /**
