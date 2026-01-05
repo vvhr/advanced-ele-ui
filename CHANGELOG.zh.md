@@ -4,10 +4,11 @@
 
 ---
 
-## [0.1.8] - 2025-12-29
+## [0.1.8] - 2025-01-05
 
 ### 新增
 * 组件 [AeForm] 已全面支持 `desginable` 模式，并新增了 `desginableDirectives` 属性和 `designableColProps` 属性，在`desginable` 模式激活时，所有表单组件同级将支持 `design` 插槽，用于渲染组件设计工具栏，
+* 组件 [AeForm] 过去使用 `form` 模式且采用 `labelPosition`: `left` 或 `right` 时，由于没有充足的空间显示，因此不支持设置 `subLabel`，现在已支持，`subLabel`将会显示在 `Tooltip` 标签中。
 
 ### 修复Bug
 * 修正 `rules.ts` 中校验身份证号码的正则表达式错误。
@@ -15,6 +16,7 @@
 
 ### 重构
 * 组件 [AeForm] 使用 `desc` 模式时，关于描述列的属性配置从`layoutProps`迁移至`descriptionsItemProps`，以便配置结构更清晰和规范。
+* 组件 [AeForm] 的 `ComponentEventFn` 由单参数传递改为全参数展开传递，由 `(event: any) => (event, form, column, disabled, excontext)` 更新为 `(...args) => (...args, form, column, disabled, excontext)`，该改动将会影响多参数事件的代码编写，因此请您仔细检查。
 
 ---
 
