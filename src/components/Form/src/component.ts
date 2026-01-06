@@ -30,6 +30,7 @@ import Group from './components/Group.vue'
 import Blank from './components/Blank.vue'
 import { Editor } from '@/components/Editor'
 import { Upload } from '@/components/Upload'
+import { dateRangeTypes } from '@/components/Form/src/constants.ts'
 
 const defaultComponents: Recordable<Component, ComponentName> = {
   /** 容器类组件 */
@@ -83,16 +84,7 @@ const defaultArrayStrategies: Partial<Record<ComponentName, (cps: Recordable) =>
   TreeSelect: (cps: Recordable) => !!cps.multiple,
   TimePicker: (cps: Recordable) => !!cps.isRange,
   DatePicker: (cps: Recordable) => {
-    const rangeTypes = [
-      'years',
-      'months',
-      'dates',
-      'datetimerange',
-      'daterange',
-      'monthrange',
-      'yearrange'
-    ]
-    return rangeTypes.includes(cps.type)
+    return dateRangeTypes.includes(cps.type)
   },
   Cascader: (cps: Recordable) => {
     // 根据 el-cascader 文档，默认 multiple=false, emitPath=true

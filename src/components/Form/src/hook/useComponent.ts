@@ -6,9 +6,10 @@ import type {
   InsideProps,
   ComponentProps,
   FormSchemaProps,
-  ComponentName
+  ComponentName,
+  InputerName
 } from '../types'
-import { SchemaType } from '../constants'
+import { needInputPlaceholder, needSelectPlaceholder, SchemaType } from '../constants'
 import type { FormImportItemConfig } from '@/types/imports'
 import { defineComponent, type Component, type Ref, type VNode, type ComputedRef } from 'vue'
 import { get } from 'lodash-es'
@@ -249,7 +250,7 @@ export function useComponent(
       }
     }
     // 插入选项
-    if (schema.component && noNeedOptions.includes(schema.component)) {
+    if (schema.component && noNeedOptions.includes(schema.component as InputerName)) {
       switch (schema.component) {
         case 'Radio':
         case 'RadioButton': {
@@ -296,7 +297,7 @@ export function useComponent(
  * 自动删除不需要options属性的组件的options属性
  */
 function removeAttrsOptions(comProps: Recordable, schema: FormSchema) {
-  if (schema.component && noNeedOptions.includes(schema.component)) {
+  if (schema.component && noNeedOptions.includes(schema.component as InputerName)) {
     if (comProps.options !== undefined) {
       delete comProps.options
     }
@@ -370,7 +371,7 @@ function setAttrsOptions(
     return {}
   }
   // 支持options属性的组件
-  if (needOptions.includes(schema.component)) {
+  if (needOptions.includes(schema.component as InputerName)) {
     // 必须拥有options属性
     if (Reflect.has(componentProps, 'options')) {
       // 选项键名
@@ -406,7 +407,7 @@ function getClearable(schema: FormSchema, schemaProps: FormSchemaProps) {
   if (clearable) {
     const type = schema.type ?? SchemaType.INPUTER
     if (type === SchemaType.INPUTER && schema.component) {
-      if (needClearable.includes(schema.component)) {
+      if (needClearable.includes(schema.component as InputerName)) {
         return { clearable: true }
       }
     }
@@ -421,11 +422,9 @@ function getPlaceholder(schema: FormSchema, schemaProps: FormSchemaProps, props:
   if (autoPlaceholder || (props.disabled && setPlaceholderInDisabled !== undefined)) {
     const type = schema.type ?? SchemaType.INPUTER
     if (type === SchemaType.INPUTER) {
-      const needInputPlaceholder = ['Autocomplete', 'Editor', 'Input', 'InputNumber', 'Mention']
-      const needSelectPlaceholder = ['Cascader', 'DatePicker', 'Select', 'TimePicker', 'TimeSelect']
       const labelStr = typeof schema?.label === 'string' ? schema.label : ''
 
-      if (needInputPlaceholder.includes(schema.component)) {
+      if (needInputPlaceholder.includes(schema.component as InputerName)) {
         if (props.disabled && setPlaceholderInDisabled !== undefined) {
           return {
             placeholder: setPlaceholderInDisabled
@@ -435,7 +434,7 @@ function getPlaceholder(schema: FormSchema, schemaProps: FormSchemaProps, props:
           placeholder: labelStr ? '请填写' + labelStr : ''
         }
       }
-      if (needSelectPlaceholder.includes(schema.component)) {
+      if (needSelectPlaceholder.includes(schema.component as InputerName)) {
         if (props.disabled && setPlaceholderInDisabled !== undefined) {
           return {
             startPlaceholder: setPlaceholderInDisabled,
