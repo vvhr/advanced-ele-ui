@@ -497,6 +497,7 @@ export interface FormItemProps {
    */
   autoRules?: AutoRules[] // 使用内置校验方法
   style?: CSSProperties | string // 该表单项的样式
+  addClass?: string | string[] // 为FormItem组件添加样式类名
 }
 
 /**

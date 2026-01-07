@@ -8,9 +8,10 @@ import {
 } from '../utils/schema'
 import type { FormItemRule } from 'element-plus'
 import { DEFAULT_DESCS_ATTRS} from '../constants'
-import {isFunction} from "@/utils/is";
+import { isArray, isFunction } from '@/utils/is'
 import {getSlot} from "@/utils/get";
 import { getAutoRulesMap } from '@/utils/rules'
+import { isString } from 'lodash-es'
 
 interface UserFormItemData {
   trueComponentProps: ComponentProps
@@ -70,7 +71,7 @@ export function useFormItem(
       ...(schema.formItemProps || {}),
       prop: schema.field || '',
       // label: formItemLabel.value,
-      class: ['ae-form-item', getNoMarginBottomClass(), getNoLabelClass(), getNormalLabelClass(), getDisabledClass()]
+      class: ['ae-form-item', getNoMarginBottomClass(), getNoLabelClass(), getNormalLabelClass(), getDisabledClass(), getAddClass()]
         .filter(name => !!name)
         .join(' '),
       required: getFormItemRequired(),
@@ -149,6 +150,18 @@ export function useFormItem(
   // el-form-item默认具有较大的下边距用来显示校验信息,但表单如果是禁用或组件是禁用时,则不需要显示下边距
   function getNoMarginBottomClass() {
     return isDisabled.value ? 'no-margin-bottom' : ''
+  }
+
+  function getAddClass() {
+    const addClass = schema.formItemProps?.addClass
+    if (addClass) {
+      if (isString(addClass)) {
+        return addClass
+      } else if (isArray(addClass)) {
+        return addClass.join(' ')
+      }
+    }
+    return ''
   }
 
   // el-form-item的el-form-item__content始终有外左边距, 如果没有标题则不需要外左边距
