@@ -81,6 +81,13 @@
   "dependencies": {
     "@element-plus/icons-vue": "^2.3.2",
     "@iconify/vue": "^5.0.0",
+    "@tiptap/extension-color": "^3.15.3",
+    "@tiptap/extension-highlight": "^3.15.3",
+    "@tiptap/extension-placeholder": "^3.15.3",
+    "@tiptap/extension-text-style": "^3.15.3",
+    "@tiptap/extension-underline": "^3.15.3",
+    "@tiptap/starter-kit": "^3.15.3",
+    "@tiptap/vue-3": "^3.15.3",
     "@unocss/preset-wind3": "^66.5.7",
     "@vueuse/core": "^11.0.0",
     "aieditor": "^1.4.2",
