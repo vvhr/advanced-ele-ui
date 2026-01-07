@@ -222,18 +222,8 @@ import 'advanced-ele-ui/dist/style.css'
 
 ## Roadmap
 
-### 🎯 Short-term Plan (v1.0.0)
-- ✅ Release the first official version
-- ✅ `AeForm`: Improve the `type`: `desc` mode, commonly used for displaying information on detail pages, to satisfy the idea of presenting forms in a Word-like form style.
-- ✅ `AeForm`: Improve the `designable`: `true` mode, which will be used in `AeFormDesginer` to implement form toolbar, drag-and-drop, selection, etc. The plan is to adopt a non-intrusive design that only provides hook functions and does not embed directly into the `AeForm` component.
-- ✅ `AeTable`: Improve the strategy for rendering editable components when `editable`: `true`; introduce more component types and support on-demand registration of components with `AeForm`.
-- ✅ Write the `element-plus-beauty.less` style class to optimize the native styles of `element-plus` components, providing a better user experience when they are disabled.
 - ⬜ Build the `advanced-ele-ui-docs` component library documentation project to provide better usage guidance!
 
-### 🔮 Mid-term Plan (v1.x)
-- ✅ `AeDialog`: Enhance the dialog component. `el-dialog` is currently rough in style and functionality; we will encapsulate a more attractive and controllable dialog component.
-- ✅ `AeDrawer`: Drawer component, same as above.
-- ✅ `AeTabs`: Tabs component, same as above.
 > 💡 If you have good ideas or suggestions, feel free to raise them in [Issues](https://github.com/vvhr/advanced-ele-ui/issues)!
 
 ---

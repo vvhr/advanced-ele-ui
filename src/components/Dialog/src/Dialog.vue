@@ -49,7 +49,7 @@ const props = defineProps({
     default: false
   }
 })
-const emit = defineEmits(['update:modelValue'])
+const emit = defineEmits(['update:modelValue', 'close'])
 const getBindValue = computed(() => {
   const delArr: string[] = [
     'fullscreen',
@@ -96,14 +96,17 @@ function handleClose() {
   if (props.beforeClose !== undefined) {
     props.beforeClose(() => {
       emit('update:modelValue', false)
+      emit('close')
     })
   } else {
     emit('update:modelValue', false)
+    emit('close')
   }
 }
 
 function onClose() {
   emit('update:modelValue', false)
+  emit('close')
 }
 </script>
 

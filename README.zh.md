@@ -31,7 +31,7 @@
 
 ## Introduction
 
-Advanced Element UI 是一个基于 Vue 3 和 Element Plus 构建的**配置驱动**高级组件库，旨在解决企业级应用中重复编码的痛点。
+Advanced Element UI 是一个基于 Vue 3 和 Element Plus 构建的**配置驱动**高级组件库，旨在解决企业级应用中二次封装、重复编码的痛点。
 
 ### 🎯 解决什么问题？
 
@@ -58,10 +58,24 @@ Advanced Element UI 是一个基于 Vue 3 和 Element Plus 构建的**配置驱�
 **传统方式**（100+ 行）：
 ```vue
 <template>
-  <el-form :model="form" :rules="rules">
-    <el-form-item label="姓名" prop="name">
-      <el-input v-model="form.name" placeholder="请输入姓名" />
-    </el-form-item>
+  <el-form :model="form">
+    <el-row>
+      <el-col :span="12">
+        <el-form-item label="姓名" prop="name" :rules="[{ required: true, message: '请输入电话' }]">
+          <el-input v-model="form.name" placeholder="请输入姓名" />
+        </el-form-item>
+      </el-col>
+      <el-col :span="12">
+        <el-form-item label="电话" prop="phone" :rules="[{ required: true, message: '请输入电话' }]">
+          <el-input v-model="form.phone" placeholder="请输入电话" />
+        </el-form-item>
+      </el-col>
+      <el-col :span="24">
+        <el-form-item label="地址" prop="address">
+          <el-input v-model="form.address" type="textarea" :rows="3" placeholder="请输入地址" />
+        </el-form-item>
+      </el-col>
+    </el-row>
     <!-- ... 20+ 个类似的表单项 -->
   </el-form>
 </template>
@@ -75,7 +89,9 @@ Advanced Element UI 是一个基于 Vue 3 和 Element Plus 构建的**配置驱�
 
 <script setup>
 const schemas = [
-  { field: 'name', label: '姓名', component: 'Input' },
+  { field: 'name', label: '姓名', component: 'Input', layoutProps: { span: 12 }, formItemProps: { autoRules: ['isRequired']} },
+  { field: 'phone', label: '电话', component: 'Input', layoutProps: { span: 12 }, formItemProps: { autoRules: ['isRequired']} },
+  { field: 'address', label: '地址', component: 'Input', componentProps: { type: 'textarea', rows: 3 }, layoutProps: { span: 24 } },
   // ... 简单配置
 ]
 </script>
@@ -219,18 +235,9 @@ import 'advanced-ele-ui/dist/style.css'
 
 ## Roadmap
 
-### 🎯 近期计划 (v1.0.0)
-- ✅ 发布第一个正式版本
-- ✅ `AeForm`: 将完善 `type`: `desc` 模式, 常用于详情页信息展示，满足您希望以类似Word表单的样式展示表单的想法。
-- ✅ `AeForm`: 将完善 `designable`: `true` 模式, 该模式将用于在`AeFormDesginer`中实现表单工具栏、拖拽、选中等功能，计划采用非入侵式设计，只提供钩子函数，不直接编入`AeForm`组件内部。
-- ✅ `AeTable`: 完善 `editable`: `true` 时, 渲染可编辑组件的策略，将引入更多组件类型，并支持与`AeForm`的按需注册组件的功能。
-- ✅ 编写 `element-plus-beauty.less` 样式类，用于优化`element-plus`组件原生样式，使其在禁用状态下提供更好的用户体验。
-- ⬜ 构建 `advanced-ele-ui-docs` 组件库文档项目，以便为您提供更好的使用指南！
-
-### 🔮 中期计划 (v1.x)
-- ✅ `AeDialog`: 增强对话框组件，`el-dialog`目前在样式和功能上较为粗糙，我们将封装一个更美观且可控的对话框组件。
-- ✅ `AeDrawer`: 抽屉组件，同上。
-- ✅ `AeTabs`: 优化标签页组件，使其更易用，并支持自定义标签页样式。
+- ✅ 本项目的初期阶段已接近尾声，核心组件的功能及结构趋近稳定，非常推荐您开始体验我们的最新正式版本！
+- ⬜ 关于构建 `advanced-ele-ui-docs` 组件库文档项目的计划已经开始实施，我希望打造一个对AI友好、非常详细、易于理解、易于示例的文档站点，为您提供最为专业的文档。
+- ⬜ 关于 `AeEditor` 使用 [AiEditor](https://aieditor.dev/docs) 作为引擎存在一些争议，由于 [AiEditor](https://aieditor.dev/docs) 与我期望的表现存在差异，目前正在评估是否替换为其他引擎。
 
 > 💡 如果您有好的想法或建议，欢迎在 [Issues](https://github.com/vvhr/advanced-ele-ui/issues) 中提出！
 
