@@ -785,6 +785,7 @@ export function useRenderForm(
       const elFormProps = { ...props, ...attrs }
       const removeProps = [
         'model',
+        'controlled',
         'schemas',
         'stepValue',
         'disabled',

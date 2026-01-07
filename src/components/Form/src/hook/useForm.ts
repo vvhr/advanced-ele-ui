@@ -1,7 +1,7 @@
-import { ref, unref, type Component, toRaw } from 'vue'
+import { ref, unref, computed, type Component, toRaw } from 'vue'
 import { ElForm, ElRow, ElNotification } from 'element-plus'
 import { get, set, unset } from 'lodash-es'
-import type { ComponentName, FormProps, FormSchema } from '../types'
+import type { ComponentName, FormProps, FormSchema, FormEmits } from '../types'
 import { SchemaType } from '../constants'
 import { findNode, findNodes } from '@/utils/tree'
 import { getFirstAttr } from '@/utils/get'
@@ -10,6 +10,7 @@ import { t } from '@/locale'
 
 export function useForm(
   props: FormProps,
+  emit: FormEmits,
   schemas: FormSchema[],
   components: Recordable<Component, ComponentName>,
   arrayStrategies: Partial<Record<ComponentName, (cps: Recordable) => boolean>>
@@ -33,7 +34,17 @@ export function useForm(
   scrollToKey: (key: string) => void
 } {
   const isValidating = ref(false)
-  const formModel = ref<Recordable>({})
+
+  // 可控模式直接返回props.model, 非可控模式使用内部对象
+  const formModel = props.controlled
+    ? computed({
+        get: () => props.model,
+        set: val => {
+          emit('update:model', val)
+        }
+      })
+    : ref<Recordable>({})
+
   const elFormRef = ref<ComponentRef<typeof ElForm>>()
   const baseElRowRef = ref<ComponentRef<typeof ElRow>>()
   const schemasKeys = ref<string[]>([])
@@ -43,9 +54,7 @@ export function useForm(
       ...getDefaultModel(initModel),
       ...initModel
     }
-    setTimeout(() => {
-      resetValidate()
-    }, 200)
+    setTimeout(() => resetValidate(), 200)
   }
 
   function getDefaultModel(defaultModel: Recordable) {
@@ -104,30 +113,43 @@ export function useForm(
 
   // 对表单赋值
   function setValues(data: Recordable = {}) {
-    formModel.value = Object.assign(unref(formModel), data)
+    formModel.value = { ...unref(formModel), ...data }
   }
   // 清空表单
   function clearValues(defaultModel: Recordable) {
-    formModel.value = {
-      ...getDefaultModel(defaultModel)
-    }
-    setTimeout(() => {
-      resetValidate()
-    }, 200)
+    formModel.value = { ...getDefaultModel(defaultModel) }
+    setTimeout(() => resetValidate(), 200)
   }
   // 对表单某路径赋值 支持多层嵌套字段赋值
   function setValue(path: string, value: any) {
-    // 使用响应式安全的方式设置值
-    if (path.includes('.')) {
-      set(formModel.value, path, value)
+    if (props.controlled) {
+      // 可控模式:创建新对象触发响应式更新
+      const newModel = { ...props.model }
+      if (path.includes('.')) {
+        set(newModel, path, value)
+      } else {
+        newModel[path] = value
+      }
+      formModel.value = newModel
     } else {
-      formModel.value[path] = value
+      // 非可控模式:直接修改
+      if (path.includes('.')) {
+        set(formModel.value, path, value)
+      } else {
+        formModel.value[path] = value
+      }
     }
   }
   // 删除表单某路径字段 支持多层嵌套字段
   function delValue(path: string) {
-    if (get(formModel.value, path) !== undefined) {
-      unset(formModel.value, path)
+    if (get(unref(formModel), path) !== undefined) {
+      if (props.controlled) {
+        const newModel = { ...props.model }
+        unset(newModel, path)
+        formModel.value = newModel
+      } else {
+        unset(formModel.value, path)
+      }
       return true
     }
     return false

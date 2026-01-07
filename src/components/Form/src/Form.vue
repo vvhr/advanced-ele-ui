@@ -16,6 +16,7 @@ import { useRenderForm } from './render/useRenderForm'
 import { useForm } from './hook/useForm'
 import { useRenderAnchor } from './render/useRenderAnchor'
 import { useImport } from './hook/useImport'
+import { isObject } from '@/utils/is'
 export default defineComponent({
   name: 'AeForm',
   props: {
@@ -23,6 +24,11 @@ export default defineComponent({
     model: {
       type: Object as PropType<Recordable>,
       default: () => ({})
+    },
+    // 是否启用可控模式
+    controlled: {
+      type: Boolean,
+      default: false
     },
     // 表单组件配置项
     schemas: {
@@ -151,9 +157,14 @@ export default defineComponent({
       default: () => {}
     }
   },
-  emits: ['register', 'update:stepValue', 'init', 'change'],
+  emits: ['register', 'update:stepValue', 'init', 'change', 'update:model'],
   setup: (props, { emit, attrs, slots, expose }) => {
     const { components, arrayStrategies, componentConfigs } = useImport(props.imports)
+
+    // 可控模式自动修正非对象的值（必须在 useForm 之前执行）
+    if (props.controlled && !isObject(props.model)) {
+      emit('update:model', {})
+    }
 
     const {
       isValidating,
@@ -173,18 +184,32 @@ export default defineComponent({
       resetValidate,
       validate,
       scrollToKey
-    } = useForm(props, props.schemas, components, arrayStrategies)
+    } = useForm(props, emit, props.schemas, components, arrayStrategies)
 
     onMounted(() => {
+      // 抛出携带el-form实例的注册事件,告知父级el-form组件已完成渲染
       emit('register', unref(elFormRef))
-      // 组件完成加载时会初始化一次表单,但如果组件配置或表单对象是异步传入的, 则需要手动调用初始化函数
-      unref(props).autoInitField ? initValues(props.model) : setValues(props.model)
+
+      if (!props.controlled) {
+        // 非可控模式, 初始化表单数据给formModel
+        unref(props).autoInitField ? initValues(props.model) : setValues(props.model)
+      } else {
+        // 可控模式, 通过事件更新props.model
+        if (unref(props).autoInitField) {
+          const initializedModel = getDefaultModel(props.model)
+          emit('update:model', { ...initializedModel })
+        }
+      }
+
+      // 抛出表单数据初始化事件
       emit('init', formModel.value)
     })
 
     onBeforeUnmount(() => {
-      // 清理表单数据
-      formModel.value = {}
+      // 只在非可控模式下清理表单数据
+      if (!props.controlled) {
+        formModel.value = {}
+      }
       // 清理其他引用
       elFormRef.value = null
     })
@@ -213,7 +238,17 @@ export default defineComponent({
         if (isValidating.value) return
 
         // 为对象中不存在的组件字段进行创建
-        unref(props).autoInitField && initValues(unref(formModel))
+        if (!props.controlled) {
+          // 非可控模式:更新内部 formModel
+          unref(props).autoInitField && initValues(unref(formModel))
+        } else {
+          if (unref(props).autoInitField) {
+            const initializedModel = getDefaultModel(props.model)
+            emit('update:model', { ...initializedModel, ...props.model })
+          }
+        }
+
+        // 重置校验
         resetValidate()
       },
       {

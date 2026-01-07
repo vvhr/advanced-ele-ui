@@ -83,6 +83,7 @@ export interface FormEmits {
   (e: 'update:stepValue', stepValue: number | null): void
   (e: 'init', form: Recordable): void
   (e: 'change', data: { value: any; field: string; oldValue: any }): void
+  (e: 'update:model', model: Recordable): void
 }
 
 /**
