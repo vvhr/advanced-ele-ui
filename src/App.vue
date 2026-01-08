@@ -45,6 +45,9 @@
       <el-tab-pane label="📄 AeEditor 富文本编辑器" name="editor">
         <EditorExample v-if="activeTab === 'editor'" />
       </el-tab-pane>
+      <el-tab-pane label="📝 EditorV2 富文本编辑器" name="editorV2">
+        <EditorV2Example v-if="activeTab === 'editorV2'" />
+      </el-tab-pane>
       <el-tab-pane label="📄 AeUpload 文件上传" name="upload">
         <UploadExample v-if="activeTab === 'upload'" />
       </el-tab-pane>
@@ -68,6 +71,7 @@ import FormExample from './examples/FormExample.vue'
 import TableExample from './examples/TableExample.vue'
 import IconExample from './examples/IconExample.vue'
 import EditorExample from './examples/EditorExample.vue'
+import EditorV2Example from './examples/EditorV2Example.vue'
 import UploadExample from './examples/UploadExample.vue'
 import DialogExample from './examples/DialogExample.vue'
 import DrawerExample from './examples/DrawerExample.vue'
