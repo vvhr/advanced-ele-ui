@@ -1,3 +1,9 @@
+<script lang="ts">
+export default {
+  name: 'AeTabs'
+}
+</script>
+
 <script setup lang="ts">
 import { ElTabs } from 'element-plus'
 import { computed, useAttrs, ref, watch, provide } from 'vue'

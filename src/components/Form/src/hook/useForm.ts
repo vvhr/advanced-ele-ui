@@ -250,6 +250,9 @@ export function useForm(
       const result = await unref(elFormRef)?.validate(handleValidationError)
       const tableResult = await validateTables()
       return result && tableResult
+    } catch (error) {
+      console.error('[AeForm] validate error', error)
+      return false
     } finally {
       isValidating.value = false
     }

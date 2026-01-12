@@ -1,3 +1,9 @@
+<script lang="ts">
+export default {
+  name: 'AeIcon'
+}
+</script>
+
 <script setup lang="ts">
 import { computed, unref } from 'vue'
 import { ElIcon } from 'element-plus'

@@ -1,3 +1,9 @@
+<script lang="ts">
+export default {
+  name: 'AeTabPane'
+}
+</script>
+
 <script setup lang="ts">
 import { ElTabPane } from 'element-plus'
 import { computed, useAttrs, inject, ref, watch } from 'vue'

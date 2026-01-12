@@ -1,3 +1,9 @@
+<script lang="ts">
+export default {
+  name: 'AeDialog'
+}
+</script>
+
 <script setup lang="ts">
 import { ElDialog, ElScrollbar } from 'element-plus'
 import { computed, useAttrs, ref, unref, useSlots, watch, type PropType } from 'vue'

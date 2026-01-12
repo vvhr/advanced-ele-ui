@@ -1,3 +1,9 @@
+<script lang="ts">
+export default {
+  name: 'AeDrawer'
+}
+</script>
+
 <script setup lang="ts">
 import { ElDrawer, ElScrollbar } from 'element-plus'
 import { computed, useAttrs, useSlots } from 'vue'
