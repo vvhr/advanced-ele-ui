@@ -4,7 +4,7 @@ English | [简体中文](./CHANGELOG.zh.md)
 
 ---
 
-## [0.2.0] - 2025-01-07
+## [0.2.0] - 2025-01-12
 
 ### Features
 * New component `AeText`: Enhanced text component with support for icons, dots, blockquote style, text highlighting, and click events on highlighted text.
