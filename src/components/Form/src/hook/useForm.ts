@@ -11,7 +11,6 @@ import { t } from '@/locale'
 export function useForm(
   props: FormProps,
   emit: FormEmits,
-  schemas: FormSchema[],
   components: Recordable<Component, ComponentName>,
   arrayStrategies: Partial<Record<ComponentName, (cps: Recordable) => boolean>>
 ): {
@@ -49,16 +48,16 @@ export function useForm(
   const baseElRowRef = ref<ComponentRef<typeof ElRow>>()
   const schemasKeys = ref<string[]>([])
   const componentRefs = ref<Recordable<ComponentRef<any>>>({})
-  function initValues(initModel: Recordable) {
+  function initValues(initModel?: Recordable) {
     formModel.value = {
-      ...getDefaultModel(initModel),
+      ...getDefaultModel(initModel || {}),
       ...initModel
     }
     setTimeout(() => resetValidate(), 200)
   }
 
-  function getDefaultModel(defaultModel: Recordable) {
-    const model: Recordable = { ...defaultModel }
+  function getDefaultModel(defaultModel?: Recordable) {
+    const model: Recordable = { ...(defaultModel || {}) }
     const initField = (schema: FormSchema) => {
       // 1. 检查 schema 是否需要初始化字段
       const type: any = schema.type ?? SchemaType.INPUTER
@@ -99,8 +98,7 @@ export function useForm(
       // 5. 默认初始化为 null
       set(model, schema.field, null)
     }
-    schemas.forEach(v => initField(v))
-
+    unref(props).schemas.forEach(v => initField(v))
     return model
   }
 
@@ -116,8 +114,8 @@ export function useForm(
     formModel.value = { ...unref(formModel), ...data }
   }
   // 清空表单
-  function clearValues(defaultModel: Recordable) {
-    formModel.value = { ...getDefaultModel(defaultModel) }
+  function clearValues(defaultModel?: Recordable) {
+    formModel.value = { ...(defaultModel || getDefaultModel()) }
     setTimeout(() => resetValidate(), 200)
   }
   // 对表单某路径赋值 支持多层嵌套字段赋值
@@ -175,7 +173,7 @@ export function useForm(
 
   // 辅助函数：获取所有可见的Table组件Schema
   const getVisibleTableSchemas = () => {
-    const rawSchemas = toRaw(schemas)
+    const rawSchemas = toRaw(unref(props).schemas)
     return findNodes(rawSchemas, (node: FormSchema) => {
       return node.component === 'Table' && !isHidden(node, formModel.value, props)
     })

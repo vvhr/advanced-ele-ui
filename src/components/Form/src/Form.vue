@@ -184,7 +184,7 @@ export default defineComponent({
       resetValidate,
       validate,
       scrollToKey
-    } = useForm(props, emit, props.schemas, components, arrayStrategies)
+    } = useForm(props, emit, components, arrayStrategies)
 
     onMounted(() => {
       // 抛出携带el-form实例的注册事件,告知父级el-form组件已完成渲染
