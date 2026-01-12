@@ -292,7 +292,18 @@ export default defineComponent({
     }
 
     async function validate() {
-      return props.editable ? await elFormRef.value?.validate() : true
+      if (!props.editable) {
+        return true
+      }
+      if (!elFormRef.value) {
+        return true
+      }
+      try {
+        await elFormRef.value.validate()
+        return true
+      } catch {
+        return false
+      }
     }
 
     function resetValidate() {
