@@ -10,6 +10,7 @@ import { AeUpload } from './components/Upload'
 import { AeDialog } from './components/Dialog'
 import { AeDrawer } from './components/Drawer'
 import { AeTabs, AeTabPane } from './components/Tabs'
+import { AeText } from './components/Text'
 
 // Import version info
 import { VERSION_INFO, getVersionInfo, printVersionInfo } from './version'
@@ -27,7 +28,7 @@ export * from './types'
 
 export type { FormImportItem, FormImportItemConfig, TableFormImportItem, TableFormImportItemConfig }
 // Export components
-export { AeForm, AeIcon, AeTable, AeEditor, AeUpload, AeDialog, AeDrawer, AeTabs, AeTabPane }
+export { AeForm, AeIcon, AeTable, AeEditor, AeUpload, AeDialog, AeDrawer, AeTabs, AeTabPane, AeText }
 
 // Export version info
 export { VERSION_INFO, getVersionInfo, printVersionInfo }
@@ -133,6 +134,9 @@ export type {
   TabsEmits
 } from './components/Tabs'
 
+// Text
+export type { TextProps, TextEmits, DotType } from './components/Text'
+
 // Rules
 export type { AutoRules } from './types/rules'
 export { getAutoRulesMap } from './utils/rules'
@@ -190,7 +194,8 @@ const install = (app: App, options?: InstallOptions) => {
     AeDialog,
     AeDrawer,
     AeTabs,
-    AeTabPane
+    AeTabPane,
+    AeText
   ]
   components.forEach(component => {
     app.use(component)

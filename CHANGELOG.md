@@ -4,6 +4,38 @@ English | [简体中文](./CHANGELOG.zh.md)
 
 ---
 
+## [0.2.0] - 2025-01-07
+
+### Features
+* New component `AeText`: Enhanced text component with support for icons, dots, blockquote style, text highlighting, and click events on highlighted text.
+  - **Text Truncation & Expansion**: Support single-line or multi-line truncation with optional expand/collapse functionality
+  - **Copy Feature**: One-click text copying to clipboard with customizable success message
+  - **Icon Customization**: Support `iconClass` and `iconStyle` for custom icon styling
+  - **Enhanced Dot Styling**: Dots now feature gradient borders and glow effects with hover animations
+* The component `AeForm` has added a `controlled` property to determine whether the form values are "controlled". The default is `false` (uncontrolled).
+  - Controlled mode (`controlled: true`): Two-way binding
+    - Must use `v-model:model` to bind the form object.
+    - The form directly reads and writes the `model` you pass in, no longer maintaining an internal copy.
+    - No need to use `setValues` / `getFormModel` for synchronization.
+  - Uncontrolled mode (default): One-way initialization
+    - The `model` you pass in is only used as the initial value.
+    - The form maintains its own data internally.
+    - Use `getFormModel` to retrieve values and `setValues` / `setValue` to update them.
+  - How to choose:
+    - Prefer uncontrolled mode: it is more stable, easier to manage, and avoids conflicts when multiple components modify the same object. It also prevents "silently modifying" the original data.
+    - Use controlled mode when internal and external synchronization is difficult and manual synchronization has high cost: directly bind and avoid synchronization logic.
+
+* The component `AeDialog` has added a `close` event to notify the parent component when the dialog window is closed.
+* The component `AeForm` now supports configuring the `addClass` property in `FormItemProps`, which allows adding custom class names to the `ae-form-item` element.
+
+### Bug fixes
+* The component [AeForm] was not compatible with the auto placeholder (`autoPlaceholder`) feature for the `InputTag` component; this has been fixed now.
+
+### Known issues
+* The component [AeForm] currently does not support `autoPlaceholder`, `auto set clearable`, and similar features for dynamically registered components. These will be added in the registration configuration in the future.
+
+---
+
 ## [0.1.9] - 2025-01-05
 
 ### Features

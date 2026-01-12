@@ -54,8 +54,11 @@
       <el-tab-pane label="💬 AeDrawer 抽屉" name="drawer">
         <DrawerExample v-if="activeTab === 'drawer'" />
       </el-tab-pane>
-      <el-tab-pane label="💬 AeTabs标签页" name="tabs">
+      <el-tab-pane label="💬 AeTabs 标签页" name="tabs">
         <TabsExample v-if="activeTab === 'tabs'" />
+      </el-tab-pane>
+      <el-tab-pane label="💬 AeText 增强文本" name="text">
+        <TextExample v-if="activeTab === 'text'" />
       </el-tab-pane>
     </el-tabs>
   </div>
@@ -73,6 +76,7 @@ import DialogExample from './examples/DialogExample.vue'
 import DrawerExample from './examples/DrawerExample.vue'
 import TabsExample from './examples/TabsExample.vue'
 import QuickStartExample from './examples/QuickStartExample.vue'
+import TextExample from './examples/TextExample.vue'
 
 const activeTab = ref('start')
 const isDark = ref(false)
