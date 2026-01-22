@@ -8,6 +8,18 @@ import { getFirstAttr } from '@/utils/get'
 import { getTrueComponentProps, getValue, isHidden } from '../utils/schema'
 import { t } from '@/locale'
 
+/**
+ * 验证结果状态接口
+ */
+export interface ValidationResultState {
+  /** 是否已完成验证（自上次数据变化后） */
+  isValidated: boolean
+  /** 最后一次验证的结果，null 表示还未验证 */
+  result: boolean | null
+  /** 验证完成的时间戳 */
+  timestamp: number | null
+}
+
 export function useForm(
   props: FormProps,
   emit: FormEmits,
@@ -30,9 +42,19 @@ export function useForm(
   delValue: (key: string) => void
   resetValidate: () => void
   validate: () => Promise<any>
+  validateSilent: () => Promise<boolean>
   scrollToKey: (key: string) => void
+  getValidationResult: () => ValidationResultState
+  resetValidationResult: () => void
 } {
   const isValidating = ref(false)
+
+  // 验证结果状态缓存
+  const validationResultState = ref<ValidationResultState>({
+    isValidated: false,
+    result: null,
+    timestamp: null
+  })
 
   // 可控模式直接返回props.model, 非可控模式使用内部对象
   const formModel = props.controlled
@@ -243,18 +265,150 @@ export function useForm(
   /**
    * 校验所有表单当前已渲染的字段
    * 说明: el-form原生校验函数封装
+   *
+   * 验证完成后会：
+   * 1. 更新 validationResultState，可通过 getValidationResult() 同步获取
+   * 2. 触发 'validate-complete' 事件，携带验证结果
    */
   async function validate() {
     isValidating.value = true
     try {
       const result = await unref(elFormRef)?.validate(handleValidationError)
       const tableResult = await validateTables()
-      return result && tableResult
+      const finalResult = result && tableResult
+
+      // 更新验证结果状态缓存
+      validationResultState.value = {
+        isValidated: true,
+        result: finalResult,
+        timestamp: Date.now()
+      }
+
+      // 触发验证完成事件
+      emit('validate-complete', finalResult)
+
+      return finalResult
     } catch (error) {
       console.error('[AeForm] validate error', error)
+
+      // 验证失败也要更新状态
+      validationResultState.value = {
+        isValidated: true,
+        result: false,
+        timestamp: Date.now()
+      }
+
+      // 触发验证完成事件
+      emit('validate-complete', false)
+
       return false
     } finally {
       isValidating.value = false
+    }
+  }
+
+  /**
+   * 静默校验所有表单当前已渲染的字段
+   * 说明: 不显示错误通知，仅更新验证结果状态缓存
+   *
+   * 适用于自动验证场景，避免在用户输入过程中频繁弹出错误提示
+   */
+  async function validateSilent(): Promise<boolean> {
+    // 如果正在验证中，直接返回当前缓存的结果
+    if (isValidating.value) {
+      return validationResultState.value.result ?? false
+    }
+
+    isValidating.value = true
+    try {
+      // 静默验证 el-form，不触发错误处理回调
+      let formResult = true
+      try {
+        formResult = await unref(elFormRef)?.validate()
+      } catch {
+        // el-form validate 在验证失败时会 reject，这里捕获并设置为 false
+        formResult = false
+      }
+
+      // 静默验证表格组件
+      let tableResult = true
+      const tableSchemas = getVisibleTableSchemas()
+      if (tableSchemas?.length) {
+        for (const item of tableSchemas) {
+          const tableRef = getComponentRef(item.key || item.field)
+          if (tableRef) {
+            try {
+              const valid = await tableRef?.validate?.()
+              if (valid === false) {
+                tableResult = false
+                break
+              }
+            } catch {
+              tableResult = false
+              break
+            }
+          }
+        }
+      }
+
+      const finalResult = formResult && tableResult
+
+      // 更新验证结果状态缓存
+      validationResultState.value = {
+        isValidated: true,
+        result: finalResult,
+        timestamp: Date.now()
+      }
+
+      // 触发验证完成事件
+      emit('validate-complete', finalResult)
+
+      return finalResult
+    } catch (error) {
+      console.error('[AeForm] validateSilent error', error)
+
+      // 验证失败也要更新状态
+      validationResultState.value = {
+        isValidated: true,
+        result: false,
+        timestamp: Date.now()
+      }
+
+      // 触发验证完成事件
+      emit('validate-complete', false)
+
+      return false
+    } finally {
+      isValidating.value = false
+    }
+  }
+
+  /**
+   * 同步获取验证结果状态
+   * @returns ValidationResultState 验证结果状态对象
+   *
+   * 使用场景：
+   * - 外部项目无法使用 await 时，可以先调用 validate() 触发验证
+   * - 然后监听 'validate-complete' 事件，或在 nextTick 后调用此方法获取结果
+   *
+   * 返回值说明：
+   * - isValidated: true 表示已完成验证，false 表示还未验证或数据已变化
+   * - result: 验证结果，true 通过，false 未通过，null 表示还未验证
+   * - timestamp: 验证完成的时间戳
+   */
+  function getValidationResult(): ValidationResultState {
+    return { ...validationResultState.value }
+  }
+
+  /**
+   * 重置验证结果状态
+   * 当表单数据发生变化时，可以调用此方法重置验证状态
+   */
+  function resetValidationResult() {
+    validationResultState.value = {
+      isValidated: false,
+      result: null,
+      timestamp: null
     }
   }
 
@@ -285,6 +439,9 @@ export function useForm(
     delValue,
     resetValidate,
     validate,
-    scrollToKey
+    validateSilent,
+    scrollToKey,
+    getValidationResult,
+    resetValidationResult
   }
 }
