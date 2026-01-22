@@ -3,15 +3,20 @@ name: Deploy to GitHub Pages
 on:
   push:
     branches:
-      - main  # 或者你的主分支名称，如果是 master 就改成 master
-    paths-ignore:
-      - '**.md'
-      - 'LICENSE'
-      - '.gitignore'
-      - '.editorconfig'
-      - '.prettierrc'
+      - main
+    paths:
+      # 源代码变化
+      - 'src/**'
+      # 构建配置变化
+      - 'vite.config.ts'
+      - 'vite.config.demo.ts'
+      - 'tsconfig.json'
+      - 'tsconfig.node.json'
+      - 'uno.config.ts'
+      # 入口文件变化
+      - 'index.html'
 
-  # 允许手动触发
+  # 允许手动触发（用于手动强制部署）
   workflow_dispatch:
 
 # 设置 GITHUB_TOKEN 的权限
@@ -38,9 +43,8 @@ jobs:
           node-version: '18'
 
       - name: Setup pnpm
-        uses: pnpm/action-setup@v2
-        with:
-          version: 8
+        uses: pnpm/action-setup@v4
+        # 自动从 package.json 的 packageManager 字段读取版本
 
       - name: Install dependencies
         run: pnpm install
