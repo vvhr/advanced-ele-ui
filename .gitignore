@@ -12,6 +12,8 @@ dist
 dist-demo
 dist-ssr
 *.local
+es
+
 
 # Auto-generated files
 # src/types/auto-imports.d.ts

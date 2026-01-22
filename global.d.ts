@@ -11,6 +11,8 @@ declare module 'vue' {
     AeDrawer: typeof import('advanced-ele-ui')['AeDrawer']
     AeTabs: typeof import('advanced-ele-ui')['AeTabs']
     AeTabPane: typeof import('advanced-ele-ui')['AeTabPane']
+    AeText: typeof import('advanced-ele-ui')['AeText']
+    AeComboInput: typeof import('advanced-ele-ui')['AeComboInput']
   }
 }
 

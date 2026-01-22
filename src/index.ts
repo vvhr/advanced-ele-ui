@@ -11,6 +11,7 @@ import { AeDialog } from './components/Dialog'
 import { AeDrawer } from './components/Drawer'
 import { AeTabs, AeTabPane } from './components/Tabs'
 import { AeText } from './components/Text'
+import { AeComboInput } from './components/ComboInput'
 
 // Import version info
 import { VERSION_INFO, getVersionInfo, printVersionInfo } from './version'
@@ -28,7 +29,7 @@ export * from './types'
 
 export type { FormImportItem, FormImportItemConfig, TableFormImportItem, TableFormImportItemConfig }
 // Export components
-export { AeForm, AeIcon, AeTable, AeEditor, AeUpload, AeDialog, AeDrawer, AeTabs, AeTabPane, AeText }
+export { AeForm, AeIcon, AeTable, AeEditor, AeUpload, AeDialog, AeDrawer, AeTabs, AeTabPane, AeText, AeComboInput }
 
 // Export version info
 export { VERSION_INFO, getVersionInfo, printVersionInfo }
@@ -137,6 +138,9 @@ export type {
 // Text
 export type { TextProps, TextEmits, DotType } from './components/Text'
 
+// ComboInput
+export type { ComboInputProps, ComboInputEmits, ComboTemplate } from './components/ComboInput'
+
 // Rules
 export type { AutoRules } from './types/rules'
 export { getAutoRulesMap } from './utils/rules'
@@ -195,7 +199,8 @@ const install = (app: App, options?: InstallOptions) => {
     AeDrawer,
     AeTabs,
     AeTabPane,
-    AeText
+    AeText,
+    AeComboInput
   ]
   components.forEach(component => {
     app.use(component)
@@ -226,7 +231,7 @@ const install = (app: App, options?: InstallOptions) => {
 
 export default {
   install,
-  version: '0.2.0',
+  version: '0.2.1',
   buildVersion: VERSION_INFO.buildVersion,
   versionInfo: VERSION_INFO
 }

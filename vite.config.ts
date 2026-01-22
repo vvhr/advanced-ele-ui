@@ -35,7 +35,9 @@ async function generateGlobalDts() {
     'AeDialog',
     'AeDrawer',
     'AeTabs',
-    'AeTabPane'
+    'AeTabPane',
+    'AeText',
+    'AeComboInput'
   ]
 
   // 生成组件声明（使用 Element Plus 的模式）
@@ -115,11 +117,11 @@ export default defineConfig({
       outDir: 'dist',
       staticImport: true,
       insertTypesEntry: true,
-      rollupTypes: true,
-      copyDtsFiles: false,
+      rollupTypes: false,
+      copyDtsFiles: true,
       tsconfigPath: './tsconfig.json',
       compilerOptions: {
-        declarationMap: false
+        declarationMap: true
       },
       afterBuild: async () => {
         await generateGlobalDts()
