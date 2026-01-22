@@ -95,7 +95,8 @@ export type {
 } from './components/Table'
 
 // Icon
-export type { IconProps } from './components/Icon'
+export type { IconProps, IconData, IconCollection } from './components/Icon'
+export { addIcon, addIconCollection, addIconCollections } from './components/Icon'
 
 // Editor
 export type {
@@ -165,6 +166,8 @@ export { default as enUS } from './locale/lang/en-US'
 import { setLocale, setCustomLocale } from './locale'
 import type { Language, LocaleConfig, DeepPartial } from './locale/types'
 import { globalFormImports, globalTableImports } from './utils/imports'
+import { addIconCollections } from './utils/icon'
+import type { IconCollection } from './utils/icon'
 
 export interface InstallOptions {
   /**
@@ -184,6 +187,23 @@ export interface InstallOptions {
    * 注册表格自定义编辑组件
    */
   tableImports?: TableFormImportItem[]
+  /**
+   * 注册自定义图标集
+   * @example
+   * ```ts
+   * app.use(AdvancedEleUI, {
+   *   iconCollections: [{
+   *     prefix: 'my-icons',
+   *     width: 24,
+   *     height: 24,
+   *     icons: {
+   *       'home': { body: '<path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/>' }
+   *     }
+   *   }]
+   * })
+   * ```
+   */
+  iconCollections?: IconCollection[]
 }
 
 // Install
@@ -227,11 +247,16 @@ const install = (app: App, options?: InstallOptions) => {
   if (options?.tableImports) {
     globalTableImports.registerComponents(options.tableImports)
   }
+
+  // 注册自定义图标集
+  if (options?.iconCollections) {
+    addIconCollections(options.iconCollections)
+  }
 }
 
 export default {
   install,
-  version: '0.2.1',
+  version: VERSION_INFO.version,
   buildVersion: VERSION_INFO.buildVersion,
   versionInfo: VERSION_INFO
 }
