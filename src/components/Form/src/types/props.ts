@@ -84,6 +84,27 @@ export interface FormEmits {
   (e: 'init', form: Recordable): void
   (e: 'change', data: { value: any; field: string; oldValue: any }): void
   (e: 'update:model', model: Recordable): void
+  /**
+   * 验证完成事件
+   * @param result 验证结果，true 表示验证通过，false 表示验证失败
+   *
+   * 使用场景：
+   * - 当无法使用 await 等待 validate() 结果时，可以监听此事件获取验证结果
+   *
+   * @example
+   * ```vue
+   * <AeForm @validate-complete="handleValidateComplete" />
+   *
+   * const handleValidateComplete = (result: boolean) => {
+   *   if (result) {
+   *     // 验证通过，执行提交逻辑
+   *   } else {
+   *     // 验证失败
+   *   }
+   * }
+   * ```
+   */
+  (e: 'validate-complete', result: boolean): void
 }
 
 /**

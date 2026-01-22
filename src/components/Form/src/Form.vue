@@ -157,7 +157,7 @@ export default defineComponent({
       default: () => {}
     }
   },
-  emits: ['register', 'update:stepValue', 'init', 'change', 'update:model'],
+  emits: ['register', 'update:stepValue', 'init', 'change', 'update:model', 'validate-complete'],
   setup: (props, { emit, attrs, slots, expose }) => {
     const { components, arrayStrategies, componentConfigs } = useImport(props.imports)
 
@@ -183,7 +183,9 @@ export default defineComponent({
       delValue,
       resetValidate,
       validate,
-      scrollToKey
+      scrollToKey,
+      getValidationResult,
+      resetValidationResult
     } = useForm(props, emit, components, arrayStrategies)
 
     onMounted(() => {
@@ -267,7 +269,9 @@ export default defineComponent({
       delValue,
       validate,
       resetValidate,
-      scrollToKey
+      scrollToKey,
+      getValidationResult,
+      resetValidationResult
     })
     const { renderForm } = useRenderForm(
       props,
