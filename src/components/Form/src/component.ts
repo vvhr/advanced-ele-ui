@@ -30,7 +30,9 @@ import Group from './components/Group.vue'
 import Blank from './components/Blank.vue'
 import { Editor } from '@/components/Editor'
 import { Upload } from '@/components/Upload'
-import { dateRangeTypes } from '@/components/Form/src/constants.ts'
+import { ComboInput } from '@/components/ComboInput'
+import { Text } from '@/components/Text'
+import { dateRangeTypes } from '@/components/Form/src/constants'
 
 const defaultComponents: Recordable<Component, ComponentName> = {
   /** 容器类组件 */
@@ -39,6 +41,7 @@ const defaultComponents: Recordable<Component, ComponentName> = {
   /** 装饰类组件名 */
   Alert: ElAlert,
   Divider: ElDivider,
+  Text: Text,
   Image: ElImage,
   Result: ElResult,
   /** 输入类组件名 */
@@ -47,6 +50,7 @@ const defaultComponents: Recordable<Component, ComponentName> = {
   Checkbox: ElCheckboxGroup,
   CheckboxButton: ElCheckboxGroup,
   ColorPicker: ElColorPicker,
+  ComboInput: ComboInput,
   DatePicker: ElDatePicker,
   Editor: Editor,
   Input: ElInput,

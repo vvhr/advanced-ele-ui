@@ -60,6 +60,9 @@
       <el-tab-pane label="💬 AeText 增强文本" name="text">
         <TextExample v-if="activeTab === 'text'" />
       </el-tab-pane>
+      <el-tab-pane label="🧩 AeComboInput 组合输入器" name="combo-input">
+        <ComboInputExample v-if="activeTab === 'combo-input'" />
+      </el-tab-pane>
     </el-tabs>
   </div>
 </template>
@@ -77,6 +80,7 @@ import DrawerExample from './examples/DrawerExample.vue'
 import TabsExample from './examples/TabsExample.vue'
 import QuickStartExample from './examples/QuickStartExample.vue'
 import TextExample from './examples/TextExample.vue'
+import ComboInputExample from './examples/ComboInputExample.vue'
 
 const activeTab = ref('start')
 const isDark = ref(false)

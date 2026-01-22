@@ -16,7 +16,7 @@ export type ContainerName = 'Group' | 'Blank'
  * - Image: 图片组件，采用el-image组件渲染，支持原生所有属性功能
  * - Result: 结果组件，采用el-result组件渲染，支持原生所有属性功能
  */
-export type DecoratorName = 'Divider' | 'Alert' | 'Image' | 'Result'
+export type DecoratorName = 'Divider' | 'Alert' | 'Image' | 'Result' | 'Text'
 
 /**
  * 输入类组件名
@@ -26,10 +26,12 @@ export type DecoratorName = 'Divider' | 'Alert' | 'Image' | 'Result'
  * - Checkbox: 多选框组件，采用el-checkbox-group组件渲染，根据componentProps.options属性渲染el-checkbox
  * - CheckboxButton: 多选框按钮组件，采用el-checkbox-group组件渲染，根据componentProps.options属性渲染el-checkbox-button
  * - ColorPicker: 颜色选择器组件，采用el-color-picker组件渲染，支持原生所有属性功能
+ * - ComboInput: 组合输入组件，采用ae-combo-input组件渲染
  * - DatePicker: 日期选择器组件，采用el-date-picker组件渲染，支持原生所有属性功能
  * - Editor: 富文本组件，采用ae-editor组件渲染
  * - Input: 输入框组件，采用el-input组件渲染，支持原生所有属性功能
  * - InputNumber: 数字输入框组件，采用el-input-number组件渲染，支持原生所有属性功能
+ * - InputTag: 输入标签组件，采用el-input-tag组件渲染，支持原生所有属性功能
  * - Mention: 提及组件，采用el-mention组件渲染，支持原生所有属性功能
  * - Radio: 单选框组件，采用el-radio-group组件渲染，根据componentProps.options属性渲染el-radio
  * - RadioButton: 单选框按钮组件，采用el-radio-group组件渲染，根据componentProps.options属性渲染el-radio-button
@@ -50,6 +52,7 @@ export type InputerName =
   | 'RadioButton'
   | 'Checkbox'
   | 'CheckboxButton'
+  | 'ComboInput'
   | 'Input'
   | 'InputTag'
   | 'Autocomplete'

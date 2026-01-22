@@ -1,0 +1,37 @@
+.ae-combo-input {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+
+  &--small {
+    font-size: 12px;
+  }
+
+  &--default {
+    font-size: 14px;
+  }
+
+  &--large {
+    font-size: 16px;
+  }
+
+  &--empty {
+    // 无效模板时的空状态样式
+    min-height: 32px;
+  }
+
+  // 使用特定类名选择器，避免过于宽泛
+  &__text {
+    white-space: nowrap;
+    flex-shrink: 0;
+    color: inherit;
+    line-height: 1.5;
+  }
+
+  // 输入框默认宽度为 100px
+  .el-input,
+  .el-select,
+  .el-date-editor {
+    width: 100px;
+  }
+}
