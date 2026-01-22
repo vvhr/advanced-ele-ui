@@ -225,12 +225,14 @@ import 'advanced-ele-ui/dist/style.css'
 ## Component
 - ✅ `AeForm`: 高级表单组件: 基于数据驱动的功能强大的表单组件，支持多种表单控件，专注于解决数据联动，动态属性的复杂场景。
 - ✅ `AeTable`: 高级表格组件: 基于数据驱动的功能丰富的表格组件，支持多种列类型和行内编辑。
-- ✅ `AeIcon`: 动态图标组件: 基于 [Iconify](https://icon-sets.iconify.design/)，支持 10 万+ 图标库动态渲染。
+- ✅ `AeIcon`: 动态图标组件: 基于 [Iconify](https://icon-sets.iconify.design/)，支持 10 万+ 图标库动态渲染。支持[自定义图标集](./ICON.zh.md)。
 - ✅ `AeEditor`: 富文本组件: 基于 [AiEditor](https://aieditor.dev/docs) 二次封装的富文本组件，支持 AI 助手功能。
 - ✅ `AeUpload`: 上传组件: 原生实现的功能丰富的上传组件，组件本身不控制上传，完全交由您实现上传请求，组件专注于数据和样式。
 - ✅ `AeDialog`: 对话框组件: 基于 `el-dialog` 二次封装的高级对话框组件，优化样式，额外扩展了窗口拖拽、窗口全屏、内容区高度自适应等功能。
 - ✅ `AeDrawer`: 抽屉组件: 基于 `el-drawer` 二次封装的高级抽屉组件，优化样式，额外扩展了窗口全屏、内容区高度自适应等功能。
 - ✅ `AeTabs`: 标签页组件: 基于 `el-tabs` 二次封装的高级标签页组件，额外扩展了高性能渲染、内容区高度撑开等功能。
+- ✅ `AeText`: 增强文本组件: 增强文本显示，支持前置图标、圆点、引用块，支持高亮文字匹配和交互
+- ✅ `AeComboInput`: 组合输入组件: 将组合输入的"邮箱号"/"不动产证号"等场景的多组件组合进行原子化封装。
 ---
 
 ## Roadmap
@@ -247,7 +249,8 @@ import 'advanced-ele-ui/dist/style.css'
 
 - [在线演示](http://aeui.vvhrdesign.com) - 查看所有组件的实时示例
 - [NPM 包](https://www.npmjs.com/package/advanced-ele-ui) - 查看发布版本和下载统计
-- [更新日志](./CHANGELOG.md) - 了解版本更新内容
+- [更新日志](./CHANGELOG.zh.md) - 了解版本更新内容
+- [图标组件指南](./ICON.zh.md) - 自定义图标集和使用方法
 - [问题反馈](https://github.com/vvhr/advanced-ele-ui/issues) - 提交 Bug 或功能建议
 
 ---

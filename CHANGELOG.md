@@ -3,6 +3,20 @@
 English | [简体中文](./CHANGELOG.zh.md)
 
 ---
+## [0.2.1] - 2025-01-22
+
+### Features
+* Added component `AeComboInput`: a composite input component that supports custom composite templates, designed specifically for text value input that requires combining multiple variables.
+* Component `AeForm` now includes built-in imports of the `AeText` and `AeComboInput` components.
+* Component `AeIcon` now supports custom icon set configuration. See [Custom Icon Sets](./ICON.md) for details.
+
+### Bug fixes
+* Fixed the issue where `AeText` was not imported in global.d.ts.
+
+### Build
+* Starting from version `0.2.1`, type merging (`rollupTypes`) is no longer performed for releases, to provide better type tracing in IDEs.
+
+---
 
 ## [0.2.0] - 2025-01-12
 

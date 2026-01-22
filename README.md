@@ -212,12 +212,14 @@ import 'advanced-ele-ui/dist/style.css'
 ## Components
 - ✅ `AeForm`: Advanced form component: A powerful data-driven form component that supports multiple form controls, focusing on solving complex scenarios of data linkage and dynamic properties.
 - ✅ `AeTable`: Advanced table component: A feature-rich data-driven table component that supports multiple column types and inline editing.
-- ✅ `AeIcon`: Dynamic icon component: Based on [Iconify](https://icon-sets.iconify.design/), supporting 100,000+ icon libraries for dynamic rendering.
+- ✅ `AeIcon`: Dynamic icon component: Based on [Iconify](https://icon-sets.iconify.design/), supporting 100,000+ icon libraries for dynamic rendering. Supports [custom icon collections](./ICON.md).
 - ✅ `AeEditor`: Rich text component: A rich text component based on [AiEditor](https://aieditor.dev/docs) with AI assistant functionality.
 - ✅ `AeUpload`: Upload component: A feature-rich native upload component. The component itself does not control uploading, leaving it entirely to you to implement upload requests. The component focuses on data and styles.
 - ✅ `AeDialog`: Dialog component: A feature-rich dialog component.  
 - ✅ `AeDrawer`: Drawer component: A feature-rich drawer component.
 - ✅ `AeTabs`: Tabs component: A feature-rich tabs component.
+- ✅ `AeText`: Enhanced text component: enhances text display; supports leading icons, bullet points, and quote blocks; supports highlighted text matching and interaction
+- ✅ `AeComboInput`: Composite input component: atomically encapsulates multi-component combinations for composite input scenarios such as "email account"/"real estate certificate number".
 ---
 
 ## Roadmap
@@ -233,6 +235,7 @@ import 'advanced-ele-ui/dist/style.css'
 - [Live Demo](http://aeui.vvhrdesign.com) - View live examples of all components
 - [NPM Package](https://www.npmjs.com/package/advanced-ele-ui) - View release versions and download statistics
 - [Changelog](./CHANGELOG.md) - Learn about version updates
+- [Icon Component Guide](./ICON.md) - Custom icon collections and usage
 - [Issue Feedback](https://github.com/vvhr/advanced-ele-ui/issues) - Submit bugs or feature suggestions
 
 ---
