@@ -99,6 +99,7 @@
     "@vitejs/plugin-vue-jsx": "^4.0.0",
     "@vitest/ui": "^4.0.9",
     "@vue/test-utils": "^2.4.6",
+    "baseline-browser-mapping": "^2.9.17",
     "element-plus": "^2.11.7",
     "eslint": "^9.35.0",
     "eslint-config-prettier": "^9.1.0",
