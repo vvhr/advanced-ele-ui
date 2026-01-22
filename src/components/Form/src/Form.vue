@@ -17,6 +17,7 @@ import { useForm } from './hook/useForm'
 import { useRenderAnchor } from './render/useRenderAnchor'
 import { useImport } from './hook/useImport'
 import { isObject } from '@/utils/is'
+import { debounce } from 'lodash-es'
 export default defineComponent({
   name: 'AeForm',
   props: {
@@ -155,6 +156,35 @@ export default defineComponent({
     anchorAffixStyle: {
       type: Object as PropType<CSSProperties>,
       default: () => {}
+    },
+    /**
+     * 是否启用自动验证
+     * @default false
+     * @description 启用后，表单数据变化时会自动进行静默验证并缓存结果。
+     * 适用于跨 iframe 场景，外部项目可以通过 getValidationResult() 同步获取验证结果。
+     *
+     * @example
+     * ```vue
+     * <AeForm ref="formRef" :auto-validate="true" />
+     *
+     * // B 项目暴露给 A 项目的验证函数
+     * window.getValidate = () => {
+     *   return formRef.value.getValidationResult().result
+     * }
+     * ```
+     */
+    autoValidate: {
+      type: Boolean,
+      default: false
+    },
+    /**
+     * 自动验证防抖时间（毫秒）
+     * @default 300
+     * @description 当 autoValidate 为 true 时生效，避免频繁验证影响性能
+     */
+    autoValidateDebounce: {
+      type: Number,
+      default: 300
     }
   },
   emits: ['register', 'update:stepValue', 'init', 'change', 'update:model', 'validate-complete'],
@@ -183,6 +213,7 @@ export default defineComponent({
       delValue,
       resetValidate,
       validate,
+      validateSilent,
       scrollToKey,
       getValidationResult,
       resetValidationResult
@@ -258,6 +289,44 @@ export default defineComponent({
       }
     )
 
+    // ========== 自动验证功能 ==========
+    // 创建防抖的静默验证函数
+    const debouncedValidateSilent = computed(() => {
+      return debounce(() => {
+        if (!props.autoValidate) return
+        validateSilent()
+      }, props.autoValidateDebounce)
+    })
+
+    // 监听表单数据变化，触发自动验证
+    watch(
+      () => props.controlled ? props.model : formModel.value,
+      () => {
+        if (!props.autoValidate) return
+
+        // 数据变化时先标记为未验证状态
+        resetValidationResult()
+
+        // 触发防抖验证
+        debouncedValidateSilent.value()
+      },
+      {
+        deep: true,
+        immediate: false
+      }
+    )
+
+    // 当 autoValidate 启用时，在 mounted 后进行首次验证
+    onMounted(() => {
+      if (props.autoValidate) {
+        // 延迟执行首次验证，确保表单完全初始化
+        setTimeout(() => {
+          validateSilent()
+        }, 100)
+      }
+    })
+    // ========== 自动验证功能结束 ==========
+
     expose({
       initValues,
       getDefaultModel,
@@ -268,6 +337,7 @@ export default defineComponent({
       setValue,
       delValue,
       validate,
+      validateSilent,
       resetValidate,
       scrollToKey,
       getValidationResult,

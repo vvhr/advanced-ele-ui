@@ -42,6 +42,7 @@ export function useForm(
   delValue: (key: string) => void
   resetValidate: () => void
   validate: () => Promise<any>
+  validateSilent: () => Promise<boolean>
   scrollToKey: (key: string) => void
   getValidationResult: () => ValidationResultState
   resetValidationResult: () => void
@@ -307,6 +308,82 @@ export function useForm(
   }
 
   /**
+   * 静默校验所有表单当前已渲染的字段
+   * 说明: 不显示错误通知，仅更新验证结果状态缓存
+   *
+   * 适用于自动验证场景，避免在用户输入过程中频繁弹出错误提示
+   */
+  async function validateSilent(): Promise<boolean> {
+    // 如果正在验证中，直接返回当前缓存的结果
+    if (isValidating.value) {
+      return validationResultState.value.result ?? false
+    }
+
+    isValidating.value = true
+    try {
+      // 静默验证 el-form，不触发错误处理回调
+      let formResult = true
+      try {
+        formResult = await unref(elFormRef)?.validate()
+      } catch {
+        // el-form validate 在验证失败时会 reject，这里捕获并设置为 false
+        formResult = false
+      }
+
+      // 静默验证表格组件
+      let tableResult = true
+      const tableSchemas = getVisibleTableSchemas()
+      if (tableSchemas?.length) {
+        for (const item of tableSchemas) {
+          const tableRef = getComponentRef(item.key || item.field)
+          if (tableRef) {
+            try {
+              const valid = await tableRef?.validate?.()
+              if (valid === false) {
+                tableResult = false
+                break
+              }
+            } catch {
+              tableResult = false
+              break
+            }
+          }
+        }
+      }
+
+      const finalResult = formResult && tableResult
+
+      // 更新验证结果状态缓存
+      validationResultState.value = {
+        isValidated: true,
+        result: finalResult,
+        timestamp: Date.now()
+      }
+
+      // 触发验证完成事件
+      emit('validate-complete', finalResult)
+
+      return finalResult
+    } catch (error) {
+      console.error('[AeForm] validateSilent error', error)
+
+      // 验证失败也要更新状态
+      validationResultState.value = {
+        isValidated: true,
+        result: false,
+        timestamp: Date.now()
+      }
+
+      // 触发验证完成事件
+      emit('validate-complete', false)
+
+      return false
+    } finally {
+      isValidating.value = false
+    }
+  }
+
+  /**
    * 同步获取验证结果状态
    * @returns ValidationResultState 验证结果状态对象
    *
@@ -362,6 +439,7 @@ export function useForm(
     delValue,
     resetValidate,
     validate,
+    validateSilent,
     scrollToKey,
     getValidationResult,
     resetValidationResult

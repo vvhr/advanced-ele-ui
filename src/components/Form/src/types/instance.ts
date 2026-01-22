@@ -78,6 +78,17 @@ export interface FormExpose {
   validate: () => Promise<any>
 
   /**
+   * 静默验证表单（异步方法）
+   * @returns Promise，验证成功返回 true，失败返回 false
+   *
+   * 与 validate() 的区别：
+   * - 不会显示错误通知
+   * - 不会滚动到错误字段
+   * - 适用于自动验证场景
+   */
+  validateSilent: () => Promise<boolean>
+
+  /**
    * 重置表单验证状态
    */
   resetValidate: () => void
