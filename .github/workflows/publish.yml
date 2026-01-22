@@ -1,0 +1,151 @@
+name: Publish to npm
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'package.json'  # 只在 package.json 变化时触发
+
+  # 允许手动触发
+  workflow_dispatch:
+
+# 设置权限 - provenance 需要 id-token: write
+permissions:
+  contents: read
+  id-token: write
+
+# 防止并发发布
+concurrency:
+  group: "npm-publish"
+  cancel-in-progress: false
+
+jobs:
+  check-version:
+    runs-on: ubuntu-latest
+    outputs:
+      version_changed: ${{ steps.check.outputs.changed }}
+      new_version: ${{ steps.check.outputs.version }}
+      is_beta: ${{ steps.check.outputs.is_beta }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 2  # 需要获取上一个 commit 来比较
+
+      - name: Check version change
+        id: check
+        run: |
+          # 获取当前版本
+          CURRENT_VERSION=$(node -p "require('./package.json').version")
+          echo "Current version: $CURRENT_VERSION"
+          
+          # 获取上一个 commit 的版本
+          git show HEAD~1:package.json > /tmp/old-package.json 2>/dev/null || echo '{"version":"0.0.0"}' > /tmp/old-package.json
+          OLD_VERSION=$(node -p "require('/tmp/old-package.json').version")
+          echo "Previous version: $OLD_VERSION"
+          
+          # 比较版本
+          if [ "$CURRENT_VERSION" != "$OLD_VERSION" ]; then
+            echo "Version changed from $OLD_VERSION to $CURRENT_VERSION"
+            echo "changed=true" >> $GITHUB_OUTPUT
+            echo "version=$CURRENT_VERSION" >> $GITHUB_OUTPUT
+            
+            # 检查是否为 beta 版本
+            if [[ "$CURRENT_VERSION" == *"beta"* ]]; then
+              echo "is_beta=true" >> $GITHUB_OUTPUT
+              echo "This is a beta version"
+            else
+              echo "is_beta=false" >> $GITHUB_OUTPUT
+              echo "This is a release version"
+            fi
+          else
+            echo "Version unchanged"
+            echo "changed=false" >> $GITHUB_OUTPUT
+          fi
+
+  publish-beta:
+    needs: check-version
+    if: needs.check-version.outputs.version_changed == 'true' && needs.check-version.outputs.is_beta == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          registry-url: 'https://registry.npmjs.org'
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9
+
+      - name: Install dependencies
+        run: pnpm install
+
+      - name: Build
+        run: pnpm run build
+        env:
+          NODE_ENV: production
+
+      - name: Publish Beta to npm
+        run: npm publish --tag beta --provenance --access public
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      - name: Summary
+        run: |
+          echo "## 🧪 Beta Published!" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Version:** ${{ needs.check-version.outputs.new_version }}" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Install:**" >> $GITHUB_STEP_SUMMARY
+          echo "\`\`\`bash" >> $GITHUB_STEP_SUMMARY
+          echo "npm install advanced-ele-ui@beta" >> $GITHUB_STEP_SUMMARY
+          echo "\`\`\`" >> $GITHUB_STEP_SUMMARY
+
+  publish-release:
+    needs: check-version
+    if: needs.check-version.outputs.version_changed == 'true' && needs.check-version.outputs.is_beta == 'false'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          registry-url: 'https://registry.npmjs.org'
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9
+
+      - name: Install dependencies
+        run: pnpm install
+
+      - name: Build
+        run: pnpm run build
+        env:
+          NODE_ENV: production
+
+      - name: Publish Release to npm
+        run: npm publish --provenance --access public
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      - name: Summary
+        run: |
+          echo "## 🚀 Release Published!" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Version:** ${{ needs.check-version.outputs.new_version }}" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Install:**" >> $GITHUB_STEP_SUMMARY
+          echo "\`\`\`bash" >> $GITHUB_STEP_SUMMARY
+          echo "npm install advanced-ele-ui@${{ needs.check-version.outputs.new_version }}" >> $GITHUB_STEP_SUMMARY
+          echo "\`\`\`" >> $GITHUB_STEP_SUMMARY
