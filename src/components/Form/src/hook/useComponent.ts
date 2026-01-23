@@ -228,7 +228,7 @@ export function useComponent(
       if (!insideSlots.hasOwnProperty(slotName)) {
         const fn = insideRenders[slotName]
         if (isFunction(fn)) {
-          slotObj[slotName] = () => fn(formModel.value, schema, props.disabled, props.excontext)
+          slotObj[slotName] = (...args: any[]) => fn(formModel.value, schema, props.disabled, props.excontext, ...args)
         } else if (typeof fn === 'string') {
           slotObj[slotName] = () => fn
         }
@@ -244,8 +244,13 @@ export function useComponent(
         false
       )
       if (enableSlot) {
-        slotObj[slotName] = () => {
-          return getSlot(slots, `${slotKey}--${slotName}`, formModel.value)
+        slotObj[slotName] = (...args: any[]) => {
+          // 始终将 formModel.value 包装为 form 属性，保持 API 一致性
+          // 如果插槽传递了参数，将插槽参数合并到对象中
+          const slotData = args.length > 0
+            ? { form: formModel.value, ...args[0] }
+            : { form: formModel.value }
+          return getSlot(slots, `${slotKey}--${slotName}`, slotData)
         }
       }
     }

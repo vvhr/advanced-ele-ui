@@ -48,12 +48,14 @@ export type ComponentEventFn<T extends any> = (
  * @param column - 当前列配置
  * @param disabled - 表单自身是否禁用
  * @param excontext - 表单数据源上下文
+ * @param slotProps - 插槽自身携带的参数（作用域插槽参数）
  */
 export type FormSchemaDomFn<T> = (
   form: Recordable,
   column: FormSchema,
   disabled: boolean,
-  excontext: Recordable
+  excontext: Recordable,
+  ...slotProps: any[]
 ) => T
 
 /**
@@ -135,10 +137,13 @@ export type OutsidePropsAppendRender = FormSchemaDomFn<VNode | false> | false
  * @example
  * // 1.激活Input组件的自身插槽
  * 组件配置: { insideProps.slots.prepend: true }
- * 页面编写: <template #key--perpend={ form }>...</template>
+ * 页面编写: <template #key--perpend="{ form }">{{ form.username }}</template>
  * // 2.根据某种条件激活Input组件的自身插槽
  * 组件配置: { insideProps.slots.append: (form, column, disabled, excontext) => form.type === '1' }
- * 页面编写: <template #key--append={ form }>...</template>
+ * 页面编写: <template #key--append="{ form }">{{ form.type }}</template>
+ * // 3.使用作用域插槽参数（当组件自身插槽传递参数时）
+ * 组件配置: { insideProps.slots.default: true }
+ * 页面编写: <template #key--default="{ form, ...props }">{{ form.name }} - {{ props.data }}</template>
  */
 export type InsidePropsSlots = Recordable<FormSchemaFn<boolean> | boolean>
 
@@ -158,6 +163,10 @@ export type InsidePropsSlots = Recordable<FormSchemaFn<boolean> | boolean>
  * )}
  * // 3.纯文本
  * { insideProps.renders.suffix: '元' }
+ * // 4.使用作用域插槽参数
+ * { insideProps.renders.default: (form, column, disabled, excontext, slotProps) => (
+ *   <div>{slotProps?.data}</div>
+ * )}
  */
 export type InsidePropsRenders = Recordable<InsidePropsRender>
 export type InsidePropsRender = FormSchemaDomFn<VNode | string | false> | false | string
