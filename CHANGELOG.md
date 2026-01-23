@@ -3,6 +3,7 @@
 English | [简体中文](./CHANGELOG.zh.md)
 
 ---
+
 ## [0.2.1] - 2025-01-22
 
 ### Features
@@ -12,9 +13,18 @@ English | [简体中文](./CHANGELOG.zh.md)
 
 ### Bug fixes
 * Fixed the issue where `AeText` was not imported in global.d.ts.
+* Component [AeForm] optimized the `setInsideSlots` function to support slot parameter passing.
+  - **insideRenders**: Render functions can now receive parameters from the slot itself (scoped slot parameters), which are appended after the original four parameters.
+  - **insideSlots**: Slot data structure optimized to always wrap `formModel.value` as the `form` property and merge it with slot parameters, maintaining API consistency.
+  - **Type definitions**: Updated `FormSchemaDomFn` type to add `slotProps` rest parameter support.
+  - **Backward compatibility**: Fully compatible with existing code, works without modification.
+
 
 ### Build
 * Starting from version `0.2.1`, type merging (`rollupTypes`) is no longer performed for releases, to provide better type tracing in IDEs.
+
+### Documentation
+* Updated `InsidePropsSlots` and `InsidePropsRenders` type comments with scoped slot parameter usage examples.
 
 ---
 

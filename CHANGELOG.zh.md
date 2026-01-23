@@ -13,10 +13,17 @@
 
 ### 修复Bug
 * 修复 global.d.ts 未引入 `AeText` 的问题。
-
+* 组件 [AeForm] 优化 `setInsideSlots` 函数，现已支持插槽参数传递功能。
+  - **insideRenders**：渲染函数现在可以接收插槽自身携带的参数（作用域插槽参数），参数会追加到原有的四个参数之后。
+  - **insideSlots**：插槽数据结构优化，始终将 `formModel.value` 包装为 `form` 属性，并与插槽参数合并传递，保持 API 一致性。
+  - **类型定义**：更新 `FormSchemaDomFn` 类型，新增 `slotProps` 剩余参数支持。
+  - **向后兼容**：完全兼容现有代码，无需修改即可正常工作。
+  - 
 ### 构建
 * 至 `0.2.1` 版本起，不再合并类型(`rollupTypes`)发布。以便于在 IDE 中获得更好的类型追踪。
 
+### 文档
+* 更新 `InsidePropsSlots` 和 `InsidePropsRenders` 类型注释，添加作用域插槽参数使用示例。
 ---
 
 ## [0.2.0] - 2025-01-12
