@@ -4,7 +4,7 @@ English | [简体中文](./CHANGELOG.zh.md)
 
 ---
 
-## [0.2.1] - 2025-01-22
+## [0.2.1] - 2025-01-26
 
 ### Features
 * Added component `AeComboInput`: a composite input component that supports custom composite templates, designed specifically for text value input that requires combining multiple variables.

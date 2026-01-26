@@ -85,11 +85,11 @@ const size = ref<any>('default')
 const basicFiles = ref<UploadFile[]>([
   {
     name: '示例图片1.png',
-    url: 'http://image.howcat.cn/thumbnails/d51a6dbd5758ab999d1246154f2d3178.png'
+    url: 'https://dummyimage.com/600x400/cccccc/000000.png&text=AEUI'
   },
   {
     name: '示例图片2.png',
-    url: 'http://image.howcat.cn/thumbnails/d51a6dbd5758ab999d1246154f2d3178.png'
+    url: 'https://dummyimage.com/600x400/cccccc/000000.png&text=AEUI'
   },
   {
     name: '示例不存在的图片1.png',
@@ -101,7 +101,7 @@ const basicFiles = ref<UploadFile[]>([
   },
   {
     name: '较长的两行显示的文件名.pdf',
-    url: 'hhttps://example.com/template.pdf'
+    url: 'https://example.com/template.pdf'
   },
   {
     name: '超长超长超长超长超长超长超长超长超长超长的文件名.pdf',
@@ -194,12 +194,12 @@ function handleUpdate() {
     {
       id: 1,
       name: '新的图片1.png',
-      url: 'http://image.howcat.cn/thumbnails/d51a6dbd5758ab999d1246154f2d3178.png'
+      url: 'https://picsum.photos/600/400'
     },
     {
       id: 2,
       name: '新的图片2.png',
-      url: 'http://image.howcat.cn/thumbnails/d51a6dbd5758ab999d1246154f2d3178.png'
+      url: 'https://picsum.photos/600/400'
     }
   ]
 }
@@ -207,11 +207,11 @@ function handleUpdate() {
 const exampleImages = [
   {
     name: '示例图1',
-    url: 'http://image.howcat.cn/thumbnails/d51a6dbd5758ab999d1246154f2d3178.png'
+    url: 'https://picsum.photos/600/400'
   },
   {
     name: '示例图2',
-    url: 'http://image.howcat.cn/thumbnails/d51a6dbd5758ab999d1246154f2d3178.png'
+    url: 'https://picsum.photos/600/400'
   }
 ]
 const fileTemplates = [
