@@ -10,6 +10,8 @@
   [![npm downloads](https://img.shields.io/npm/dt/advanced-ele-ui.svg?style=flat-square)](https://www.npmjs.com/package/advanced-ele-ui)
   [![license](https://img.shields.io/npm/l/advanced-ele-ui.svg?style=flat-square)](https://github.com/vvhr/advanced-ele-ui/blob/main/LICENSE)
   [![pnpm](https://img.shields.io/badge/maintained%20with-pnpm-cc00ff.svg?style=flat-square)](https://pnpm.io/)
+
+  [![zread](https://img.shields.io/badge/Ask_Zread-_.svg?style=flat&color=00b0aa&labelColor=000000&logo=data%3Aimage%2Fsvg%2Bxml%3Bbase64%2CPHN2ZyB3aWR0aD0iMTYiIGhlaWdodD0iMTYiIHZpZXdCb3g9IjAgMCAxNiAxNiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTQuOTYxNTYgMS42MDAxSDIuMjQxNTZDMS44ODgxIDEuNjAwMSAxLjYwMTU2IDEuODg2NjQgMS42MDE1NiAyLjI0MDFWNC45NjAxQzEuNjAxNTYgNS4zMTM1NiAxLjg4ODEgNS42MDAxIDIuMjQxNTYgNS42MDAxSDQuOTYxNTZDNS4zMTUwMiA1LjYwMDEgNS42MDE1NiA1LjMxMzU2IDUuNjAxNTYgNC45NjAxVjIuMjQwMUM1LjYwMTU2IDEuODg2NjQgNS4zMTUwMiAxLjYwMDEgNC45NjE1NiAxLjYwMDFaIiBmaWxsPSIjZmZmIi8%2BCjxwYXRoIGQ9Ik00Ljk2MTU2IDEwLjM5OTlIMi4yNDE1NkMxLjg4ODEgMTAuMzk5OSAxLjYwMTU2IDEwLjY4NjQgMS42MDE1NiAxMS4wMzk5VjEzLjc1OTlDMS42MDE1NiAxNC4xMTM0IDEuODg4MSAxNC4zOTk5IDIuMjQxNTYgMTQuMzk5OUg0Ljk2MTU2QzUuMzE1MDIgMTQuMzk5OSA1LjYwMTU2IDE0LjExMzQgNS42MDE1NiAxMy43NTk5VjExLjAzOTlDNS42MDE1NiAxMC42ODY0IDUuMzE1MDIgMTAuMzk5OSA0Ljk2MTU2IDEwLjM5OTlaIiBmaWxsPSIjZmZmIi8%2BCjxwYXRoIGQ9Ik0xMy43NTg0IDEuNjAwMUgxMS4wMzg0QzEwLjY4NSAxLjYwMDEgMTAuMzk4NCAxLjg4NjY0IDEwLjM5ODQgMi4yNDAxVjQuOTYwMUMxMC4zOTg0IDUuMzEzNTYgMTAuNjg1IDUuNjAwMSAxMS4wMzg0IDUuNjAwMUgxMy43NTg0QzE0LjExMTkgNS42MDAxIDE0LjM5ODQgNS4zMTM1NiAxNC4zOTg0IDQuOTYwMVYyLjI0MDFDMTQuMzk4NCAxLjg4NjY0IDE0LjExMTkgMS42MDAxIDEzLjc1ODQgMS42MDAxWiIgZmlsbD0iI2ZmZiIvPgo8cGF0aCBkPSJNNCAxMkwxMiA0TDQgMTJaIiBmaWxsPSIjZmZmIi8%2BCjxwYXRoIGQ9Ik00IDEyTDEyIDQiIHN0cm9rZT0iI2ZmZiIgc3Ryb2tlLXdpZHRoPSIxLjUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPgo8L3N2Zz4K&logoColor=ffffff)](https://zread.ai/vvhr/advanced-ele-ui)
   [![Vue](https://img.shields.io/badge/Vue-≥3.2.0-green?style=flat-square&logo=vue.js)](https://vuejs.org/)
   [![Element Plus](https://img.shields.io/badge/Element%20Plus-≥2.9.0-409eff?style=flat-square)](https://element-plus.org/)
   [![TypeScript](https://img.shields.io/badge/TypeScript-5.3-blue?style=flat-square&logo=typescript)](https://www.typescriptlang.org/)
@@ -17,17 +19,22 @@
   <br/>
 
   <h3>
-    <a href="http://aeui.vvhrdesign.com" target="_blank">📱 在线演示</a>
+    <a href="http://aeui.vvhrdesign.com" target="_blank">在线演示</a>
     ·
     <a href="#QuickStart">快速开始</a>
     ·
     <a href="./CHANGELOG.zh.md">更新日志</a>
     ·
-    <a href="#Roadmap">更新计划</a>
+    <a href="https://zread.ai/vvhr/advanced-ele-ui">技术文档</a>
   </h3>
 </div>
 
 ---
+
+> 现在，您可以访问由 `ZRead` 提供支持的 [技术文档](https://zread.ai/vvhr/advanced-ele-ui) 并点击 `Ask AI` 按钮的方式快速检索本项目的知识！
+
+---
+
 
 ## Introduction
 
@@ -236,11 +243,6 @@ import 'advanced-ele-ui/dist/style.css'
 ---
 
 ## Roadmap
-
-- ✅ 本项目的初期阶段已接近尾声，核心组件的功能及结构趋近稳定，非常推荐您开始体验我们的最新正式版本！
-- ⬜ 关于构建 `advanced-ele-ui-docs` 组件库文档项目的计划已经开始实施，我希望打造一个对AI友好、非常详细、易于理解、易于示例的文档站点，为您提供最为专业的文档。
-- ⬜ 关于 `AeEditor` 使用 [AiEditor](https://aieditor.dev/docs) 作为引擎存在一些争议，由于 [AiEditor](https://aieditor.dev/docs) 与我期望的表现存在差异，目前正在评估是否替换为其他引擎。
-
 > 💡 如果您有好的想法或建议，欢迎在 [Issues](https://github.com/vvhr/advanced-ele-ui/issues) 中提出！
 
 ---
@@ -248,11 +250,12 @@ import 'advanced-ele-ui/dist/style.css'
 ## Documents and Resources
 
 - [在线演示](http://aeui.vvhrdesign.com) - 查看所有组件的实时示例
+- [技术文档](https://zread.ai/vvhr/advanced-ele-ui) - 由 [ZRead.ai](https://zread.ai/) 生成的完整技术文档
 - [NPM 包](https://www.npmjs.com/package/advanced-ele-ui) - 查看发布版本和下载统计
 - [更新日志](./CHANGELOG.zh.md) - 了解版本更新内容
 - [图标组件指南](./ICON.zh.md) - 自定义图标集和使用方法
 - [问题反馈](https://github.com/vvhr/advanced-ele-ui/issues) - 提交 Bug 或功能建议
-
+- [ZRead](https://zread.ai/) - Github 文档自动生成及知识检索
 ---
 
 ## Contribution

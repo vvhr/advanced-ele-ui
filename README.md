@@ -10,7 +10,8 @@ English | [简体中文](./README.zh.md)
   [![npm downloads](https://img.shields.io/npm/dt/advanced-ele-ui.svg?style=flat-square)](https://www.npmjs.com/package/advanced-ele-ui)
   [![license](https://img.shields.io/npm/l/advanced-ele-ui.svg?style=flat-square)](https://github.com/vvhr/advanced-ele-ui/blob/main/LICENSE)
   [![pnpm](https://img.shields.io/badge/maintained%20with-pnpm-cc00ff.svg?style=flat-square)](https://pnpm.io/)
-  
+
+  [![zread](https://img.shields.io/badge/Ask_Zread-_.svg?style=flat&color=00b0aa&labelColor=000000&logo=data%3Aimage%2Fsvg%2Bxml%3Bbase64%2CPHN2ZyB3aWR0aD0iMTYiIGhlaWdodD0iMTYiIHZpZXdCb3g9IjAgMCAxNiAxNiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTQuOTYxNTYgMS42MDAxSDIuMjQxNTZDMS44ODgxIDEuNjAwMSAxLjYwMTU2IDEuODg2NjQgMS42MDE1NiAyLjI0MDFWNC45NjAxQzEuNjAxNTYgNS4zMTM1NiAxLjg4ODEgNS42MDAxIDIuMjQxNTYgNS42MDAxSDQuOTYxNTZDNS4zMTUwMiA1LjYwMDEgNS42MDE1NiA1LjMxMzU2IDUuNjAxNTYgNC45NjAxVjIuMjQwMUM1LjYwMTU2IDEuODg2NjQgNS4zMTUwMiAxLjYwMDEgNC45NjE1NiAxLjYwMDFaIiBmaWxsPSIjZmZmIi8%2BCjxwYXRoIGQ9Ik00Ljk2MTU2IDEwLjM5OTlIMi4yNDE1NkMxLjg4ODEgMTAuMzk5OSAxLjYwMTU2IDEwLjY4NjQgMS42MDE1NiAxMS4wMzk5VjEzLjc1OTlDMS42MDE1NiAxNC4xMTM0IDEuODg4MSAxNC4zOTk5IDIuMjQxNTYgMTQuMzk5OUg0Ljk2MTU2QzUuMzE1MDIgMTQuMzk5OSA1LjYwMTU2IDE0LjExMzQgNS42MDE1NiAxMy43NTk5VjExLjAzOTlDNS42MDE1NiAxMC42ODY0IDUuMzE1MDIgMTAuMzk5OSA0Ljk2MTU2IDEwLjM5OTlaIiBmaWxsPSIjZmZmIi8%2BCjxwYXRoIGQ9Ik0xMy43NTg0IDEuNjAwMUgxMS4wMzg0QzEwLjY4NSAxLjYwMDEgMTAuMzk4NCAxLjg4NjY0IDEwLjM5ODQgMi4yNDAxVjQuOTYwMUMxMC4zOTg0IDUuMzEzNTYgMTAuNjg1IDUuNjAwMSAxMS4wMzg0IDUuNjAwMUgxMy43NTg0QzE0LjExMTkgNS42MDAxIDE0LjM5ODQgNS4zMTM1NiAxNC4zOTg0IDQuOTYwMVYyLjI0MDFDMTQuMzk4NCAxLjg4NjY0IDE0LjExMTkgMS42MDAxIDEzLjc1ODQgMS42MDAxWiIgZmlsbD0iI2ZmZiIvPgo8cGF0aCBkPSJNNCAxMkwxMiA0TDQgMTJaIiBmaWxsPSIjZmZmIi8%2BCjxwYXRoIGQ9Ik00IDEyTDEyIDQiIHN0cm9rZT0iI2ZmZiIgc3Ryb2tlLXdpZHRoPSIxLjUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPgo8L3N2Zz4K&logoColor=ffffff)](https://zread.ai/vvhr/advanced-ele-ui)
   [![Vue](https://img.shields.io/badge/Vue-≥3.2.0-green?style=flat-square&logo=vue.js)](https://vuejs.org/)
   [![Element Plus](https://img.shields.io/badge/Element%20Plus-≥2.9.0-409eff?style=flat-square)](https://element-plus.org/)
   [![TypeScript](https://img.shields.io/badge/TypeScript-5.3-blue?style=flat-square&logo=typescript)](https://www.typescriptlang.org/)
@@ -24,10 +25,12 @@ English | [简体中文](./README.zh.md)
     ·
     <a href="./CHANGELOG.md">Changelog</a>
     ·
-    <a href="#Roadmap">Roadmap</a>
+  <a href="https://zread.ai/vvhr/advanced-ele-ui">Documents</a>
   </h3>
 </div>
 
+---
+> You can now access the [Technical Documents](https://zread.ai/vvhr/advanced-ele-ui) powered by `ZRead` and click the `Ask AI` button to quickly retrieve knowledge about this project!
 ---
 
 ## Introduction
@@ -223,9 +226,6 @@ import 'advanced-ele-ui/dist/style.css'
 ---
 
 ## Roadmap
-
-- ⬜ Build the `advanced-ele-ui-docs` component library documentation project to provide better usage guidance!
-
 > 💡 If you have good ideas or suggestions, feel free to raise them in [Issues](https://github.com/vvhr/advanced-ele-ui/issues)!
 
 ---
@@ -233,6 +233,7 @@ import 'advanced-ele-ui/dist/style.css'
 ## Documents and Resources
 
 - [Live Demo](http://aeui.vvhrdesign.com) - View live examples of all components
+- [Documents](https://zread.ai/vvhr/advanced-ele-ui) - Created by [ZRead.ai](https://zread.ai/)
 - [NPM Package](https://www.npmjs.com/package/advanced-ele-ui) - View release versions and download statistics
 - [Changelog](./CHANGELOG.md) - Learn about version updates
 - [Icon Component Guide](./ICON.md) - Custom icon collections and usage
@@ -263,7 +264,7 @@ This project is open source under the [MIT](./LICENSE) license.
 - [Iconify](https://iconify.design/) - Unified icon framework
 - [VueUse](https://vueuse.org/) - Collection of Vue Composition Utilities
 - [AiEditor](https://aieditor.dev/) - Intelligent text editor
-
+- [ZRead.ai](https://zread.ai/) - Github Docs Auto Generation
 ---
 
 ## Contact
