@@ -14,6 +14,7 @@ export function renderPagination(
       v-model:currentPage={currentPageRef.value}
       class="ae-table-pagination"
       {...unref(pagination)}
+      total={props.total ?? unref(pagination).total ?? 0}
       onChange={handlePageChange}
     ></ElPagination>
   ) : undefined

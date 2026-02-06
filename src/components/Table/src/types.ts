@@ -69,6 +69,8 @@ export interface TableProps {
   page: number
   // 双向绑定的分页器参数-每页数量
   pageSize: number
+  // 表格总条数(优先级高于pagination.total)
+  total?: number
   // 是否全局超出隐藏(优先级低于column.ellipsis)
   ellipsis: boolean
   // 分页器参数(若undefined或false时则不显示分页器)

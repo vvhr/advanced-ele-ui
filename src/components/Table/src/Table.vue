@@ -67,6 +67,10 @@ export default defineComponent({
       type: Boolean,
       default: false
     },
+    total: {
+      type: Number,
+      default: 0
+    },
     pagination: {
       type: Object as PropType<Pagination | undefined | false>,
       default: (): Pagination | undefined => undefined
