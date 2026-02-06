@@ -7,7 +7,7 @@ English | [简体中文](./CHANGELOG.zh.md)
 ## [0.2.2] - 2025-02-06
 
 ### Features
-* Added `total` prop to the `AeTable` component for setting the total number of items in the paginator, which takes precedence over `pagination.total`.
+* Added `total` prop to the `AeTable` component for setting the total number of items in the paginator.
 
 ### Improvements
 * Removed the default `font-size` from the `AeText` component and optimized the tag styles for highlight blocks.
