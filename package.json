@@ -1,6 +1,6 @@
 {
   "name": "advanced-ele-ui",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "buildVersion": "dev-20260122-1428",
   "description": "Advanced Component Library Based on Vue3 + Element Plus",
   "type": "module",

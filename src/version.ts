@@ -4,7 +4,7 @@
  */
 export const VERSION_INFO = {
   // npm 版本
-  version: '0.2.1',
+  version: '0.2.2',
   // 构建版本（内部测试用）
   buildVersion: 'dev-20260122-1428',
   // 构建时间
