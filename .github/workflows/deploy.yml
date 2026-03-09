@@ -49,6 +49,10 @@ jobs:
       - name: Install dependencies
         run: pnpm install
 
+      # 修复 CI 下 oxc-parser 无法找到 native binding 的问题（jiti/UnoCSS 依赖）
+      - name: Install oxc-parser Linux binding for CI
+        run: pnpm add -D @oxc-parser/binding-linux-x64-gnu
+
       - name: Build Demo Site
         run: pnpm run build:demo
         env:
