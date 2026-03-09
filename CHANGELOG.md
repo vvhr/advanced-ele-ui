@@ -4,7 +4,7 @@ English | [简体中文](./CHANGELOG.zh.md)
 
 ---
 
-## [0.2.3] - 2025-03-09
+## [0.2.4] - 2025-03-09
 
 ### Improvements
 * When the component `AeTable` uses `type` = `dict`, it will now automatically detect whether the `value` is an array. If it is an array, it will automatically concatenate the `label` of each option.
