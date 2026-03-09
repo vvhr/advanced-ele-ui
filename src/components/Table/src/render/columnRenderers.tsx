@@ -73,25 +73,35 @@ export function renderDictColumn(ctx: RenderContext): RenderResult | string {
   }
 
   // 普通字典处理
-  const dictItem = dictOptions.find(item => item.value === value)
-  const label = dictItem?.label || value
-
-  if (!dictItem && !value) {
-    return emptyValue
-  }
-
-  // 自定义渲染
-  if (column.typeProps.dictViewRender !== undefined) {
-    return {
-      value: label,
-      valueRender: column.typeProps.dictViewRender(ctx.originValue, label, dictItem)
+  let label: string
+  // 如果value是数组
+  if (isArray(value)) {
+    const labels = []
+    value.forEach((val, index) => {
+      const dictItem = dictOptions.find(item => item.value === val)
+      const _label = dictItem?.label || val
+      labels.push(_label)
+    })
+    label = labels.join(', ')
+  } else {
+    const dictItem = dictOptions.find(item => item.value === value)
+    label = dictItem?.label || value
+    if (!dictItem && !value) {
+      return emptyValue
+    }
+    // 自定义渲染
+    if (column.typeProps.dictViewRender !== undefined) {
+      return {
+        value: label,
+        valueRender: column.typeProps.dictViewRender(ctx.originValue, label, dictItem)
+      }
+    }
+    // 样式渲染
+    if (column.typeProps.dictViewType && column.typeProps.dictViewType !== 'text') {
+      return renderDictViewType(column.typeProps.dictViewType, label, dictItem)
     }
   }
 
-  // 样式渲染
-  if (column.typeProps.dictViewType && column.typeProps.dictViewType !== 'text') {
-    return renderDictViewType(column.typeProps.dictViewType, label, dictItem)
-  }
 
   return { value: label || emptyValue }
 }
