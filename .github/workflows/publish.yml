@@ -11,7 +11,7 @@ on:
   workflow_dispatch:
     inputs:
       force_publish:
-        description: '强制发布（跳过版本检测）'
+        description: '强制发布（跳过 commit 关键词检测）'
         required: false
         type: boolean
         default: false
@@ -27,7 +27,7 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
-  check-version:
+  check-publish:
     runs-on: ubuntu-latest
     outputs:
       should_publish: ${{ steps.check.outputs.should_publish }}
@@ -36,17 +36,15 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-        with:
-          fetch-depth: 2  # 需要获取上一个 commit 来比较
 
-      - name: Check version change
+      - name: Check commit message and version
         id: check
         run: |
           # 获取当前版本
           CURRENT_VERSION=$(node -p "require('./package.json').version")
           echo "Current version: $CURRENT_VERSION"
           echo "version=$CURRENT_VERSION" >> $GITHUB_OUTPUT
-          
+
           # 检查是否为 beta 版本
           if [[ "$CURRENT_VERSION" == *"beta"* ]]; then
             echo "is_beta=true" >> $GITHUB_OUTPUT
@@ -55,32 +53,29 @@ jobs:
             echo "is_beta=false" >> $GITHUB_OUTPUT
             echo "This is a release version"
           fi
-          
-          # 检查是否强制发布
+
+          # 强制发布时跳过 commit 关键词检测
           FORCE_PUBLISH="${{ github.event.inputs.force_publish }}"
           if [ "$FORCE_PUBLISH" == "true" ]; then
-            echo "Force publish enabled, skipping version check"
+            echo "Force publish enabled"
             echo "should_publish=true" >> $GITHUB_OUTPUT
             exit 0
           fi
-          
-          # 获取上一个 commit 的版本
-          git show HEAD~1:package.json > /tmp/old-package.json 2>/dev/null || echo '{"version":"0.0.0"}' > /tmp/old-package.json
-          OLD_VERSION=$(node -p "require('/tmp/old-package.json').version")
-          echo "Previous version: $OLD_VERSION"
-          
-          # 比较版本
-          if [ "$CURRENT_VERSION" != "$OLD_VERSION" ]; then
-            echo "Version changed from $OLD_VERSION to $CURRENT_VERSION"
+
+          # 根据本次提交的 commit message 是否包含 "publish" 决定是否发布
+          COMMIT_MSG=$(git log -1 --pretty=%B)
+          echo "Commit message: $COMMIT_MSG"
+          if echo "$COMMIT_MSG" | grep -qi "publish"; then
+            echo "Commit message contains 'publish', will publish"
             echo "should_publish=true" >> $GITHUB_OUTPUT
           else
-            echo "Version unchanged"
+            echo "Commit message does not contain 'publish', skip publish"
             echo "should_publish=false" >> $GITHUB_OUTPUT
           fi
 
   publish-beta:
-    needs: check-version
-    if: needs.check-version.outputs.should_publish == 'true' && needs.check-version.outputs.is_beta == 'true'
+    needs: check-publish
+    if: needs.check-publish.outputs.should_publish == 'true' && needs.check-publish.outputs.is_beta == 'true'
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -113,7 +108,7 @@ jobs:
         run: |
           echo "## 🧪 Beta Published!" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
-          echo "**Version:** ${{ needs.check-version.outputs.new_version }}" >> $GITHUB_STEP_SUMMARY
+          echo "**Version:** ${{ needs.check-publish.outputs.new_version }}" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
           echo "**Install:**" >> $GITHUB_STEP_SUMMARY
           echo "\`\`\`bash" >> $GITHUB_STEP_SUMMARY
@@ -121,8 +116,8 @@ jobs:
           echo "\`\`\`" >> $GITHUB_STEP_SUMMARY
 
   publish-release:
-    needs: check-version
-    if: needs.check-version.outputs.should_publish == 'true' && needs.check-version.outputs.is_beta == 'false'
+    needs: check-publish
+    if: needs.check-publish.outputs.should_publish == 'true' && needs.check-publish.outputs.is_beta == 'false'
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -155,9 +150,9 @@ jobs:
         run: |
           echo "## 🚀 Release Published!" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
-          echo "**Version:** ${{ needs.check-version.outputs.new_version }}" >> $GITHUB_STEP_SUMMARY
+          echo "**Version:** ${{ needs.check-publish.outputs.new_version }}" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
           echo "**Install:**" >> $GITHUB_STEP_SUMMARY
           echo "\`\`\`bash" >> $GITHUB_STEP_SUMMARY
-          echo "npm install advanced-ele-ui@${{ needs.check-version.outputs.new_version }}" >> $GITHUB_STEP_SUMMARY
+          echo "npm install advanced-ele-ui@${{ needs.check-publish.outputs.new_version }}" >> $GITHUB_STEP_SUMMARY
           echo "\`\`\`" >> $GITHUB_STEP_SUMMARY
