@@ -87,7 +87,8 @@ const zhCN: LocaleConfig = {
     fileSizeLimit: '文件大小不能超过 {size}',
     uploadFunctionRequired: '未配置上传函数',
     previewNotSupported: '该文件不支持预览',
-    downloadNotSupported: '暂不支持下载'
+    downloadNotSupported: '暂不支持下载',
+    empty: '暂无文件'
   },
 
   pagination: {

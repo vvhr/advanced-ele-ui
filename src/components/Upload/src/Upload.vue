@@ -83,7 +83,13 @@
             </div>
           </div>
         </div>
-
+        <!-- 非编辑模式且无任何文件时 -->
+        <div v-if="disabled && internalFileList.length === 0" class="ae-upload__item ae-upload__item--picture">
+          <div class="flex flex-col items-center justify-center h-full gap-1 is-empty">
+            <AeIcon icon="streamline-ultimate:picture-double-landscape-bold" :size="24" />
+            <span>{{ t('upload.empty') }}</span>
+          </div>
+        </div>
         <!-- 上传按钮 -->
         <div
           v-if="showUploadButton"
@@ -135,6 +141,12 @@
           </div>
         </div>
 
+        <!-- 非编辑模式且无任何文件时 -->
+        <div v-if="disabled && internalFileList.length === 0" class="ae-upload__item ae-upload__item--text">
+          <div class="flex flex-row items-center justify-center w-full gap-1 is-empty">
+            <span>{{ t('upload.empty') }}</span>
+          </div>
+        </div>
         <!-- 上传按钮 -->
         <div
           v-if="showUploadButton"
@@ -176,7 +188,7 @@
 
 <script setup lang="ts">
 import { ref, computed, watch } from 'vue'
-import { Icon } from '@/components/Icon'
+import AeIcon, { Icon } from '@/components/Icon'
 import {
   ElMessage,
   ElImageViewer,
@@ -539,6 +551,10 @@ function handleImageError(item: InternalUploadFile) {
       border-radius: var(--el-border-radius-base);
       overflow: hidden;
       cursor: pointer;
+      .is-empty {
+        color: var(--el-text-color-secondary);
+        font-size: var(--el-font-size-base);
+      }
     }
 
     &--text {
@@ -553,6 +569,10 @@ function handleImageError(item: InternalUploadFile) {
 
       &:hover {
         background-color: var(--el-fill-color-light);
+      }
+
+      .is-empty {
+        color: var(--el-text-color-regular);
       }
     }
   }
@@ -752,6 +772,9 @@ function handleImageError(item: InternalUploadFile) {
     .ae-upload__item--picture {
       width: 64px;
       height: 64px;
+      .is-empty {
+        font-size: 12px;
+      }
     }
 
     .ae-upload__trigger--picture {
@@ -763,6 +786,9 @@ function handleImageError(item: InternalUploadFile) {
       height: 32px;
       padding: 6px 8px;
       font-size: 12px;
+      .is-empty {
+        font-size: 12px;
+      }
     }
 
     .ae-upload__trigger--text {
@@ -789,12 +815,18 @@ function handleImageError(item: InternalUploadFile) {
     .ae-upload__trigger--picture {
       width: 256px;
       height: 256px;
+      .is-empty {
+        font-size: 14px;
+      }
     }
 
     .ae-upload__item--text {
       height: 48px;
       padding: 10px 16px;
       font-size: 16px;
+      .is-empty {
+        font-size: 16px;
+      }
     }
 
     .ae-upload__trigger--text {

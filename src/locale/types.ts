@@ -106,6 +106,7 @@ export interface LocaleConfig {
     uploadFunctionRequired: string // 未配置上传函数
     previewNotSupported: string // 该文件不支持预览
     downloadNotSupported: string // 暂不支持下载
+    empty: string // 暂无文件
   }
 
   // 分页

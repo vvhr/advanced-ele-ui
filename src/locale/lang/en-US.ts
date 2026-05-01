@@ -87,7 +87,8 @@ const enUS: LocaleConfig = {
     fileSizeLimit: 'File size cannot exceed {size}',
     uploadFunctionRequired: 'Upload function is not configured',
     previewNotSupported: 'This file does not support preview',
-    downloadNotSupported: 'Download is not supported yet'
+    downloadNotSupported: 'Download is not supported yet',
+    empty: 'No files'
   },
 
   pagination: {
