@@ -44,9 +44,13 @@ export function useImport(localImports: ImportItem[] = []) {
   })
 
   // 注册局部组件（覆盖全局注册的同名组件）
+  const loggerRecords = {
+    componentExists: [],
+    componentRegistered: []
+  }
   localImports.forEach(item => {
     if (components[item.name]) {
-      logger.warn('console.table.componentExists', { name: item.name })
+      loggerRecords.componentExists.push(item.name)
     }
     components[item.name] = item.component
 
@@ -57,8 +61,11 @@ export function useImport(localImports: ImportItem[] = []) {
     if (item.isArrayFn) {
       arrayStrategies[item.name] = item.isArrayFn
     }
-
-    logger.success('console.table.componentRegistered', { name: item.name })
+    loggerRecords.componentRegistered.push(item.name)
+  })
+  logger.warn('console.table.componentExists', { names: loggerRecords.componentExists.join(', ') })
+  logger.success('console.table.componentRegistered', {
+    names: loggerRecords.componentRegistered.join(', ')
   })
 
   return {

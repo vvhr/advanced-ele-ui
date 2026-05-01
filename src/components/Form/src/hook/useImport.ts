@@ -41,9 +41,13 @@ export function useImport(localImports: FormImportItem[] = []) {
   })
 
   // 注册局部组件（覆盖全局注册的同名组件）
+  const loggerRecords = {
+    componentExists: [],
+    componentRegistered: []
+  }
   localImports.forEach(item => {
     if (components[item.name]) {
-      logger.warn('console.form.componentExists', { name: item.name })
+      loggerRecords.componentExists.push(item.name)
     }
     components[item.name] = item.component
 
@@ -55,7 +59,12 @@ export function useImport(localImports: FormImportItem[] = []) {
       arrayStrategies[item.name] = item.isArrayFn
     }
 
-    logger.success('console.form.componentRegistered', { name: item.name })
+    loggerRecords.componentRegistered.push(item.name)
+  })
+
+  logger.warn('console.form.componentExists', { names: loggerRecords.componentExists.join(', ') })
+  logger.success('console.form.componentRegistered', {
+    names: loggerRecords.componentRegistered.join(', ')
   })
 
   return {

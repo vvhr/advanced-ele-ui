@@ -27,14 +27,19 @@ class GlobalFormImports {
     config?: any,
     isArrayFn?: (cps: Recordable) => boolean
   ) {
+    const loggerRecords = {
+      componentExists: [],
+      componentRegistered: [],
+      configExists: []
+    }
     if (this.components[name]) {
-      logger.warn('console.form.componentExists', { name })
+      loggerRecords.componentExists.push(name)
     }
     this.components[name] = component
 
     if (config) {
       if (this.componentConfigs[name]) {
-        logger.warn('console.form.configExists', { name })
+        loggerRecords.configExists.push(name)
       }
       this.componentConfigs[name] = config
     }
@@ -43,7 +48,12 @@ class GlobalFormImports {
       this.arrayStrategies[name] = isArrayFn
     }
 
-    logger.success('console.form.componentRegistered', { name })
+    loggerRecords.componentRegistered.push(name)
+    logger.warn('console.form.componentExists', { names: loggerRecords.componentExists.join(', ') })
+    logger.warn('console.form.configExists', { names: loggerRecords.configExists.join(', ') })
+    logger.success('console.form.componentRegistered', {
+      names: loggerRecords.componentRegistered.join(', ')
+    })
   }
 }
 
@@ -67,14 +77,19 @@ class GlobalTableImports {
     config?: any,
     isArrayFn?: (cps: Recordable) => boolean
   ) {
+    const loggerRecords = {
+      componentExists: [],
+      componentRegistered: [],
+      configExists: []
+    }
     if (this.components[name]) {
-      logger.warn('console.table.componentExists', { name })
+      loggerRecords.componentExists.push(name)
     }
     this.components[name] = component
 
     if (config) {
       if (this.componentConfigs[name]) {
-        logger.warn('console.table.configExists', { name })
+        loggerRecords.configExists.push(name)
       }
       this.componentConfigs[name] = config
     }
@@ -83,7 +98,12 @@ class GlobalTableImports {
       this.arrayStrategies[name] = isArrayFn
     }
 
-    logger.success('console.table.componentRegistered', { name })
+    loggerRecords.componentRegistered.push(name)
+    logger.warn('console.table.componentExists', { names: loggerRecords.componentExists.join(', ') })
+    logger.warn('console.table.configExists', { names: loggerRecords.configExists.join(', ') })
+    logger.success('console.table.componentRegistered', {
+      names: loggerRecords.componentRegistered.join(', ')
+    })
   }
 }
 
