@@ -14,7 +14,7 @@ export function usePagination(props: TableProps, emit: TableEmits) {
         hideOnSinglePage: false,
         total: 10
       },
-      { total: unref(props).total, ...unref(props).pagination }
+      { total: unref(props).total, ...(unref(props).pagination || {}) }
     )
   })
   function watchPage() {

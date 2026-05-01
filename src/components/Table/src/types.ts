@@ -74,7 +74,7 @@ export interface TableProps {
   // 是否全局超出隐藏(优先级低于column.ellipsis)
   ellipsis: boolean
   // 分页器参数(若undefined或false时则不显示分页器)
-  pagination: Pagination | undefined | false
+  pagination: Pagination | undefined | false | null
   // 加载状态
   loading: boolean
   // 全局对齐方式(优先级低于column.align)
