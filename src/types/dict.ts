@@ -1,9 +1,11 @@
 // 选项用途
 export type Useful = 'read' | 'edit'
 
+export type DictItemValue = string | number | boolean | null
+
 export type DictItem = {
   label: string
-  value: string
+  value: DictItemValue
   disabled?: boolean
   hidden?: boolean
   useful?: Useful[]

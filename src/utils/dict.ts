@@ -1,14 +1,14 @@
-import type { DictMap, DictItem } from '@/types/dict'
+import type { DictMap, DictItem, DictItemValue } from '@/types/dict'
 
 export interface UseDictTools {
   isExistName(name: string): boolean
   getDictOptions(name: string): DictItem[]
-  getDictItem(name: string, value: string): DictItem
-  getDictItemLabel(name: string, value: string): string
-  getDictItemProp(name: string, value: string, prop: string): any
+  getDictItem(name: string, value: DictItemValue): DictItem
+  getDictItemLabel(name: string, value: DictItemValue): string
+  getDictItemProp(name: string, value: DictItemValue, prop: string): any
   getTreeDictItemLabel(
     name: string | DictItem[],
-    value: string | string[],
+    value: DictItemValue | DictItemValue[],
     valueIsPath?: boolean,
     fullpath?: boolean,
     separator?: string
@@ -27,19 +27,19 @@ export function useDict(dictMap: DictMap): UseDictTools {
   }
 
   // 工具方法-通过字典名和值获取字典项
-  function getDictItem(name: string, value: string) {
+  function getDictItem(name: string, value: DictItemValue) {
     const options: DictItem[] = getDictOptions(name)
     const item: DictItem = options.find(item => item.value === value)
     return item || { label: '', value: value }
   }
 
   // 工具方法-通过字典名和值获取字典项的 label
-  function getDictItemLabel(name: string, value: string) {
+  function getDictItemLabel(name: string, value: DictItemValue) {
     return getDictItem(name, value).label || ''
   }
 
   // 工具方法-通过字典名和值和需的属性获取字典项的属性值
-  function getDictItemProp(name: string, value: string, prop: string) {
+  function getDictItemProp(name: string, value: DictItemValue, prop: string) {
     return this.getDictItem(name, value)[prop] || ''
   }
 
@@ -72,7 +72,7 @@ export function useDict(dictMap: DictMap): UseDictTools {
    */
   function getTreeDictItemLabel(
     name: string | DictItem[],
-    value: string | string[],
+    value: DictItemValue | DictItemValue[],
     valueIsPath: boolean = true,
     fullpath: boolean = true,
     separator: string = ' / '
@@ -81,16 +81,16 @@ export function useDict(dictMap: DictMap): UseDictTools {
     if (value === null || value === undefined || value === '') return ''
     const nodeLabel = (node: any) => node && (node.label ?? String(node.value ?? ''))
     // 将节点 value 转为字符串以便比较
-    const eq = (a: any, b: any) => String(a) === String(b)
+    const eq = (a: DictItemValue, b: DictItemValue) => String(a) === String(b)
     // 情况一：传入的是路径数组（或 value 为 string 且 valueIsPath 为 true）
-    let pathArray: string[] | null = null
+    let pathArray: DictItemValue[] | null = null
     if (Array.isArray(value)) {
-      pathArray = value.map(v => String(v))
+      pathArray = value.map(v => typeof v === 'string' ? v : String(v))
     } else if (valueIsPath) {
-      pathArray = String(value)
+      pathArray = (typeof value === 'string' ? value : String(value))
         .split(',')
         .map(s => s.trim())
-        .filter(s => s.length > 0)
+        .filter(s => s.length > 0) as DictItemValue[]
     }
     if (pathArray) {
       const labels: string[] = []
@@ -106,7 +106,7 @@ export function useDict(dictMap: DictMap): UseDictTools {
       return fullpath ? labels.join(separator) : labels[labels.length - 1]
     }
     // 情况二：传入的是单个值（字符串），需要在整棵树中查找并回溯路径
-    const target = String(value)
+    const target = typeof value === 'string' ? value : String(value)
     const stackLabels: string[] = []
     let found = false
     const dfs = (nodes: any[]): boolean => {
