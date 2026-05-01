@@ -93,7 +93,7 @@ export function useComponent(
         width: '100%'
       },
       // 自动添加placeholder
-      ...getPlaceholderText(column, props),
+      ...getPlaceholderText(column, props, componentConfigs),
       // 注入组件属性
       ...(column.editProps?.componentProps || {}),
       // 自动处理选项
@@ -166,18 +166,19 @@ export function useComponent(
   }
 }
 
-function getPlaceholderText(column: TableColumn, props: TableProps) {
+function getPlaceholderText(column: TableColumn, props: TableProps, componentConfigs: Partial<Recordable<TableFormImportItemConfig, TableFormComponentName>>) {
   const needInputPlaceholder = ['Autocomplete', 'Editor', 'Input', 'InputNumber', 'Mention']
   const needSelectPlaceholder = ['Cascader', 'DatePicker', 'Select', 'TimePicker', 'TimeSelect']
   const componentName = column.editProps?.component || 'Input'
+  const component = componentConfigs[componentName]
 
-  if (needInputPlaceholder.includes(componentName)) {
+  if (needInputPlaceholder.includes(componentName) || component?.needInputPlaceholder) {
     return {
       placeholder: getPlaceholder(t('form.placeholder.input'), column?.label || '')
     }
   }
 
-  if (needSelectPlaceholder.includes(componentName)) {
+  if (needSelectPlaceholder.includes(componentName) || component?.needSelectPlaceholder) {
     const selectPlaceholder = getPlaceholder(t('form.placeholder.select'), column?.label || '')
     return {
       startPlaceholder: t('form.placeholder.startDate'),

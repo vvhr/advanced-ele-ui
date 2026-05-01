@@ -91,15 +91,15 @@ export function useComponent(
     if (type === SchemaType.INPUTER) {
       compProps = {
         // 自动添加clearable属性
-        ...getClearable(schema, props.schemaProps),
+        ...getClearable(schema, props.schemaProps, componentConfigs),
         // 自动添加placeholder
-        ...getPlaceholder(schema, props.schemaProps, props),
+        ...getPlaceholder(schema, props.schemaProps, props, componentConfigs),
         // 如果是表格组件,自动将表单的formModel和excontext传递给组件
         ...setTableProps(schema, formModel.value, props, disabled.value),
         // 注入组件属性
         ...(componentProps || {}),
         // 自动处理选项
-        ...setAttrsOptions(schema, componentProps, formModel.value, props),
+        ...setAttrsOptions(schema, componentProps, formModel.value, props, componentConfigs),
         // 自定处理日期时间组件的初始时刻
         ...setDateRangeDefaultTime(schema, componentProps)
       }
@@ -228,7 +228,8 @@ export function useComponent(
       if (!insideSlots.hasOwnProperty(slotName)) {
         const fn = insideRenders[slotName]
         if (isFunction(fn)) {
-          slotObj[slotName] = (...args: any[]) => fn(formModel.value, schema, props.disabled, props.excontext, ...args)
+          slotObj[slotName] = (...args: any[]) =>
+            fn(formModel.value, schema, props.disabled, props.excontext, ...args)
         } else if (typeof fn === 'string') {
           slotObj[slotName] = () => fn
         }
@@ -247,9 +248,8 @@ export function useComponent(
         slotObj[slotName] = (...args: any[]) => {
           // 始终将 formModel.value 包装为 form 属性，保持 API 一致性
           // 如果插槽传递了参数，将插槽参数合并到对象中
-          const slotData = args.length > 0
-            ? { form: formModel.value, ...args[0] }
-            : { form: formModel.value }
+          const slotData =
+            args.length > 0 ? { form: formModel.value, ...args[0] } : { form: formModel.value }
           return getSlot(slots, `${slotKey}--${slotName}`, slotData)
         }
       }
@@ -369,14 +369,16 @@ function setAttrsOptions(
   schema: FormSchema,
   componentProps: ComponentProps,
   formModel: Recordable,
-  props: FormProps
+  props: FormProps,
+  componentConfigs: Recordable<FormImportItemConfig, ComponentName>
 ) {
   // 检查组件类型及属性
   if (!schema.component) {
     return {}
   }
+  const component = componentConfigs[schema.component]
   // 支持options属性的组件
-  if (needOptions.includes(schema.component as InputerName)) {
+  if (needOptions.includes(schema.component as InputerName) || component?.needOptions) {
     // 必须拥有options属性
     if (Reflect.has(componentProps, 'options')) {
       // 选项键名
@@ -407,7 +409,11 @@ function setAttrsOptions(
 }
 
 // 自动为组件添加clearable属性
-function getClearable(schema: FormSchema, schemaProps: FormSchemaProps) {
+function getClearable(
+  schema: FormSchema,
+  schemaProps: FormSchemaProps,
+  componentConfigs: Recordable<FormImportItemConfig, ComponentName>
+) {
   const clearable = schemaProps?.componentProps?.clearable ?? true
   if (clearable) {
     const type = schema.type ?? SchemaType.INPUTER
@@ -415,12 +421,21 @@ function getClearable(schema: FormSchema, schemaProps: FormSchemaProps) {
       if (needClearable.includes(schema.component as InputerName)) {
         return { clearable: true }
       }
+      // 如果是自定义注册的组件,则需要根据组件配置中的clearable属性来决定是否添加clearable属性
+      if (componentConfigs[schema.component]?.needClearable) {
+        return { clearable: true }
+      }
     }
   }
   return {}
 }
 
-function getPlaceholder(schema: FormSchema, schemaProps: FormSchemaProps, props: FormProps) {
+function getPlaceholder(
+  schema: FormSchema,
+  schemaProps: FormSchemaProps,
+  props: FormProps,
+  componentConfigs: Recordable<FormImportItemConfig, ComponentName>
+) {
   const autoPlaceholder = schemaProps?.componentProps?.autoPlaceholder ?? true
   const setPlaceholderInDisabled = schemaProps?.componentProps?.setPlaceholderInDisabled
 
@@ -428,8 +443,9 @@ function getPlaceholder(schema: FormSchema, schemaProps: FormSchemaProps, props:
     const type = schema.type ?? SchemaType.INPUTER
     if (type === SchemaType.INPUTER) {
       const labelStr = typeof schema?.label === 'string' ? schema.label : ''
+      const component = componentConfigs[schema.component]
 
-      if (needInputPlaceholder.includes(schema.component as InputerName)) {
+      if (needInputPlaceholder.includes(schema.component as InputerName) || component?.needInputPlaceholder) {
         if (props.disabled && setPlaceholderInDisabled !== undefined) {
           return {
             placeholder: setPlaceholderInDisabled
@@ -439,7 +455,7 @@ function getPlaceholder(schema: FormSchema, schemaProps: FormSchemaProps, props:
           placeholder: labelStr ? '请填写' + labelStr : ''
         }
       }
-      if (needSelectPlaceholder.includes(schema.component as InputerName)) {
+      if (needSelectPlaceholder.includes(schema.component as InputerName) || component?.needSelectPlaceholder) {
         if (props.disabled && setPlaceholderInDisabled !== undefined) {
           return {
             startPlaceholder: setPlaceholderInDisabled,
