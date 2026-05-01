@@ -3,15 +3,29 @@
 简体中文 | [English](./CHANGELOG.md)
 
 ---
+## [0.2.5] - 2026-05-01
 
-## [0.2.4] - 2025-03-09
+### 优化
+* 全局字典类型 `DictItem` 的 `value` 由 `string` 扩展为 `string | number | boolean | null`。
+* 组件 `AeTable` 通过 `tableImports` 加载组件时，对控制台的日志输出进行归一化合并。
+* 组件 `AeForm` 通过 `formImports` 加载组件时，对控制台的日志输出进行归一化合并。
+* 组件 `AeTable` 的 `Pagination` 属性新增支持 `null`，并修正了相关处理逻辑。
+
+### 新增
+* 组件 `AeForm` 通过 `formImports` 加载组件所依赖的 `FormImportItemConfig` 可配置项新增 `needClearable`、`needInputPlaceholder`、`needSelectPlaceholder`、`needOptions`，便于您引入组件的组件与内置组件保持相同的自动生成占位文本、自动添加清空按钮、自动处理选项的能力。
+* 组件 `AeTable` 通过 `tableImports` 加载组件所依赖的 `TableImportItemConfig` 可配置项新增 `needInputPlaceholder`、`needSelectPlaceholder`，便于您引入组件的组件与内置组件保持相同的自动生成占位文本能力。
+* 组件 `AeUpload` 在被禁用时，如果列表无任何文件，会显示`暂无文件`占位样式块。
+
+---
+
+## [0.2.4] - 2026-03-09
 
 ### 优化
 * 组件 `AeTable` 在使用 `type` = `dict` 时, 现在会自动识别 `value` 是否为数组, 如果是数组则会自动拼接每个选项的`label`
 
 ---
 
-## [0.2.2] - 2025-02-06
+## [0.2.2] - 2026-02-06
 
 ### 新增
 * 组件 `AeTable` 新增 `total` 属性，用于设置分页器的总条数。
@@ -21,7 +35,7 @@
 
 ---
 
-## [0.2.1] - 2025-01-26
+## [0.2.1] - 2026-01-26
 
 ### 新增
 * 新增组件 `AeComboInput`：组合输入组件，支持自定义组合模板，专用于需要多变量组合的文本值输入。
@@ -43,7 +57,7 @@
 * 更新 `InsidePropsSlots` 和 `InsidePropsRenders` 类型注释，添加作用域插槽参数使用示例。
 ---
 
-## [0.2.0] - 2025-01-12
+## [0.2.0] - 2026-01-12
 
 ### 新增
 * 新增组件 `AeText`：增强文本组件，支持前置图标、圆点、引用块样式、文本高亮匹配及高亮文本点击事件。
@@ -78,7 +92,7 @@
 
 ---
 
-## [0.1.9] - 2025-01-05
+## [0.1.9] - 2026-01-05
 
 ### 新增
 * 组件 [AeForm] 已全面支持 `desginable` 模式，并新增了 `desginableDirectives` 属性和 `designableColProps` 属性，在`desginable` 模式激活时，所有表单组件同级将支持 `design` 插槽，用于渲染组件设计工具栏，

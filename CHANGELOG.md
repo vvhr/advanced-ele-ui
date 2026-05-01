@@ -3,6 +3,20 @@
 English | [简体中文](./CHANGELOG.zh.md)
 
 ---
+## [0.2.5] - 2026-05-01
+
+### Improvements
+* Extended the value field of the global dictionary type `DictItem` from `string` to `string | number | boolean | null`.
+* Standardized and merged console log outputs when the `AeTable` component loads custom components via `tableImports`.
+* Standardized and merged console log outputs when the `AeForm` component loads custom components via `formImports`.
+* Added support for null in the `Pagination` property of the `AeTable` component, and fixed the related processing logic.
+
+### Features
+* Added new configurable properties `needClearable`, `needInputPlaceholder`, `needSelectPlaceholder` and `needOptions` to `FormImportItemConfig` (used when loading components via `formImports` in `AeForm`). This enables custom imported components to have the same capabilities as built-in components, including `auto-generating placeholder text`, `automatically adding clear buttons`, and `automatically processing options`.
+* Added new configurable properties `needInputPlaceholder` and `needSelectPlaceholder` to `TableImportItemConfig` (used when loading components via `tableImports` in `AeTable`). This enables custom imported components to support the same `auto-generated placeholder text` capability as built-in components.
+* When the `AeUpload` component is `disabled` and the file list is empty, a placeholder block displaying `No files` available will be shown.
+
+---
 
 ## [0.2.4] - 2025-03-09
 
