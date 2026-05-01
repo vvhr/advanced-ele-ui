@@ -11,9 +11,11 @@ type ArrayStrategies = Record<string, (cps: Recordable) => boolean>
  * 全局Form组件注册器
  */
 class GlobalFormImports {
-  components: Components = shallowReactive({})
-  componentConfigs: ComponentConfigs = shallowReactive({})
-  arrayStrategies: ArrayStrategies = shallowReactive({})
+  // 使用泛型显式声明响应式对象的类型，避免 Vue 3.5+ 中 shallowReactive 类型推断
+  // 出现 ShallowReactiveBrandClass 缺少字符串索引签名的报错
+  components: Components = shallowReactive<Components>({})
+  componentConfigs: ComponentConfigs = shallowReactive<ComponentConfigs>({})
+  arrayStrategies: ArrayStrategies = shallowReactive<ArrayStrategies>({})
 
   registerComponents(imports: FormImportItem[]) {
     imports.forEach(item => {
@@ -61,9 +63,11 @@ class GlobalFormImports {
  * 全局Table组件注册器
  */
 class GlobalTableImports {
-  components: Components = shallowReactive({})
-  componentConfigs: ComponentConfigs = shallowReactive({})
-  arrayStrategies: ArrayStrategies = shallowReactive({})
+  // 使用泛型显式声明响应式对象的类型，避免 Vue 3.5+ 中 shallowReactive 类型推断
+  // 出现 ShallowReactiveBrandClass 缺少字符串索引签名的报错
+  components: Components = shallowReactive<Components>({})
+  componentConfigs: ComponentConfigs = shallowReactive<ComponentConfigs>({})
+  arrayStrategies: ArrayStrategies = shallowReactive<ArrayStrategies>({})
 
   registerComponents(imports: TableFormImportItem[]) {
     imports.forEach(item => {
