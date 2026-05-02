@@ -18,22 +18,36 @@ class GlobalFormImports {
   arrayStrategies: ArrayStrategies = shallowReactive<ArrayStrategies>({})
 
   registerComponents(imports: FormImportItem[]) {
-    imports.forEach(item => {
-      this.registerComponent(item.name, item.component, item.config, item.isArrayFn)
-    })
-  }
-
-  registerComponent(
-    name: string,
-    component: Component,
-    config?: any,
-    isArrayFn?: (cps: Recordable) => boolean
-  ) {
     const loggerRecords = {
       componentExists: [],
       componentRegistered: [],
       configExists: []
     }
+    imports.forEach(item => {
+      this.registerComponent(loggerRecords, item.name, item.component, item.config, item.isArrayFn)
+    })
+    if (loggerRecords.componentExists.length) {
+      logger.warn('console.form.componentExists', {
+        name: loggerRecords.componentExists.join(', ')
+      })
+    }
+    if (loggerRecords.configExists.length) {
+      logger.warn('console.form.configExists', { name: loggerRecords.configExists.join(', ') })
+    }
+    if (loggerRecords.componentRegistered.length) {
+      logger.success('console.form.componentRegistered', {
+        name: loggerRecords.componentRegistered.join(', ')
+      })
+    }
+  }
+
+  registerComponent(
+    loggerRecords: any,
+    name: string,
+    component: Component,
+    config?: any,
+    isArrayFn?: (cps: Recordable) => boolean
+  ) {
     if (this.components[name]) {
       loggerRecords.componentExists.push(name)
     }
@@ -51,11 +65,6 @@ class GlobalFormImports {
     }
 
     loggerRecords.componentRegistered.push(name)
-    logger.warn('console.form.componentExists', { names: loggerRecords.componentExists.join(', ') })
-    logger.warn('console.form.configExists', { names: loggerRecords.configExists.join(', ') })
-    logger.success('console.form.componentRegistered', {
-      names: loggerRecords.componentRegistered.join(', ')
-    })
   }
 }
 
@@ -70,22 +79,36 @@ class GlobalTableImports {
   arrayStrategies: ArrayStrategies = shallowReactive<ArrayStrategies>({})
 
   registerComponents(imports: TableFormImportItem[]) {
-    imports.forEach(item => {
-      this.registerComponent(item.name, item.component, item.config, item.isArrayFn)
-    })
-  }
-
-  registerComponent(
-    name: string,
-    component: Component,
-    config?: any,
-    isArrayFn?: (cps: Recordable) => boolean
-  ) {
     const loggerRecords = {
       componentExists: [],
       componentRegistered: [],
       configExists: []
     }
+    imports.forEach(item => {
+      this.registerComponent(loggerRecords, item.name, item.component, item.config, item.isArrayFn)
+    })
+    if (loggerRecords.componentExists.length) {
+      logger.warn('console.table.componentExists', {
+        name: loggerRecords.componentExists.join(', ')
+      })
+    }
+    if (loggerRecords.configExists.length) {
+      logger.warn('console.table.configExists', { name: loggerRecords.configExists.join(', ') })
+    }
+    if (loggerRecords.componentRegistered.length) {
+      logger.success('console.table.componentRegistered', {
+        name: loggerRecords.componentRegistered.join(', ')
+      })
+    }
+  }
+
+  registerComponent(
+    loggerRecords: any,
+    name: string,
+    component: Component,
+    config?: any,
+    isArrayFn?: (cps: Recordable) => boolean
+  ) {
     if (this.components[name]) {
       loggerRecords.componentExists.push(name)
     }
@@ -103,11 +126,6 @@ class GlobalTableImports {
     }
 
     loggerRecords.componentRegistered.push(name)
-    logger.warn('console.table.componentExists', { names: loggerRecords.componentExists.join(', ') })
-    logger.warn('console.table.configExists', { names: loggerRecords.configExists.join(', ') })
-    logger.success('console.table.componentRegistered', {
-      names: loggerRecords.componentRegistered.join(', ')
-    })
   }
 }
 

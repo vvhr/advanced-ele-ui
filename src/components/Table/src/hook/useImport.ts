@@ -63,11 +63,16 @@ export function useImport(localImports: ImportItem[] = []) {
     }
     loggerRecords.componentRegistered.push(item.name)
   })
-  logger.warn('console.table.componentExists', { names: loggerRecords.componentExists.join(', ') })
-  logger.success('console.table.componentRegistered', {
-    names: loggerRecords.componentRegistered.join(', ')
-  })
-
+  if (loggerRecords.componentExists.length) {
+    logger.warn('console.table.componentExists', {
+      name: loggerRecords.componentExists.join(', ')
+    })
+  }
+  if (loggerRecords.componentRegistered.length) {
+    logger.success('console.table.componentRegistered', {
+      name: loggerRecords.componentRegistered.join(', ')
+    })
+  }
   return {
     components,
     arrayStrategies,
