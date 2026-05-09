@@ -49,19 +49,28 @@ export function useComponent(
    * 为组件构造双向绑定
    */
   function setModelValue() {
+    const bindings: Record<string, any> = {}
     if (field) {
       const modelValueKey = isExistAttr(components, componentName)
         ? componentConfigs[componentName]?.modelValueKey || 'modelValue'
         : 'modelValue'
-      return {
-        [modelValueKey]: get(row, field),
-        [`onUpdate:${modelValueKey}`]: (value: any) => {
-          // 使用响应式安全的方式更新值
+
+        bindings[modelValueKey] = get(row, field)
+        bindings[`onUpdate:${modelValueKey}`] = (value: any) => {
           setReactiveValue(row, field, value)
         }
-      }
     }
-    return {}
+    if (column.editProps?.componentProps?.vBinds) {
+      Object.entries(column.editProps.componentProps.vBinds).forEach(([propName, fieldPath]) => {
+        if (propName && fieldPath && typeof fieldPath === 'string') {
+          bindings[propName] = get(row, fieldPath)
+          bindings[`onUpdate:${propName}`] = (value: any) => {
+            setReactiveValue(row, fieldPath, value)
+          }
+        }
+      })
+    }
+    return bindings
   }
 
   function getFormItemRules() {

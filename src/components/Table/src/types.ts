@@ -573,6 +573,21 @@ export interface TableFormComponentProps {
    * @description 适用于`Select` `Input` 等组件
    */
   placeholder?: string
+    /**
+   * 其他需要双向绑定的属性
+   * @description
+   * 如果组件自身支持多个`双向绑定属性`，且你需要调用除 `modelValue` 以外的`双向绑定属性`则在此定义。
+   * `键`为组件的`属性名`，`值`为 row 中的`字段名`。
+   * @notes 仅对 `Inputer` 类型的组件有效，且当前`FormSchema`中必须已设置`field`。
+   * @example
+   * {
+   *   // v-model:fileList = row.attachments
+   *   fileList: 'attachments'
+   *   // v-model:bizNo = row.businessId
+   *   bizNo: 'businessId'
+   * }
+   */
+    vBinds?: Recordable<string, string>
   // 其他组件自身属性
   [key: string]: any
 }
