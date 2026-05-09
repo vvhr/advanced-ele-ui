@@ -223,7 +223,7 @@ setLocale('en-US')
 只引入需要的组件：
 
 ```typescript
-import { AeForm, AeTable, AeIcon, AeEditor, AeUpload, AeDialog, AeDrawer, AeTabs, AeTabPanel } from 'advanced-ele-ui'
+import { AeForm, AeTable, AeIcon, AeEditor, AeUpload, AeDialog, AeDrawer, AeTabs, AeTabPane } from 'advanced-ele-ui'
 import 'advanced-ele-ui/dist/style.css'
 ```
 

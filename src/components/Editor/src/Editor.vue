@@ -17,7 +17,7 @@ import { getStyleWidth } from '@/utils/get'
 import { useDebounceFn } from '@vueuse/core'
 
 export default defineComponent({
-  name: 'Editor',
+  name: 'AeEditor',
   props: {
     // 双向绑定编辑器的content
     modelValue: {

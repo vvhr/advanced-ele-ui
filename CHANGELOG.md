@@ -242,7 +242,7 @@ English | [简体中文](./CHANGELOG.zh.md)
 * The dependent plugin `dayjs` will also switch languages according to the current locale of the component library.
 * New component [AeDialog], based on `el-dialog`, is re-encapsulated with optimized styles, content area scrolling, support for drag and full screen toggle, and custom title bar buttons.
 * New component [AeDrawer], based on `el-drawer`, is re-encapsulated with optimized styles, content area scrolling, and support for custom title bar buttons.
-* New components [AeTabs] and [AeTabPanel], based on `el-tabs`, have content areas initialized with `flex` layout and optimized rendering.
+* New components [AeTabs] and [AeTabPane], based on `el-tabs`, have content areas initialized with `flex` layout and optimized rendering.
 
 ### Refactors
 * Component [AeTable] has undergone a small-scale refactoring, decoupling the rendering process of columns to facilitate future expansion and improve code readability, without affecting the original functionality.

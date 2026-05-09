@@ -206,7 +206,7 @@ After configuration, restart your IDE, and you can use components directly in Vu
 Import only the components you need:
 
 ```typescript
-import { AeForm, AeTable, AeIcon, AeEditor, AeUpload, AeDialog, AeDrawer, AeTabs, AeTabPanel } from 'advanced-ele-ui'
+import { AeForm, AeTable, AeIcon, AeEditor, AeUpload, AeDialog, AeDrawer, AeTabs, AeTabPane } from 'advanced-ele-ui'
 import 'advanced-ele-ui/dist/style.css'
 ```
 
