@@ -58,6 +58,7 @@ const enUS: LocaleConfig = {
       normalText: '{label} can only contain Chinese, English, and numbers',
       idCard: 'Please enter a valid ID card number',
       mobilePhone: 'Please enter a valid mobile phone number',
+      areaPhone: 'Please enter a valid area phone number',
       telephone: 'Please enter a valid telephone number',
       noChinese: '{label} cannot contain Chinese characters',
       creditCode: 'Please enter a valid unified social credit code',

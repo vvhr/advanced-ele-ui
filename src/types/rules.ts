@@ -8,6 +8,7 @@
  * - `normalText`: 常规文本 无特殊符号
  * - `isIdCard`: 身份证
  * - `isMobilePhone`: 手机号码
+ * - `isAreaPhone`: 带区号的手机号码
  * - `isTelephone`: 通用号码
  * - `noChinese`: 无汉字
  * - `isCreditCode`: 统一社会信用代码
@@ -22,6 +23,7 @@ export type AutoRules =
   | 'normalText' // 常规文本 无特殊符号
   | 'isIdCard' // 身份证号码
   | 'isMobilePhone' // 11位手机号码
+  | 'isAreaPhone' // 带区号的手机号码
   | 'isTelephone' // 通用号码
   | 'noChinese' // 无汉字
   | 'isCreditCode' // 统一社会信用代码

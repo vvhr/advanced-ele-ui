@@ -59,6 +59,14 @@ export function getAutoRulesMap(): Record<AutoRules, FormItemRule> {
       trigger: 'change',
       validator: createValidator(v => /^1[3456789]\d{9}/.test(v), 'form.validation.mobilePhone')
     },
+    isAreaPhone: {
+      message: t('form.validation.areaPhone'),
+      trigger: 'change',
+      validator: createValidator(
+        v => /^\+[0-9]+$/.test(v),
+        'form.validation.areaPhone'
+      )
+    },
     isTelephone: {
       message: t('form.validation.telephone'),
       trigger: 'change',

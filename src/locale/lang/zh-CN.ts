@@ -58,6 +58,7 @@ const zhCN: LocaleConfig = {
       normalText: '{label}只能包含中文、英文、数字',
       idCard: '请输入正确的身份证号码',
       mobilePhone: '请输入正确的手机号码',
+      areaPhone: '请输入正确的带区号的手机号码',
       telephone: '请输入正确的电话号码',
       noChinese: '{label}不能包含中文',
       creditCode: '请输入正确的统一社会信用代码',
