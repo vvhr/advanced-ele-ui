@@ -3,18 +3,21 @@
 简体中文 | [English](./CHANGELOG.md)
 
 ---
-## [0.2.5] - 2026-05-01
+## [0.2.5] - 2026-05-10
 
 ### 优化
 * 全局字典类型 `DictItem` 的 `value` 由 `string` 扩展为 `string | number | boolean | null`。
 * 组件 `AeTable` 通过 `tableImports` 加载组件时，对控制台的日志输出进行归一化合并。
 * 组件 `AeForm` 通过 `formImports` 加载组件时，对控制台的日志输出进行归一化合并。
 * 组件 `AeTable` 的 `Pagination` 属性新增支持 `null`，并修正了相关处理逻辑。
+* 组件 `AeTable` 的 `column.editable` 现已正确支持透传 `row`, `index` 参数实现行编辑状态动态化。
 
 ### 新增
 * 组件 `AeForm` 通过 `formImports` 加载组件所依赖的 `FormImportItemConfig` 可配置项新增 `needClearable`、`needInputPlaceholder`、`needSelectPlaceholder`、`needOptions`，便于您引入组件的组件与内置组件保持相同的自动生成占位文本、自动添加清空按钮、自动处理选项的能力。
 * 组件 `AeTable` 通过 `tableImports` 加载组件所依赖的 `TableImportItemConfig` 可配置项新增 `needInputPlaceholder`、`needSelectPlaceholder`，便于您引入组件的组件与内置组件保持相同的自动生成占位文本能力。
 * 组件 `AeUpload` 在被禁用时，如果列表无任何文件，会显示`暂无文件`占位样式块。
+* 组件 `AeTable` 的 `editProps.componentProps` 新增支持 `vBinds` 属性，用法与 `AeForm` 对齐。
+* 全局校验规则新增 `isAreaPhone` 实现带区号的手机号码校验。
 
 ---
 
