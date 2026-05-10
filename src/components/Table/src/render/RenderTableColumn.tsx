@@ -121,7 +121,7 @@ export function renderTableColumns(
     // 渲染列的default插槽
     const renderTableColumnDefault = (column: TableColumn, row: Recordable, index: number) => {
       // 1. 编辑模式
-      if (isEditable(props, column)) {
+      if (isEditable(props, column, row, index)) {
         return renderEditableColumn({
           props,
           slots,
