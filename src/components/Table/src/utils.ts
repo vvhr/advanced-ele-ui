@@ -69,13 +69,13 @@ export function isLoadingAction(
     return action.loading
   }
 }
-export function isEditable(props: TableProps, column: TableColumn) {
+export function isEditable(props: TableProps, column: TableColumn, row?: Recordable, index?: number) {
   if (props.editable) {
     if (column.editable === undefined) {
       return true
     }
     if (isFunction(column.editable)) {
-      return column.editable({}, null, column, props.form, props.excontext, props.editable)
+      return column.editable(row, index, column, props.form, props.excontext, props.editable)
     } else {
       return column.editable
     }
