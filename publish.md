@@ -14,5 +14,7 @@
 
 ```bash
 npm view advanced-ele-ui versions
-npm unpublish advanced-ele-ui@0.1.9
+npm unpublish advanced-ele-ui@0.2.5
+npm unpublish advanced-ele-ui@0.2.5-beta.2
+npm unpublish advanced-ele-ui@0.2.5-beta.3
 ```

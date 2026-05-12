@@ -230,7 +230,10 @@ export type TableColumnTypeProps = {
   actionDropdown?: {
     noIcon?: boolean
     noLabel?: boolean
+    icon?: string
+    iconSize?: number
     size?: ElButtonProps['size']
+    buttonProps?: ElButtonProps
   }
   /**
    * 全局字典名

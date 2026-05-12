@@ -281,7 +281,7 @@ export function renderTableColumns(
           minWidth: column.minWidth || '',
           prop: column.field || '',
           ...(column.columnAttrs || {}),
-          className: isEditable(props, column) ? 'ae-table-column-editable' : 'ae-table-column'
+          className: isEditable(props, column, {}, null) ? 'ae-table-column-editable' : 'ae-table-column'
         }
         return (
           <ElTableColumn {...columnAttrs}>

@@ -160,9 +160,10 @@ function renderMoreDropdown(
           <ElButton
             type="default"
             size={column?.typeProps?.actionDropdown?.size ?? 'default'}
-          >
+            {...(column?.typeProps?.actionDropdown?.buttonProps || {})}
+          > 
             {!column?.typeProps?.actionDropdown?.noIcon && (
-              <Icon icon="icon-park-outline:more" size={14} />
+              <Icon icon={column?.typeProps?.actionDropdown?.icon ?? 'icon-park-outline:more'} size={column?.typeProps?.actionDropdown?.iconSize ?? 14} />
             )}
             {!column?.typeProps?.actionDropdown?.noLabel && <span>{t('table.action.more')}</span>}
           </ElButton>
