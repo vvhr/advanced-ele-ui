@@ -36,7 +36,7 @@ export function renderActionColumn(ctx: ActionRenderContext): VNode | string {
   // 分类按钮
   const { normalActions, dropdownActions } = categorizeActions(visibleActions)
   const showMoreButton = dropdownActions.length > 1
-
+  const showSingleButton = dropdownActions.length === 1
   // 对齐方式
   const align = column.align ?? props.align ?? 'left'
   const rowClassAlign = getAlignClass(align)
@@ -48,6 +48,7 @@ export function renderActionColumn(ctx: ActionRenderContext): VNode | string {
     <div class={`ae-table-cell-value w-full flex flex-row items-center gap-2 ${rowClassAlign}`}>
       {normalActions.length > 0 && normalActions.map(action => renderActionButton(action, handlers.handleClick, ctx))}
       {showMoreButton && renderMoreDropdown(column, dropdownActions, handlers.handleCommand, ctx)}
+      {showSingleButton && renderActionButton(dropdownActions[0]!, handlers.handleClick, ctx)}
     </div>
   )
 }
@@ -160,7 +161,7 @@ function renderMoreDropdown(
           <ElButton
             type="default"
             size={column?.typeProps?.actionDropdown?.size ?? 'default'}
-            {...(column?.typeProps?.actionDropdown?.buttonProps || {})}
+            {...(column?.typeProps?.actionDropdown?.buttonAttrs || {})}
           > 
             {!column?.typeProps?.actionDropdown?.noIcon && (
               <Icon icon={column?.typeProps?.actionDropdown?.icon ?? 'icon-park-outline:more'} size={column?.typeProps?.actionDropdown?.iconSize ?? 14} />

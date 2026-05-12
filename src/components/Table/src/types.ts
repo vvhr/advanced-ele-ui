@@ -233,7 +233,7 @@ export type TableColumnTypeProps = {
     icon?: string
     iconSize?: number
     size?: ElButtonProps['size']
-    buttonProps?: ElButtonProps
+    buttonAttrs?: ElButtonProps
   }
   /**
    * 全局字典名

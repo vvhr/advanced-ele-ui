@@ -3,6 +3,18 @@
 简体中文 | [English](./CHANGELOG.md)
 
 ---
+## [0.2.7-beta.2] - 2026-05-12
+
+### 新增
+* 组件 `AeTable` 操作列「更多」下拉（`typeProps.actionDropdown`）新增可配置项：`icon`、`iconSize` 用于自定义触发按钮图标与尺寸；`buttonProps` 用于向触发 `ElButton` 透传属性。
+
+### 修复Bug
+* 组件 `AeTable` 在计算表头列可编辑样式类名时，`isEditable` 现向 `column.editable` 函数传入占位 `row` 与 `index`，避免未定义参数导致的异常或与单元格判断不一致。
+* 组件 `AeTable` 操作列：当下拉折叠区仅包含一条操作时无法正常显示，现在已改为只有一个下拉按钮时直接渲染为该操作的按钮，不再使用「更多」下拉。
+
+### 优化
+* 组件 `AeTable` 内部 `ElButtonProps` 类型补充 `dashed`、`color` 及 Element Plus 版本说明（`dashed` > `2.13.3`，`color` > `2.13.7`），与 `ElButton` 能力对齐。
+
 ## [0.2.5] - 2026-05-10
 
 ### 优化

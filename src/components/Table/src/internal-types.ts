@@ -16,6 +16,7 @@ export interface ElTableEventHanders {
  * - `link`: 按钮是否链接按钮
  * - `round`: 按钮是否圆角按钮
  * - `circle`: 按钮是否圆形按钮
+ * - `dashed`: 按钮是否虚线按钮
  */
 export interface ElButtonProps {
   type?: 'default' | 'primary' | 'success' | 'warning' | 'danger' | 'info' | ''
@@ -26,6 +27,14 @@ export interface ElButtonProps {
   link?: boolean
   round?: boolean
   circle?: boolean
+  /**
+   * Element Plus > `2.13.3`。
+   */
+  dashed?: boolean
+  /**
+   * Element Plus > `2.13.7`。
+   */
+  color?: string
 }
 
 export type OptionKeys = {

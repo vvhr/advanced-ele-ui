@@ -3,6 +3,18 @@
 English | [简体中文](./CHANGELOG.zh.md)
 
 ---
+## [0.2.7-beta.2] - 2026-05-12
+
+### Features
+* AeTable component: Added new configurable options for the operation column "More" dropdown (`typeProps.actionDropdown`): `icon` and `iconSize` for customizing the trigger button's icon and size; `buttonProps` allows passing attributes directly to the trigger `ElButton`.
+
+### Bug Fixes
+* AeTable component: When calculating the editable style class for header columns, `isEditable` now passes placeholder `row` and `index` to the `column.editable` function to avoid exceptions or inconsistencies caused by undefined parameters, ensuring alignment with cell-level logic.
+* AeTable component: The operation column dropdown previously could not display correctly when only one action was present in the collapsed area. Now, if there is only one dropdown button, it is rendered directly as that action's button, and the "More" dropdown is no longer used.
+
+### Improvements
+* AeTable component: The internal `ElButtonProps` type now includes `dashed` and `color` properties, along with Element Plus version notes (`dashed` > `2.13.3`, `color` > `2.13.7`), aligning with the capabilities of `ElButton`.
+
 ## [0.2.5] - 2026-05-10
 
 ### Improvements
