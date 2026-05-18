@@ -99,6 +99,11 @@ const zhCN: LocaleConfig = {
     itemsPerPage: '条/页'
   },
 
+  disclosure: {
+    toggleText: '隐藏',
+    collapsedText: '显示更多'
+  },
+  
   console: {
     table: {
       rowKeyRequired: '[AeTable] 启用选择功能时需要设置 rowKey 属性',

@@ -5,8 +5,9 @@ export type ComponentName = ContainerName | DecoratorName | InputerName | string
  * @description 容器类组件，用于包裹其他组件
  * - Group: 具有标题/副标题/折叠展开功能的卡片型容器组件
  * - Blank: 空白容器组件，该组件无可见样式，一般用于统一控制子组件的显隐
+ * - Disclosure: 折叠容器组件，默认隐藏内容，点击标题展开
  */
-export type ContainerName = 'Group' | 'Blank'
+export type ContainerName = 'Group' | 'Blank' | 'Disclosure'
 
 /**
  * 装饰型组件

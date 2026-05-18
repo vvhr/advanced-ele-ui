@@ -884,9 +884,40 @@ const formSchemas = reactive<FormSchema[]>([
   },
   {
     key: 'group',
-    label: '使用内置分组容器',
+    label: '内置分组容器',
     type: 'Container',
     component: 'Group',
+    componentProps: {
+      subLabel: '内置分组容器，默认支持折叠展开功能'
+    },
+    children: [
+      {
+        field: 'groupInput',
+        label: '输入框',
+        value: '',
+        component: 'Input'
+      },
+      {
+        field: 'groupInput2',
+        label: '输入框',
+        value: '',
+        component: 'Input'
+      }
+    ],
+    layoutProps: { span: 24 }
+  },
+  {
+    key: 'group2',
+    label: '内置分组容器(无边框)',
+    type: 'Container',
+    component: 'Group',
+    componentProps: {
+      border: false,
+      bg: false,
+      toggleable: false,
+      decor: true,
+      subLabel: '无边框容器，使用了decor属性来显示装饰块'
+    },
     children: [
       {
         field: 'groupInput',
@@ -937,6 +968,30 @@ const formSchemas = reactive<FormSchema[]>([
       },
       {
         field: 'cardInput2',
+        label: '输入框',
+        value: '',
+        component: 'Input'
+      }
+    ],
+    layoutProps: { span: 24 }
+  },
+  {
+    key: 'disclosure',
+    label: '内置折叠容器',
+    type: 'Container',
+    component: 'Disclosure',
+    componentProps: {
+      subLabel: '内置折叠容器，默认支持折叠展开功能'
+    },
+    children: [
+      {
+        field: 'groupInput',
+        label: '输入框',
+        value: '',
+        component: 'Input'
+      },
+      {
+        field: 'groupInput2',
         label: '输入框',
         value: '',
         component: 'Input'

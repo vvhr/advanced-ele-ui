@@ -99,6 +99,11 @@ const enUS: LocaleConfig = {
     itemsPerPage: 'items/page'
   },
 
+  disclosure: {
+    toggleText: 'Hide',
+    collapsedText: 'Show more'
+  },
+  
   console: {
     table: {
       rowKeyRequired: '[AeTable] rowKey is required when selection is enabled',

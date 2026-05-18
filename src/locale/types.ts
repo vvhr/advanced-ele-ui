@@ -118,6 +118,12 @@ export interface LocaleConfig {
     itemsPerPage: string // 条/页
   }
 
+  // 折叠容器
+  disclosure: {
+    toggleText: string // 隐藏
+    collapsedText: string // 显示更多
+  }
+  
   // 控制台消息
   console: {
     // Table 相关

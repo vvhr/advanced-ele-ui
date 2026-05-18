@@ -19,6 +19,19 @@ const props = defineProps({
     type: Boolean,
     default: true
   },
+  border: {
+    type: Boolean,
+    default: true
+  },
+  bg: {
+    type: Boolean,
+    default: true
+  },
+  // 标题前部装饰块
+  decor: {
+    type: Boolean,
+    default: false
+  },
   headerStyle: {
     type: [Object as PropType<CSSProperties>, String] as PropType<CSSProperties | string>,
     default: () => ''
@@ -80,7 +93,7 @@ function onTransitionEnd() {
 </script>
 
 <template>
-  <div class="ae-form-group">
+  <div class="ae-form-group" :class="{ border: border, bg: bg }">
     <div
       class="ae-form-group-header"
       :class="{
@@ -91,7 +104,11 @@ function onTransitionEnd() {
       @click="toggleable ? handleExpandChange() : undefined"
     >
       <div class="ae-form-group-header__label">
-        <span class="title" :style="labelStyle">{{ label }}</span>
+        <!-- 装饰块仅包裹主标题行，避免 sub-title 参与定位高度 -->
+        <div class="ae-form-group-header__title-line">
+          <div class="decor" v-if="decor"></div>
+          <span class="title" :style="labelStyle">{{ label }}</span>
+        </div>
         <span v-if="subLabel" class="sub-title" :style="subLabelStyle">{{ subLabel }}</span>
       </div>
       <Icon
@@ -117,11 +134,26 @@ function onTransitionEnd() {
 <style scoped lang="less">
 .ae-form-group {
   width: 100%;
-  border: 1px solid var(--el-border-color);
-  border-radius: var(--el-border-radius-base);
   margin-bottom: 10px;
   position: relative;
-
+  &.border {
+    border: 1px solid var(--el-border-color);
+    border-radius: var(--el-border-radius-base);
+    .ae-form-group-header {
+      border-radius: var(--el-border-radius-base) var(--el-border-radius-base) 0 0;
+      &.isExpanded {
+        border-bottom: 1px solid var(--el-border-color);
+      }
+    }
+  }
+  &.bg {
+    .ae-form-group-header {
+      background: var(--el-fill-color-light);
+    }
+    .ae-form-group-body {
+      background: var(--el-bg-color);
+    }
+  }
   .ae-form-group-header {
     display: flex;
     flex-direction: row;
@@ -129,17 +161,34 @@ function onTransitionEnd() {
     justify-content: space-between;
     width: 100%;
     padding: 10px 15px 10px 10px;
-    background: var(--el-color-info-light-9);
     font-size: 14px;
     box-sizing: border-box;
-    border-radius: var(--el-border-radius-base) var(--el-border-radius-base) 0 0;
-
     .ae-form-group-header__label {
       display: flex;
       flex-direction: column;
 
-      > .title {
-        font-size: 14px;
+      // 主标题独立一行，作为 decor 的定位参照，高度不包含 sub-title
+      .ae-form-group-header__title-line {
+        position: relative;
+        display: inline-flex;
+        align-items: center;
+
+        > .title {
+          font-size: 14px;
+          font-weight: 500;
+        }
+
+        > .decor {
+          position: absolute;
+          left: -10px;
+          top: 50%;
+          transform: translateY(-50%);
+          width: 4px;
+          // 与主标题字号一致，仅修饰 title 行
+          height: 1.1em;
+          background: var(--el-color-primary);
+          border-radius: 4px;
+        }
       }
 
       > .sub-title {
@@ -153,20 +202,14 @@ function onTransitionEnd() {
     &.toggleable {
       cursor: pointer;
     }
-
-    &.isExpanded {
-      border-bottom: 1px solid var(--el-border-color);
-    }
   }
 
   .ae-form-group-body {
-    //background: white;
     position: relative;
     overflow: hidden;
     transition:
       height 0.3s cubic-bezier(0.4, 0, 0.2, 1),
       padding 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-
     &.expanded {
       padding: 10px;
     }
