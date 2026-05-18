@@ -281,6 +281,11 @@ function onTransitionEnd() {
     overflow: hidden;
     transition: height 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 
+    // 初始折叠态（expand 为 false）时由 class 控制高度，与 Group 组件一致
+    &:not(.expanded) {
+      height: 0;
+    }
+
     .ae-form-disclosure-body__content {
       padding: 0;
     }
