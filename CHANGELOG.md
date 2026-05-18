@@ -3,10 +3,12 @@
 English | [简体中文](./CHANGELOG.zh.md)
 
 ---
-## [0.2.7-beta.2] - 2026-05-12
+## [0.2.7] - 2026-05-18
 
 ### Features
 * AeTable component: Added new configurable options for the operation column "More" dropdown (`typeProps.actionDropdown`): `icon` and `iconSize` for customizing the trigger button's icon and size; `buttonProps` allows passing attributes directly to the trigger `ElButton`.
+* AeForm component: Added built-in container component `Disclosure` — a collapsible disclosure panel that hides child fields by default, with title/subtitle and smooth height animation on expand/collapse; supports `divider`, `dividerPosition` (`left` / `center` / `right`), and `dividerStyle` (`solid` / `dashed` / `dot`) for header dividers; configurable via `toggleable`, `expand`, `toggleText`, and `collapsedText`.
+* i18n: Added `disclosure.toggleText` and `disclosure.collapsedText` for disclosure expand/collapse labels.
 
 ### Bug Fixes
 * AeTable component: When calculating the editable style class for header columns, `isEditable` now passes placeholder `row` and `index` to the `column.editable` function to avoid exceptions or inconsistencies caused by undefined parameters, ensuring alignment with cell-level logic.
@@ -14,6 +16,9 @@ English | [简体中文](./CHANGELOG.zh.md)
 
 ### Improvements
 * AeTable component: The internal `ElButtonProps` type now includes `dashed` and `color` properties, along with Element Plus version notes (`dashed` > `2.13.3`, `color` > `2.13.7`), aligning with the capabilities of `ElButton`.
+* AeForm component: Built-in `Group` container now supports `border`, `bg`, and `decor` props — toggle border/background styling independently, and optionally show a primary-color decorative bar before the main title.
+
+---
 
 ## [0.2.5] - 2026-05-10
 

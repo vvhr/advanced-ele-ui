@@ -3,10 +3,12 @@
 简体中文 | [English](./CHANGELOG.md)
 
 ---
-## [0.2.7-beta.2] - 2026-05-12
+## [0.2.7] - 2026-05-18
 
 ### 新增
 * 组件 `AeTable` 操作列「更多」下拉（`typeProps.actionDropdown`）新增可配置项：`icon`、`iconSize` 用于自定义触发按钮图标与尺寸；`buttonProps` 用于向触发 `ElButton` 透传属性。
+* 组件 `AeForm` 新增内置容器组件 `Disclosure`（折叠披露容器）：默认折叠隐藏子表单项，支持标题/副标题与展开收起高度动画；可通过 `divider`、`dividerPosition`（`left` / `center` / `right`）、`dividerStyle`（`solid` / `dashed` / `dot`）配置标题区分割线；支持 `toggleable`、`expand`、`toggleText`、`collapsedText` 等属性。
+* 国际化新增 `disclosure.toggleText`、`disclosure.collapsedText`，用于折叠容器展开/收起文案。
 
 ### 修复Bug
 * 组件 `AeTable` 在计算表头列可编辑样式类名时，`isEditable` 现向 `column.editable` 函数传入占位 `row` 与 `index`，避免未定义参数导致的异常或与单元格判断不一致。
@@ -14,6 +16,9 @@
 
 ### 优化
 * 组件 `AeTable` 内部 `ElButtonProps` 类型补充 `dashed`、`color` 及 Element Plus 版本说明（`dashed` > `2.13.3`，`color` > `2.13.7`），与 `ElButton` 能力对齐。
+* 组件 `AeForm` 内置容器 `Group` 新增 `border`、`bg`、`decor` 配置：`border` / `bg` 可分别关闭边框与背景样式；`decor` 可在主标题前显示主题色装饰条。
+
+---
 
 ## [0.2.5] - 2026-05-10
 
