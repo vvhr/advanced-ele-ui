@@ -3,6 +3,17 @@
 简体中文 | [English](./CHANGELOG.md)
 
 ---
+## [0.2.9-beta.1] - 2026-05-22
+
+### 修复Bug
+* 组件 `AeDialog`：内部布局样式改为直接子元素选择器（`> .el-dialog__header`、`> .el-dialog__body`、`> .el-dialog__footer`、`> .el-scrollbar`），避免弹窗嵌套时外层样式误作用于内层弹窗结构。
+* 组件 `AeDrawer`：对 `> .el-drawer__header`、`> .el-drawer__body`、`> .el-drawer__footer` 做同样调整，修复抽屉嵌套时的布局与内边距异常。
+
+### 优化
+* 组件 `AeUpload`：图片卡片模式下禁用且无文件时，空态占位图标由自定义 `AeIcon`（streamline 图标集）改为 Element Plus 内置 `Picture` 图标（经 `el-icon` 渲染，尺寸与 `pictureFileIconSize` 一致），与列表项图标风格统一，并减少对第三方图标集的依赖。
+
+---
+
 ## [0.2.7] - 2026-05-18
 
 ### 新增

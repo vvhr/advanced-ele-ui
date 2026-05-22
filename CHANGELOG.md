@@ -3,6 +3,17 @@
 English | [简体中文](./CHANGELOG.zh.md)
 
 ---
+## [0.2.8-beta.1] - 2026-05-22
+
+### Bug Fixes
+* AeDialog component: Internal layout styles now use direct-child selectors (`> .el-dialog__header`, `> .el-dialog__body`, `> .el-dialog__footer`, `> .el-scrollbar`) instead of descendant selectors, preventing style leakage when dialogs are nested inside one another.
+* AeDrawer component: Same direct-child selector adjustment for `> .el-drawer__header`, `> .el-drawer__body`, and `> .el-drawer__footer`, fixing nested drawer layout and padding issues.
+
+### Improvements
+* AeUpload component: When disabled with an empty file list in picture-card mode, the empty-state placeholder now uses the Element Plus `Picture` icon via `el-icon` (sized with `pictureFileIconSize`) instead of a custom `AeIcon` streamline icon, keeping empty and list states visually consistent and reducing reliance on external icon sets.
+
+---
+
 ## [0.2.7] - 2026-05-18
 
 ### Features
