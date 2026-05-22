@@ -86,7 +86,9 @@
         <!-- 非编辑模式且无任何文件时 -->
         <div v-if="disabled && internalFileList.length === 0" class="ae-upload__item ae-upload__item--picture">
           <div class="flex flex-col items-center justify-center h-full gap-1 is-empty">
-            <AeIcon icon="streamline-ultimate:picture-double-landscape-bold" :size="24" />
+            <el-icon :size="pictureFileIconSize">
+              <Picture />
+            </el-icon>
             <span>{{ t('upload.empty') }}</span>
           </div>
         </div>
@@ -206,7 +208,8 @@ import {
   Close,
   Upload as UploadIcon,
   ArrowDown,
-  Download
+  Download,
+  Picture
 } from '@element-plus/icons-vue'
 import type {
   UploadProps,

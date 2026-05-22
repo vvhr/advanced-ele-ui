@@ -39,6 +39,10 @@ export default defineConfig({
     }
   },
   base: '/',
+  server: {
+    port: 8989,
+    open: true
+  },
   build: {
     outDir: 'dist-demo',
     emptyOutDir: true

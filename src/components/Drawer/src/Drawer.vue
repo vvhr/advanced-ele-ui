@@ -95,7 +95,7 @@ const onClose = () => {
 
 <style lang="less">
 .ae-drawer {
-  .el-drawer__header {
+  > .el-drawer__header {
     height: 54px;
     padding: 0;
     margin-bottom: 0 !important;
@@ -103,13 +103,13 @@ const onClose = () => {
     background-color: var(--el-bg-color);
   }
 
-  .el-drawer__body {
+  > .el-drawer__body {
     padding: 0;
     display: flex;
     flex-direction: column;
   }
 
-  .el-drawer__footer {
+  > .el-drawer__footer {
     padding: 15px;
     background-color: var(--el-bg-color);
     border-top: 1px solid var(--el-border-color-extra-light);

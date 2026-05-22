@@ -8,7 +8,7 @@ import UnoCSS from 'unocss/vite'
 import dts from 'vite-plugin-dts'
 
 import { resolve } from 'path'
-import { readFileSync, writeFileSync, copyFileSync, existsSync, mkdirSync } from 'fs'
+import { readFileSync, writeFileSync } from 'fs'
 import { exec } from 'child_process'
 import { promisify } from 'util'
 
@@ -136,6 +136,10 @@ export default defineConfig({
     }
   },
   base: process.env.NODE_ENV === 'production' ? '/advanced-ele-ui/' : './',
+  server: {
+    port: 8989,
+    open: true
+  },
   build: {
     target: 'es2015',
     outDir: 'dist',

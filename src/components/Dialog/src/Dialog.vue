@@ -177,10 +177,10 @@ function onClose() {
       height: 100vh;
       display: flex;
       flex-direction: column;
-      .el-dialog__body {
+      > .el-dialog__body {
         flex: 1;
         height: 0;
-        .el-scrollbar {
+        > .el-scrollbar {
           height: 100% !important;
           box-sizing: border-box;
         }
@@ -193,11 +193,11 @@ function onClose() {
   margin: 0 !important;
   padding: 0 !important;
   &.no-header {
-    .el-dialog__header {
+    > .el-dialog__header {
       display: none;
     }
   }
-  .el-dialog__header {
+  > .el-dialog__header {
     height: 54px;
     padding: 0;
     margin-right: 0 !important;
@@ -206,11 +206,11 @@ function onClose() {
     z-index: 2;
   }
 
-  .el-dialog__body {
+  > .el-dialog__body {
     padding: 0;
   }
 
-  .el-dialog__footer {
+  > .el-dialog__footer {
     padding: 15px;
     z-index: 2;
     background-color: var(--el-bg-color);
