@@ -3,7 +3,7 @@
 English | [简体中文](./CHANGELOG.zh.md)
 
 ---
-## [0.2.8-beta.1] - 2026-05-22
+## [0.2.9-beta.1] - 2026-05-22
 
 ### Bug Fixes
 * AeDialog component: Internal layout styles now use direct-child selectors (`> .el-dialog__header`, `> .el-dialog__body`, `> .el-dialog__footer`, `> .el-scrollbar`) instead of descendant selectors, preventing style leakage when dialogs are nested inside one another.
