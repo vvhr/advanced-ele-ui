@@ -117,7 +117,9 @@ export function useComponent(
       // 自动处理时间范围组件的默认时间
       ...setDateRangeDefaultTime(column, column.editProps?.componentProps || {}),
       // 是否禁用
-      disabled: isDisabled(props, column, row, index)
+      disabled: isDisabled(props, column, row, index),
+      // 合并动态componentProps属性
+      ...getDynamicComponentProps(column, formModel, props)
     }
     // 删除optionKeys属性
     delete compProps.optionKeys
@@ -197,6 +199,13 @@ function getPlaceholderText(column: TableColumn, props: TableProps, componentCon
     }
   }
 
+  return {}
+}
+
+function getDynamicComponentProps(column: TableColumn, formModel: Recordable, props: TableProps) {
+  if (isFunction(column.editProps?._v_componentProps)) {
+    return column.editProps?._v_componentProps({}, null, column, formModel, props.excontext, props.editable) || {}
+  }
   return {}
 }
 

@@ -89,7 +89,7 @@
             <el-icon :size="pictureFileIconSize">
               <Picture />
             </el-icon>
-            <span>{{ t('upload.empty') }}</span>
+            <span class="empty-text">{{ t('upload.empty') }}</span>
           </div>
         </div>
         <!-- 上传按钮 -->
@@ -557,6 +557,9 @@ function handleImageError(item: InternalUploadFile) {
       .is-empty {
         color: var(--el-text-color-secondary);
         font-size: var(--el-font-size-base);
+        .empty-text {
+          line-height: var(--el-font-size-base);
+        }
       }
     }
 
@@ -777,6 +780,9 @@ function handleImageError(item: InternalUploadFile) {
       height: 64px;
       .is-empty {
         font-size: 12px;
+        .empty-text {
+          line-height: 12px;
+        }
       }
     }
 
@@ -820,6 +826,9 @@ function handleImageError(item: InternalUploadFile) {
       height: 256px;
       .is-empty {
         font-size: 14px;
+        .empty-text {
+          line-height: 14px;
+        }
       }
     }
 

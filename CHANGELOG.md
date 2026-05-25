@@ -3,6 +3,16 @@
 English | [简体中文](./CHANGELOG.zh.md)
 
 ---
+## [0.2.9-beta.2] - 2026-05-25
+
+### Features
+* AeTable component: Editable column `editProps` now supports dynamic `_v_componentProps`, allowing component props to be generated from the current column, row form model, table external context, and editable state.
+
+### Bug Fixes
+* AeUpload component: Empty-state text in picture-card mode now has explicit line-height styling for each size, keeping placeholder text vertically aligned with the configured font size.
+
+---
+
 ## [0.2.9-beta.1] - 2026-05-22
 
 ### Bug Fixes

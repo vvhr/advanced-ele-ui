@@ -529,6 +529,7 @@ export interface TableColumnEditProps {
   component?: TableFormComponentName | string
   defaultValue?: any
   componentProps?: TableFormComponentProps
+  _v_componentProps?: TableColumnFn<Recordable>
   componentEvent?: TableFormComponentEvents
   formItemProps?: {
     rules?: FormItemRule[]
