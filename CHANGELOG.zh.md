@@ -3,19 +3,14 @@
 简体中文 | [English](./CHANGELOG.md)
 
 ---
-## [0.2.9-beta.2] - 2026-05-25
+
+## [0.2.9] - 2026-05-31
 
 ### 新增
 * 组件 `AeTable`：可编辑列 `editProps` 新增支持动态 `_v_componentProps`，可基于当前列、行表单模型、表格外部上下文与编辑状态生成组件属性。
 
 ### 修复Bug
 * 组件 `AeUpload`：图片卡片模式空态文本为不同尺寸补充明确的 `line-height` 样式，使占位文本与对应字号保持垂直对齐。
-
----
-
-## [0.2.9-beta.1] - 2026-05-22
-
-### 修复Bug
 * 组件 `AeDialog`：内部布局样式改为直接子元素选择器（`> .el-dialog__header`、`> .el-dialog__body`、`> .el-dialog__footer`、`> .el-scrollbar`），避免弹窗嵌套时外层样式误作用于内层弹窗结构。
 * 组件 `AeDrawer`：对 `> .el-drawer__header`、`> .el-drawer__body`、`> .el-drawer__footer` 做同样调整，修复抽屉嵌套时的布局与内边距异常。
 
