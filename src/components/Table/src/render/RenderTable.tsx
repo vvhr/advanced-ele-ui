@@ -1,15 +1,11 @@
 import { getSlot } from '@/utils/get'
-import type {
-  TableEmits,
-  TableProps,
-  TableFormComponentName
-} from '../types'
+import type { TableEmits, TableProps, TableFormComponentName } from '../types'
 import type { TableFormImportItemConfig } from '@/types/imports'
 import type { ElTableEventHanders } from '../internal-types'
-import { ElTable, ElForm, vLoading } from 'element-plus'
+import { ElTable, ElForm, vLoading, type FormInstance, type TableInstance } from 'element-plus'
 import { renderTableColumns } from '../render/RenderTableColumn'
-import {type Ref, withDirectives, unref, type Component} from 'vue'
-import type { UseDictTools } from "@/utils/dict"
+import { type Ref, withDirectives, unref, type Component } from 'vue'
+import type { UseDictTools } from '@/utils/dict'
 import { t } from '@/locale'
 
 export function renderTable(
@@ -19,8 +15,8 @@ export function renderTable(
   currentRowRef: Ref<Recordable>,
   pageSizeRef: Ref<number>,
   pageRef: Ref<number>,
-  elTableRef: Ref<ComponentRef<typeof ElTable>>,
-  elFormRef: Ref<ComponentRef<typeof ElForm>>,
+  elTableRef: Ref<TableInstance>,
+  elFormRef: Ref<FormInstance>,
   elTableAttrs: Ref<Recordable>,
   elTableHanders: ElTableEventHanders,
   selections: Ref<Recordable[]>,
@@ -63,7 +59,18 @@ export function renderTable(
         {...unref(elTableAttrs)}
       >
         {{
-          default: () => renderTableColumns(props, slots, emit, currentRowRef, pageSizeRef, pageRef, dictTools, components, componentConfigs),
+          default: () =>
+            renderTableColumns(
+              props,
+              slots,
+              emit,
+              currentRowRef,
+              pageSizeRef,
+              pageRef,
+              dictTools,
+              components,
+              componentConfigs
+            ),
           append: () => getSlot(slots, 'append') || renderElTableAppend()
         }}
       </ElTable>

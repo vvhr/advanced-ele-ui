@@ -9,7 +9,13 @@ import {
   type PropType,
   type VNode
 } from 'vue'
-import { ElTable, TableColumnCtx, ElForm } from 'element-plus'
+import {
+  ElTable,
+  ElForm,
+  type FormInstance,
+  type TableColumnCtx,
+  type TableInstance
+} from 'element-plus'
 import type { TableProps, TableColumn, Pagination } from './types'
 import type { TableFormImportItem } from '@/types/imports'
 import type { ElTableEventHanders } from './internal-types'
@@ -145,8 +151,8 @@ export default defineComponent({
     const { components, componentConfigs } = useImport(props.imports)
 
     // 声明 elTableRef 实例
-    const elTableRef = ref<ComponentRef<typeof ElTable>>()
-    const elFormRef = ref<ComponentRef<typeof ElForm>>()
+    const elTableRef = ref<TableInstance>()
+    const elFormRef = ref<FormInstance>()
     const selections = ref<Recordable[]>([])
     const currentRowRef = ref<Recordable>()
     const dictTools: UseDictTools = useDict(props.dict)

@@ -7,17 +7,10 @@ import {
   TableSlots
 } from '../types'
 import type { TableFormImportItemConfig } from '@/types/imports'
-import {
-  ElTableColumn,
-  ElRadio
-} from 'element-plus'
+import { ElTableColumn, ElRadio } from 'element-plus'
 import TooltipHeader from '@/components/Table/src/components/TooltipHeader.vue'
 import { getSlot } from '@/utils/get'
-import {
-  setIndex,
-  isHidden,
-  isEditable
-} from '../utils'
+import { setIndex, isHidden, isEditable } from '../utils'
 import type { Ref, Component } from 'vue'
 import type { UseDictTools } from '@/utils/dict'
 import {
@@ -84,7 +77,14 @@ export function renderTableColumns(
     const renderSelectionColumn = (column: TableColumn) => {
       const setSelectable = (row: any, index: number) => {
         return column.typeProps?.selectable !== undefined
-          ? column.typeProps?.selectable(row, index, column, props.form, props.excontext, props.editable)
+          ? column.typeProps?.selectable(
+              row,
+              index,
+              column,
+              props.form,
+              props.excontext,
+              props.editable
+            )
           : true
       }
 
@@ -168,7 +168,14 @@ export function renderTableColumns(
 
         // 使用 formatter 函数
         if (column.formatter !== undefined) {
-          const formattedValue = column.formatter(row, index, column, props.form, props.excontext, props.editable)
+          const formattedValue = column.formatter(
+            row,
+            index,
+            column,
+            props.form,
+            props.excontext,
+            props.editable
+          )
           return wrapValueWithFeatures(ctx, { value: formattedValue })
         }
 
@@ -223,22 +230,19 @@ export function renderTableColumns(
       }
       // 序号列
       if (column?.type === 'index') {
-        const getIndex = (index: number) => {
-          if (column.typeProps?.index !== undefined) {
-            return column.typeProps?.index
-          } else {
-            return setIndex(
-              column.typeProps?.reserveIndex || true,
+        const index =
+          column.typeProps?.index ??
+          ((index: number) =>
+            setIndex(
+              column.typeProps?.reserveIndex ?? true,
               index,
               pageSizeRef.value || 10,
               pageRef.value || 1
-            )
-          }
-        }
+            ))
         return (
           <ElTableColumn
             type="index"
-            index={(index: number) => getIndex(index)}
+            index={index}
             align={column.align ?? props.align ?? 'center'}
             headerAlign={column.headerAlign ?? props.headerAlign ?? 'center'}
             fixed={column.fixed ?? false}
@@ -281,7 +285,9 @@ export function renderTableColumns(
           minWidth: column.minWidth || '',
           prop: column.field || '',
           ...(column.columnAttrs || {}),
-          className: isEditable(props, column, {}, null) ? 'ae-table-column-editable' : 'ae-table-column'
+          className: isEditable(props, column, {}, null)
+            ? 'ae-table-column-editable'
+            : 'ae-table-column'
         }
         return (
           <ElTableColumn {...columnAttrs}>
@@ -291,9 +297,14 @@ export function renderTableColumns(
                 renderTableColumnDefault(column, data.row, data.$index),
               header: () =>
                 getSlot(slots, `${columnKey}-header`) ||
-                column.headerRender?.({}, null, column, props.form, props.excontext, props.editable) || (
-                  <TooltipHeader title={column.label} subtitle={column.subLabel} />
-                )
+                column.headerRender?.(
+                  {},
+                  null,
+                  column,
+                  props.form,
+                  props.excontext,
+                  props.editable
+                ) || <TooltipHeader title={column.label} subtitle={column.subLabel} />
             }}
           </ElTableColumn>
         )

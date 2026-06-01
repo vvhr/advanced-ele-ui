@@ -1,4 +1,4 @@
-import { ElTable, type FormItemRule, TableColumnCtx } from 'element-plus'
+import { type FormItemRule, type TableColumnCtx, type TableInstance } from 'element-plus'
 import { DictItem, DictMap } from '@/types/dict'
 import type { VNode, Component, CSSProperties, Slots } from 'vue'
 import type { ElButtonProps, OptionKeys } from './internal-types'
@@ -39,7 +39,7 @@ export interface TableEmits {
   (e: 'update:editable', value: boolean): void
   (e: 'update:pageSize', value: number): void
   (e: 'update:page', value: number): void
-  (e: 'register', elTableRef: ComponentRef<typeof ElTable>): void
+  (e: 'register', elTableRef: TableInstance): void
   (e: 'selection-change', value: Recordable[]): void
   (e: 'page-change', value: { page: number; pageSize: number }): void
   (e: 'current-change', currentRow: any): void
@@ -577,7 +577,7 @@ export interface TableFormComponentProps {
    * @description 适用于`Select` `Input` 等组件
    */
   placeholder?: string
-    /**
+  /**
    * 其他需要双向绑定的属性
    * @description
    * 如果组件自身支持多个`双向绑定属性`，且你需要调用除 `modelValue` 以外的`双向绑定属性`则在此定义。
@@ -591,7 +591,7 @@ export interface TableFormComponentProps {
    *   bizNo: 'businessId'
    * }
    */
-    vBinds?: Recordable<string, string>
+  vBinds?: Recordable<string, string>
   // 其他组件自身属性
   [key: string]: any
 }
